@@ -10,7 +10,9 @@ typedef struct {
 
 typedef struct
 {
-    
+   Fahrzeug *p_stellplaetze;        /* Pointer auf Stellplatz-Array */
+   int maximale_kapazitaet;         /* Maximale Anzahl an Stellplätzen */
+   int belegte_stellplaetze;        /* Aktuell belegte Stellplätze */ 
 } Parkhaus;
 
 
