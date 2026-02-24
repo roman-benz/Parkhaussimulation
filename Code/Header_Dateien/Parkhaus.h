@@ -8,7 +8,7 @@
 
 
 /**
- * @brief Repräsentiert ein einzelnes Fahrzeug im System
+ * @brief Repräsentiert ein einzelnes Fahrzeug im Code
  */
 typedef struct {
     int fahrzeug_id;                 /* Eindeutige ID des Fahrzeugs */
