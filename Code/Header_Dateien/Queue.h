@@ -21,5 +21,7 @@ void queue_enqueue(Queue *eineQueue, Fahrzeug *einFahrzeug, int enqueue_zeitschr
 
 void queue_dequeue(Queue *queue, Fahrzeug *einparkendesFahrzeug, int *einparken_zeitschritt);
 
+void queue_destroy(Queue *queue);
+
 
 #endif
