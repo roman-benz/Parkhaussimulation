@@ -53,6 +53,6 @@ void simulationsschrittdaten_ausgeben(int aktueller_schritt, const Simulationdat
  * 
  * @param p_konfiguration Zeiger auf die Simulationskonfiguration
  */
-void run_simulation(const Simulationskonfiguration *p_konfiguration);
+void start_simulation(const Simulationskonfiguration *p_konfiguration);
 
 #endif
