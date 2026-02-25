@@ -32,7 +32,7 @@ void initialisierung_garage(Parkhaus *p_garage, int maximale_kapazitaet);
  * @param p_queue Zeiger auf die Warteschlange
  * @param p_daten Zeiger auf die Datenstruktur zur Speicherung der Ergebnisse
  */
-void ausführen_simulationsschritt(
+void ausfuehren_simulationsschritt(
     int aktueller_schritt,
     const Simulationskonfiguration *p_konfiguration,
     Parkhaus *p_garage,
