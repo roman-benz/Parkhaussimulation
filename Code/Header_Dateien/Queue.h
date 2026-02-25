@@ -17,6 +17,9 @@ typedef struct Queue
     int length;
 } Queue;
 
+
+void queue_init(Queue *queue);
+
 void queue_enqueue(Queue *eineQueue, Fahrzeug *einFahrzeug, int enqueue_zeitschritt);
 
 void queue_dequeue(Queue *queue, Fahrzeug *einparkendesFahrzeug, int *einparken_zeitschritt);
