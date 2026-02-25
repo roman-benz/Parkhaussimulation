@@ -38,7 +38,7 @@ typedef struct
  * @param[out] queue Zeiger auf die zu initialisierende Queue
  * @return void
  */
-void queue_init(Queue *queue);      //Initialisiert die Queue, um Garbage Werte zu vermeiden
+void queue_init(Queue *queue);    
 
 /**
  * @brief Fügt ein Fahrzeug in die Warteschlange ein
@@ -72,7 +72,7 @@ Fahrzeug queue_dequeue(Queue *eineQueue, Fahrzeug *einparkendesFahrzeug, int *ei
  * @param[in, out] queue Zeiger auf die Queue, deren Speicher freigegeben werden soll
  * @return void
  */
-void queue_destroy(Queue *queue);   //Gibt speicher frei
+void queue_destroy(Queue *queue);   
 
 
 #endif
