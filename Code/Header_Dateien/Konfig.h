@@ -10,4 +10,6 @@ typedef struct
     unsigned int zufalls_seed; 
 } Simulatiionskonfiguration;
 
+bool lese_und_validiere_konfiguration(imulationskonfiguration *p_konfiguration);
+
 #endif
