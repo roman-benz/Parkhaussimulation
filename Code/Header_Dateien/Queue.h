@@ -1,0 +1,30 @@
+#ifndef QUEUE_H
+#define QUEUE_H
+
+#include "Parkhaus.h"
+
+typedef struct QueueNode 
+{
+    Fahrzeug einFahrzeug;
+    int enqueue_zeitschritt;
+    struct QueueNode *next;
+} QueueNode;
+
+typedef struct 
+{
+    QueueNode *head;
+    QueueNode *tail;
+    int length;
+} Queue;
+
+
+void queue_init(Queue *queue);      //Initialisiert die Queue, um Garbage Werte zu vermeiden
+
+void queue_enqueue(Queue *eineQueue, Fahrzeug *einFahrzeug, int enqueue_zeitschritt);
+
+void queue_dequeue(Queue *queue, Fahrzeug *einparkendesFahrzeug, int *einparken_zeitschritt);
+
+void queue_destroy(Queue *queue);   //Gibt speicher frei
+
+
+#endif
