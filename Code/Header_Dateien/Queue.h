@@ -6,6 +6,7 @@
 typedef struct QueueNode 
 {
     Fahrzeug einFahrzeug;
+    int enqueue_zeitschritt;
     struct QueueNode *next;
 } QueueNode;
 
@@ -15,6 +16,8 @@ typedef struct Queue
     QueueNode *tail;
     int length;
 } Queue;
+
+void queue_enqueue(Queue *eineQueue, Fahrzeug *einFahrzeug, int enqueue_zeitschritt);
 
 
 #endif
