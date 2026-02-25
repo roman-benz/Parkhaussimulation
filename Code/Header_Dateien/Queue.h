@@ -10,7 +10,7 @@ typedef struct QueueNode
     struct QueueNode *next;
 } QueueNode;
 
-typedef struct Queue 
+typedef struct 
 {
     QueueNode *head;
     QueueNode *tail;
