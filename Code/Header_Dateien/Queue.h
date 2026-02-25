@@ -18,13 +18,13 @@ typedef struct Queue
 } Queue;
 
 
-void queue_init(Queue *queue);
+void queue_init(Queue *queue);      //Initialisiert die Queue, um Garbage Werte zu vermeiden
 
 void queue_enqueue(Queue *eineQueue, Fahrzeug *einFahrzeug, int enqueue_zeitschritt);
 
 void queue_dequeue(Queue *queue, Fahrzeug *einparkendesFahrzeug, int *einparken_zeitschritt);
 
-void queue_destroy(Queue *queue);
+void queue_destroy(Queue *queue);   //Gibt speicher frei
 
 
 #endif
