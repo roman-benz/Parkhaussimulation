@@ -13,7 +13,7 @@ typedef struct {
     int warteschlangen_laenge;
     double auslastungsrate;
     double durchschnittliche_wartezeit;
-} SimulationDaten;
+} Simulationdaten;
 
 /**
  * @brief Initialisiert Parkhausdatenstrukturen für die Simulation.
@@ -25,9 +25,11 @@ void ausführen_simulationsschritt(
     const Simulationskonfiguration *p_konfiguration,
     Parkhaus *garage,
     Queue *queue,
-    SimulationDaten *p_daten
+    Simulationdaten *p_daten
 );
 
-void simulationsschrittdaten_ausgeben(int aktueller_schritt, const SimulationDaten *p_daten);
+void simulationsschrittdaten_ausgeben(int aktueller_schritt, const Simulationdaten *p_daten);
+
+void run_simulation(const Simulationskonfiguration *p_konfiguration);
 
 #endif
