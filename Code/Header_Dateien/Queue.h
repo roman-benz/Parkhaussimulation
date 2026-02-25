@@ -19,5 +19,7 @@ typedef struct Queue
 
 void queue_enqueue(Queue *eineQueue, Fahrzeug *einFahrzeug, int enqueue_zeitschritt);
 
+void queue_dequeue(Queue *queue, Fahrzeug *einparkendesFahrzeug, int *einparken_zeitschritt);
+
 
 #endif
