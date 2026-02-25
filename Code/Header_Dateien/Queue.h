@@ -35,7 +35,7 @@ typedef struct
  * 
  * Die Funktion setzt alle Parameter der Queue auf NULL, um Garbage-Werte zu vermeiden.
  * 
- * @param[in] queue Zeiger auf die zu initialisierende Queue
+ * @param[out] queue Zeiger auf die zu initialisierende Queue
  * @return void
  */
 void queue_init(Queue *queue);      //Initialisiert die Queue, um Garbage Werte zu vermeiden
@@ -45,8 +45,8 @@ void queue_init(Queue *queue);      //Initialisiert die Queue, um Garbage Werte 
  * 
  * Die Funktion erstellt einen neuen Knoten mit den Informationen des Fahrzeugs und fügt diesen am Ende der Queue hinzu.
  * 
- * @param[out] eineQueue Zeiger auf die Queue, in die das Fahrzeug eingefügt werden soll
- * @param[out] einFahrzeug Zeiger auf das Fahrzeug, das in die Queue eingefügt werden soll
+ * @param[in, out] eineQueue Zeiger auf die Queue, in die das Fahrzeug eingefügt werden soll
+ * @param[in] einFahrzeug Zeiger auf das Fahrzeug, das in die Queue eingefügt werden soll
  * @param[in] enqueue_zeitschritt der Zeitschritt, zu dem das Fahrzeug in die Queue eingefügt wurde (fuer spaetere Berechnung der Wartezeit!)
  * @return void
  */
@@ -57,13 +57,21 @@ void queue_enqueue(Queue *eineQueue, Fahrzeug *einFahrzeug, int enqueue_zeitschr
  * 
  * Die Funktion entfernt den Knoten am Anfang der Queue und gibt das darin enthaltene Fahrzeug zurück.
  * 
- * @param[out] eineQueue Zeiger auf die Queue, aus der das Fahrzeug entfernt werden soll
+ * @param[in, out] eineQueue Zeiger auf die Queue, aus der das Fahrzeug entfernt werden soll
  * @param[out] einparkendesFahrzeug Zeiger auf das Fahrzeug, das aus der Queue entfernt werden soll
  * @param[out] einparken_zeitschritt Zeiger auf den Zeitschritt, zu dem das Fahrzeug aus der Queue entfernt wurde (fuer spaetere Berechnung der Wartezeit!)
  * @return Das entfernte Fahrzeug
  */
 Fahrzeug queue_dequeue(Queue *eineQueue, Fahrzeug *einparkendesFahrzeug, int *einparken_zeitschritt);
 
+/**
+ * @brief Gibt den Speicher der Queue frei
+ * 
+ * Die Funktion entfernt alle Knoten der Queue und gibt den Speicher frei.
+ * 
+ * @param[in, out] queue Zeiger auf die Queue, deren Speicher freigegeben werden soll
+ * @return void
+ */
 void queue_destroy(Queue *queue);   //Gibt speicher frei
 
 
