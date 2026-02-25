@@ -21,11 +21,13 @@ typedef struct {
 void initialisierung_garage(Parkhaus *garage, int maximale_kapazitaet);
 
 void ausführen_simulationsschritt(
-    int current_step,
+    int aktueller_schritt,
     const Simulationskonfiguration *p_konfiguration,
     Parkhaus *garage,
     Queue *queue,
-    SimulationDaten *daten
+    SimulationDaten *p_daten
 );
+
+void simulationsschrittdaten_ausgeben(int aktueller_schritt, const SimulationDaten *p_daten);
 
 #endif
