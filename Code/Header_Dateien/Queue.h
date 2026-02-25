@@ -8,6 +8,10 @@
 
 #include "Parkhaus.h"
 
+/**
+ * @brief Repräsentiert ein einzelnen Knoten in der Warteschlange
+*/
+
 typedef struct QueueNode 
 {
     Fahrzeug einFahrzeug;
@@ -15,6 +19,10 @@ typedef struct QueueNode
     struct QueueNode *next;
 } QueueNode;
 
+
+/**
+ * @brief Repräsentiert die Warteschlange durch die Aufsammlung der Knoten
+*/
 typedef struct 
 {
     QueueNode *head;
