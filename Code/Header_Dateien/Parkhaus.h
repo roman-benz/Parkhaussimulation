@@ -10,7 +10,8 @@
 /**
  * @brief Repräsentiert ein einzelnes Fahrzeug im Code
  */
-typedef struct {
+typedef struct 
+{
     int fahrzeug_id;                 /* Eindeutige ID des Fahrzeugs */
     int verbleibende_parkdauer;      /* Restdauer der Parkzeit */
     int eintritts_zeit;              /* Zeitschritt beim Einfahren */
