@@ -2,32 +2,32 @@
 #include <stdlib.h>
 
 Function queue_init(Queue *queue) 
-
     queue->head <- NULL;
     queue->tail <- NULL;
     queue->length <- 0;
 END 
 
 Function queue_enqueue(Queue *eineQueue, Fahrzeug *einFahrzeug, int enqueue_zeitschritt)
-    QueueNode *Fahrzeugknoten <- malloc(sizeof);
+    //Neuer Listenelement für das Fahrzeug mit Malloc reserviert
+    QueueNode *Fahrzeugknoten <- malloc(sizeof(Fahrzeugknoten));
     IF (malloc() erfolgreich?)
-
+        //Das Fahrzeug das der Schlange hinzugefügt werden soll wird hier dem Knoten zugewiesen
         Fahrzeugknoten->einFahrzeug <- einFahrzeug;
-        IF eineQueue.Length == 0
+        IF eineQueue.Length == 0    //Wenn die Warteschlange leer ist, dann ist das ankommende Fahrzeug head und tail der Warteschlange
             eineQueue.head <- Fahrzeugknoten;
             eineQueue.tail <- Fahrzeugknoten;
-            Fahrzeugknoten->next <- NULL;
-            Fahrzeugknoten->enqueue_zeitschritt <- enqueue_zeitschritt;
+            Fahrzeugknoten->next <- NULL;   //Um Garbage-Werte zu vermeiden
+            Fahrzeugknoten->enqueue_zeitschritt <- enqueue_zeitschritt; //Fuer spätere Berechnung der Wartezeit
         ELSE 
-            eineQueue->tail->next <- Fahrzeugknoten;    
+            eineQueue->tail->next <- Fahrzeugknoten;   //Wenn Fahrzeuge schon in der Warteschlange sind, dann soll das ankommende Fahrzeug an den Tail angehängt werden
             eineQueue->tail <- Fahrzeugknoten;
-            Fahrzeugknoten->next <- NULL;
-            Fahrzeugknoten->enqueue_zeitschritt <- enqueue_zeitschritt;
+            Fahrzeugknoten->next <- NULL;   //Garbage-Werte vermeiden
+            Fahrzeugknoten->enqueue_zeitschritt <- enqueue_zeitschritt; //Fuer spätere Berechnung der Wartezeit
         END IF 
-        eineQueue->length <- eineQueue->length + 1; 
+        eineQueue->length <- eineQueue->length + 1; //Warteschlangenlaenge um 1 erhöhen
 
     ELSE 
-        END 
+        END //Abbruch
     END IF 
 END
 
