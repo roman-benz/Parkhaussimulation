@@ -1,0 +1,135 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36" version="29.5.4">
+  <diagram name="Seite-1" id="nZOWY2ditioaM5BGluEi">
+    <mxGraphModel dx="1113" dy="702" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="F67DF3xmugA9nHhPoDIg-3" edge="1" parent="1" source="F67DF3xmugA9nHhPoDIg-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="F67DF3xmugA9nHhPoDIg-2" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="F67DF3xmugA9nHhPoDIg-1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Start durch Funktionsaufruf" vertex="1">
+          <mxGeometry height="60" width="120" x="354" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="F67DF3xmugA9nHhPoDIg-5" edge="1" parent="1" source="F67DF3xmugA9nHhPoDIg-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="F67DF3xmugA9nHhPoDIg-4" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="F67DF3xmugA9nHhPoDIg-2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Speicher mit für neuen Knoten mit malloc() reservieren und Knoten dort anlegen" vertex="1">
+          <mxGeometry height="80" width="136" x="346" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="F67DF3xmugA9nHhPoDIg-7" edge="1" parent="1" source="F67DF3xmugA9nHhPoDIg-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="287" y="380" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="F67DF3xmugA9nHhPoDIg-9" connectable="0" parent="F67DF3xmugA9nHhPoDIg-7" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Nein" vertex="1">
+          <mxGeometry relative="1" x="-0.2222" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="F67DF3xmugA9nHhPoDIg-11" edge="1" parent="1" source="F67DF3xmugA9nHhPoDIg-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="F67DF3xmugA9nHhPoDIg-10" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="F67DF3xmugA9nHhPoDIg-19" connectable="0" parent="F67DF3xmugA9nHhPoDIg-11" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Ja" vertex="1">
+          <mxGeometry relative="1" x="-0.0331" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="F67DF3xmugA9nHhPoDIg-4" parent="1" style="rhombus;whiteSpace=wrap;html=1;rounded=0;" value="malloc() erfolgreich?" vertex="1">
+          <mxGeometry height="90" width="96" x="366" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="F67DF3xmugA9nHhPoDIg-13" edge="1" parent="1" source="F67DF3xmugA9nHhPoDIg-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="F67DF3xmugA9nHhPoDIg-12" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="F67DF3xmugA9nHhPoDIg-10" parent="1" style="whiteSpace=wrap;html=1;rounded=0;" value="Fahrzeug Variable des Knotens gleich mit dem ankommenden Fahrzeug setzen" vertex="1">
+          <mxGeometry height="85" width="150" x="530" y="368.5" as="geometry" />
+        </mxCell>
+        <mxCell id="F67DF3xmugA9nHhPoDIg-15" edge="1" parent="1" source="F67DF3xmugA9nHhPoDIg-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="F67DF3xmugA9nHhPoDIg-14" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="F67DF3xmugA9nHhPoDIg-18" connectable="0" parent="F67DF3xmugA9nHhPoDIg-15" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Ja" vertex="1">
+          <mxGeometry relative="1" x="0.0649" y="-2" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="F67DF3xmugA9nHhPoDIg-21" edge="1" parent="1" source="F67DF3xmugA9nHhPoDIg-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="F67DF3xmugA9nHhPoDIg-20" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="F67DF3xmugA9nHhPoDIg-31" connectable="0" parent="F67DF3xmugA9nHhPoDIg-21" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Nein" vertex="1">
+          <mxGeometry relative="1" x="-0.4037" as="geometry">
+            <mxPoint y="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="F67DF3xmugA9nHhPoDIg-12" parent="1" style="rhombus;whiteSpace=wrap;html=1;rounded=0;" value="Queue Length == 0?" vertex="1">
+          <mxGeometry height="90" width="93.12" x="558.4399999999999" y="495" as="geometry" />
+        </mxCell>
+        <mxCell id="F67DF3xmugA9nHhPoDIg-38" edge="1" parent="1" source="F67DF3xmugA9nHhPoDIg-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="F67DF3xmugA9nHhPoDIg-37" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="F67DF3xmugA9nHhPoDIg-14" parent="1" style="whiteSpace=wrap;html=1;rounded=0;" value="Head = Tail = Knoten vom ankommenden Fahrzeug" vertex="1">
+          <mxGeometry height="60" width="120" x="371.87999999999994" y="510" as="geometry" />
+        </mxCell>
+        <mxCell id="F67DF3xmugA9nHhPoDIg-25" edge="1" parent="1" source="F67DF3xmugA9nHhPoDIg-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="F67DF3xmugA9nHhPoDIg-24" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="432" y="930" />
+              <mxPoint x="580" y="930" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="F67DF3xmugA9nHhPoDIg-16" parent="1" style="whiteSpace=wrap;html=1;rounded=0;" value="Eintrittszeitschritt des Knoten von ankommendes Fahrzeug = übergebener Zeitschritt" vertex="1">
+          <mxGeometry height="70" width="148.12" x="357.82" y="710" as="geometry" />
+        </mxCell>
+        <mxCell id="F67DF3xmugA9nHhPoDIg-33" edge="1" parent="1" source="F67DF3xmugA9nHhPoDIg-34" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="F67DF3xmugA9nHhPoDIg-22" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="F67DF3xmugA9nHhPoDIg-20" parent="1" style="whiteSpace=wrap;html=1;rounded=0;" value="Queue tail.next = neuer Knoten" vertex="1">
+          <mxGeometry height="60" width="120" x="680" y="590" as="geometry" />
+        </mxCell>
+        <mxCell id="F67DF3xmugA9nHhPoDIg-42" edge="1" parent="1" source="F67DF3xmugA9nHhPoDIg-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="F67DF3xmugA9nHhPoDIg-41" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="F67DF3xmugA9nHhPoDIg-22" parent="1" style="whiteSpace=wrap;html=1;rounded=0;" value="Tail aktualisieren" vertex="1">
+          <mxGeometry height="60" width="120" x="680" y="790" as="geometry" />
+        </mxCell>
+        <mxCell id="F67DF3xmugA9nHhPoDIg-29" edge="1" parent="1" source="F67DF3xmugA9nHhPoDIg-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="F67DF3xmugA9nHhPoDIg-28" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="F67DF3xmugA9nHhPoDIg-24" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Queue length++" vertex="1">
+          <mxGeometry height="60" width="120" x="545" y="1010" as="geometry" />
+        </mxCell>
+        <mxCell id="F67DF3xmugA9nHhPoDIg-28" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Ende" vertex="1">
+          <mxGeometry height="60" width="120" x="545" y="1109" as="geometry" />
+        </mxCell>
+        <mxCell id="F67DF3xmugA9nHhPoDIg-35" edge="1" parent="1" source="F67DF3xmugA9nHhPoDIg-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="F67DF3xmugA9nHhPoDIg-34" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="605" y="680" as="sourcePoint" />
+            <mxPoint x="605" y="820" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="F67DF3xmugA9nHhPoDIg-34" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Nächster Knoten vom neuen Knoten auf NULL setzen" vertex="1">
+          <mxGeometry height="60" width="120" x="680" y="690" as="geometry" />
+        </mxCell>
+        <mxCell id="F67DF3xmugA9nHhPoDIg-40" edge="1" parent="1" source="F67DF3xmugA9nHhPoDIg-37" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="F67DF3xmugA9nHhPoDIg-16" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="F67DF3xmugA9nHhPoDIg-37" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Nächster Knoten von Tail auf NULL setzen" vertex="1">
+          <mxGeometry height="60" width="120" x="372" y="610" as="geometry" />
+        </mxCell>
+        <mxCell id="F67DF3xmugA9nHhPoDIg-41" parent="1" style="whiteSpace=wrap;html=1;rounded=0;" value="Eintrittszeitschritt von tail = übergebener Zeitschritt" vertex="1">
+          <mxGeometry height="70" width="148.12" x="665.94" y="900" as="geometry" />
+        </mxCell>
+        <mxCell id="F67DF3xmugA9nHhPoDIg-44" edge="1" parent="1" source="F67DF3xmugA9nHhPoDIg-41" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="630" y="930" />
+            </Array>
+            <mxPoint x="630" y="1010" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="F67DF3xmugA9nHhPoDIg-46" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Abbruch" vertex="1">
+          <mxGeometry height="60" width="120" x="226" y="381" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
