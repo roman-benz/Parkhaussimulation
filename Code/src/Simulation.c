@@ -3,19 +3,27 @@
 #include <stdio.h>
 
 Function initialisierung_garage(Parkhaus *p_garage, int maximale_kapazitaet)
-	IF (p_garage == NULL OR maximale_kapazitaet <= 0)
-		RETURN;     //Ungueltige Eingabe -> Abbruch
+	IF (p_garage == NULL)
+		RETURN 0;   //Ungueltiger Zeiger
+	END IF
+
+	//Immer zuerst in sicheren Grundzustand setzen
+	p_garage->p_stellplaetze = NULL;
+	p_garage->maximale_kapazitaet = 0;
+	p_garage->belegte_stellplaetze = 0;
+
+	IF (maximale_kapazitaet <= 0)
+		RETURN 0;   //Ungueltige Kapazitaet
 	END IF
 
 	p_garage->maximale_kapazitaet = maximale_kapazitaet;
-	p_garage->belegte_stellplaetze = 0;
 
 	//Speicher fuer Stellplaetze reservieren
 	p_garage->p_stellplaetze = malloc(sizeof(Fahrzeug) * maximale_kapazitaet);
 
 	IF (p_garage->p_stellplaetze == NULL)
 		p_garage->maximale_kapazitaet = 0;
-		RETURN;     //Speicher konnte nicht reserviert werden
+		RETURN 0;   //Speicher konnte nicht reserviert werden
 	END IF
 
 	//Alle Stellplaetze mit for Schleife mit Leerwerten initialisieren
@@ -25,6 +33,8 @@ Function initialisierung_garage(Parkhaus *p_garage, int maximale_kapazitaet)
 		p_garage->p_stellplaetze[i].eintritts_zeit = 0;
 		p_garage->p_stellplaetze[i].wartezeit = 0;
 	END FOR
+
+	RETURN 1;   //Initialisierung erfolgreich
 END
 
 Function einparken_fahrzeug(Parkhaus *p_garage, const Fahrzeug *p_fahrzeug)
@@ -102,8 +112,11 @@ Function ausfuehren_simulationsschritt(
 	//Solange freie Plaetze vorhanden sind und die Queue nicht leer ist,
 	//wird immer das vorderste Fahrzeug aus der Queue geholt.
 	WHILE (p_garage->belegte_stellplaetze < p_garage->maximale_kapazitaet AND p_queue->length > 0)
+		//Separater Wert, damit aktueller_schritt nicht versehentlich ueberschrieben wird
+		einparken_zeitschritt = aktueller_schritt;
+
 		//Wartezeit wird in queue_dequeue berechnet und im Fahrzeug gesetzt
-		wartendes_fahrzeug = queue_dequeue(p_queue, &aktueller_schritt);
+		wartendes_fahrzeug = queue_dequeue(p_queue, &einparken_zeitschritt);
 
 		erfolg_einparken = einparken_fahrzeug(p_garage, &wartendes_fahrzeug);
 		IF (erfolg_einparken == 1)
@@ -206,8 +219,18 @@ Function start_simulation(const Simulationskonfiguration *p_konfiguration)
 	Parkhaus garage;
 	Queue warteschlange;
 	Simulationdaten daten;
+	erfolg_init = 0;
 
-	initialisierung_garage(&garage, p_konfiguration->anzahl_parkplaetze);
+	//Garage direkt in sicheren Startzustand setzen
+	garage.p_stellplaetze = NULL;
+	garage.maximale_kapazitaet = 0;
+	garage.belegte_stellplaetze = 0;
+
+	erfolg_init = initialisierung_garage(&garage, p_konfiguration->anzahl_parkplaetze);
+	IF (erfolg_init == 0)
+		RETURN;     //Bei fehlgeschlagener Initialisierung Simulation abbrechen
+	END IF
+
 	queue_init(&warteschlange);
 
 	//3) Simulationsdaten auf Startwerte setzen

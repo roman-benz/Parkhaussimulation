@@ -9,13 +9,13 @@
  * @brief Speichert alle relevanten Kennzahlen der laufenden Simulation.
  */
 typedef struct {
-    int gesamt_ankuenfte;                /* Anzahl aller angekommenen Fahrzeuge */
-    int gesamt_geparkt;                  /* Anzahl aller erfolgreich eingeparkten Fahrzeuge */
-    int gesamt_abfahrten;                /* Anzahl aller ausgeparkten Fahrzeuge */
-    int warteschlangen_laenge;           /* Aktuelle Anzahl wartender Fahrzeuge in der Queue */
-    double auslastungsrate;              /* Aktuelle Auslastung des Parkhauses (0.0 bis 1.0) */
-    double durchschnittliche_wartezeit;  /* Durchschnittliche Wartezeit aller eingeparkten Fahrzeuge */
-    double durchschnittliche_auslastung; /* Durchschnittliche Auslastung ueber alle Simulationsschritte */
+    int gesamt_ankuenfte;                //Anzahl aller angekommenen Fahrzeuge
+    int gesamt_geparkt;                  //Anzahl aller erfolgreich eingeparkten Fahrzeuge 
+    int gesamt_abfahrten;                //Anzahl aller ausgeparkten Fahrzeuge 
+    int warteschlangen_laenge;           //Aktuelle Anzahl wartender Fahrzeuge in der Queue
+    double auslastungsrate;              //Aktuelle Auslastung des Parkhauses (0.0 bis 1.0)
+    double durchschnittliche_wartezeit;  //Durchschnittliche Wartezeit aller eingeparkten Fahrzeuge
+    double durchschnittliche_auslastung; //Durchschnittliche Auslastung ueber alle Simulationsschritte
 } Simulationdaten;
 
 /**
@@ -23,8 +23,9 @@ typedef struct {
  * 
  * @param p_garage Zeiger auf die zu initialisierende Parkhausstruktur
  * @param maximale_kapazitaet Maximale Anzahl der Stellplätze
+ * @return 1 bei erfolgreicher Initialisierung, 0 bei Fehler
  */
-void initialisierung_garage(Parkhaus *p_garage, int maximale_kapazitaet);
+int initialisierung_garage(Parkhaus *p_garage, int maximale_kapazitaet);
 
 /**
  * @brief Parkt ein Fahrzeug auf dem ersten freien Stellplatz ein.
