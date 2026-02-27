@@ -15,5 +15,9 @@ Function main()
         RETURN 1
     END IF
 
+    // Starte die Simulation mit der geladenen Konfiguration
+    start_simulation(&konfiguration)
+
+    
     RETURN 0
 END
