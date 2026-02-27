@@ -24,6 +24,24 @@ typedef struct {
 void initialisierung_garage(Parkhaus *p_garage, int maximale_kapazitaet);
 
 /**
+ * @brief Parkt ein Fahrzeug auf dem ersten freien Stellplatz ein.
+ *
+ * @param p_garage Zeiger auf das Parkhaus
+ * @param p_fahrzeug Zeiger auf das einzuparkende Fahrzeug
+ * @return 1 bei Erfolg, 0 falls kein Stellplatz frei ist oder Eingaben ungueltig sind
+ */
+int einparken_fahrzeug(Parkhaus *p_garage, const Fahrzeug *p_fahrzeug);
+
+/**
+ * @brief Parkt ein Fahrzeug anhand seiner Fahrzeug-ID aus.
+ *
+ * @param p_garage Zeiger auf das Parkhaus
+ * @param fahrzeug_id Eindeutige ID des auszuparkenden Fahrzeugs
+ * @return 1 bei Erfolg, 0 falls das Fahrzeug nicht gefunden wurde oder Eingaben ungueltig sind
+ */
+int ausparken_fahrzeug(Parkhaus *p_garage, int fahrzeug_id);
+
+/**
  * @brief Führt einen einzelnen Simulationsschritt aus.
  * 
  * @param aktueller_schritt Nummer des aktuellen Simulationsschritts
