@@ -166,7 +166,23 @@ Function ausfuehren_simulationsschritt(
 	END IF
 END
 
-Function end_simulationsdaten_ausgeben(const Simulationdaten *p_daten)
+Function simulationsschrittdaten_ausgeben(int aktueller_schritt, const Simulationdaten *p_daten)
+	IF (p_daten == NULL)
+		RETURN;     //Ohne Daten keine Ausgabe moeglich
+	END IF
+
+	PRINT "===== SIMULATIONSSCHRITT ", aktueller_schritt, " =====";
+	PRINT "Gesamtankuenfte: ", p_daten->gesamt_ankuenfte;
+	PRINT "Gesamt geparkt: ", p_daten->gesamt_geparkt;
+	PRINT "Gesamtabfahrten: ", p_daten->gesamt_abfahrten;
+	PRINT "Gesamt abgewiesen: ", p_daten->gesamt_abgewiesen;
+	PRINT "Warteschlangenlaenge: ", p_daten->warteschlangen_laenge;
+	PRINT "Aktuelle Auslastungsrate: ", p_daten->auslastungsrate;
+	PRINT "Durchschnittliche Wartezeit: ", p_daten->durchschnittliche_wartezeit;
+	PRINT "Durchschnittliche Auslastung: ", p_daten->durchschnittliche_auslastung;
+END
+
+Function end_simulationsdaten_ausgeben(const Simulationdaten *p_daten) //gibt am Ende der Simulation die Daten aus
 	IF (p_daten == NULL)
 		RETURN;     //Ohne Daten keine Ausgabe moeglich
 	END IF
