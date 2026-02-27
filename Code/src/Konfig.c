@@ -16,3 +16,8 @@ Function int_wert_einlesen(prompt, min_wert, max_wert, out_wert)
             PRINT "Wert außerhalb des erlaubten Bereichs (min_wert bis max_wert)."
             CONTINUE
         END IF
+        out_wert <- value
+        RETURN TRUE
+    END WHILE
+END
+
