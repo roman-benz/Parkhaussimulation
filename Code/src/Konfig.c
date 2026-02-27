@@ -7,3 +7,7 @@ Function int_wert_einlesen(prompt, min_wert, max_wert, out_wert)
     WHILE TRUE
         PRINT "..."
         value <- Benutzereingabe als int
+        IF Eingabe ungültig
+        PRINT "Ungültige Eingabe. Bitte eine ganze Zahl eingeben."
+            Eingabepuffer leeren
+            CONTINUE
