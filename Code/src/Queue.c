@@ -9,7 +9,7 @@ END
 
 Function queue_enqueue(Queue *eineQueue, Fahrzeug *einFahrzeug, int enqueue_zeitschritt)
     //Neuer Listenelement für das Fahrzeug mit Malloc reserviert
-    QueueNode *Fahrzeugknoten <- malloc(sizeof(Fahrzeugknoten));
+    QueueNode *Fahrzeugknoten <- malloc(sizeof *Fahrzeugknoten);
     IF (malloc() erfolgreich?)
         //Das Fahrzeug das der Schlange hinzugefügt werden soll wird hier dem Knoten zugewiesen
         Fahrzeugknoten->einFahrzeug <- einFahrzeug;
