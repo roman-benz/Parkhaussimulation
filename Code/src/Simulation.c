@@ -198,3 +198,43 @@ Function end_simulationsdaten_ausgeben(const Simulationdaten *p_daten) //gibt am
 	PRINT "Durchschnittliche Auslastung: ", p_daten->durchschnittliche_auslastung;
 END
 
+Function start_simulation(const Simulationskonfiguration *p_konfiguration)
+	IF (p_konfiguration == NULL)
+		RETURN;     //Ohne Konfiguration kann keine Simulation gestartet werden
+	END IF
+
+	//1) Zufallsgenerator mit konfiguriertem Seed initialisieren
+	srand(p_konfiguration->zufalls_seed);
+
+	//2) Lokale Datenstrukturen vorbereiten
+	Parkhaus garage;
+	Queue warteschlange;
+	Simulationdaten daten;
+
+	initialisierung_garage(&garage, p_konfiguration->anzahl_parkplaetze);
+	queue_init(&warteschlange);
+
+	//3) Simulationsdaten auf Startwerte setzen
+	daten.gesamt_ankuenfte = 0;
+	daten.gesamt_geparkt = 0;
+	daten.gesamt_abfahrten = 0;
+	daten.gesamt_abgewiesen = 0;
+	daten.warteschlangen_laenge = 0;
+	daten.auslastungsrate = 0.0;
+	daten.durchschnittliche_wartezeit = 0.0;
+	daten.durchschnittliche_auslastung = 0.0;
+
+	//4) Alle Simulationsschritte nacheinander ausfuehren
+	FOR schritt = 1 TO p_konfiguration->anzahl_simulationsschritte DO
+		ausfuehren_simulationsschritt(schritt, p_konfiguration, &garage, &warteschlange, &daten);
+		simulationsschrittdaten_ausgeben(schritt, &daten);
+	END FOR
+
+	//5) Endergebnis ausgeben
+	end_simulationsdaten_ausgeben(&daten);
+
+	//6) Speicher aufraeumen
+	queue_destroy(&warteschlange);
+	free(garage.p_stellplaetze);
+END
+
