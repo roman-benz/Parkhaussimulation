@@ -154,5 +154,31 @@ Function ausfuehren_simulationsschritt(
 	ELSE
 		p_daten->auslastungsrate = 0.0;
 	END IF
+
+	//Durchschnittliche Auslastung als laufenden Mittelwert ueber alle Schritte berechnen
+	IF (aktueller_schritt > 0)
+		p_daten->durchschnittliche_auslastung = (
+			(p_daten->durchschnittliche_auslastung * (aktueller_schritt - 1))
+			+ p_daten->auslastungsrate
+		) / aktueller_schritt;
+	ELSE
+		p_daten->durchschnittliche_auslastung = p_daten->auslastungsrate;
+	END IF
+END
+
+Function end_simulationsdaten_ausgeben(const Simulationdaten *p_daten)
+	IF (p_daten == NULL)
+		RETURN;     //Ohne Daten keine Ausgabe moeglich
+	END IF
+
+	PRINT "===== ENDE DER SIMULATION =====";
+	PRINT "Gesamtankuenfte: ", p_daten->gesamt_ankuenfte;
+	PRINT "Gesamt geparkt: ", p_daten->gesamt_geparkt;
+	PRINT "Gesamtabfahrten: ", p_daten->gesamt_abfahrten;
+	PRINT "Gesamt abgewiesen: ", p_daten->gesamt_abgewiesen;
+	PRINT "Warteschlangenlaenge (aktuell): ", p_daten->warteschlangen_laenge;
+	PRINT "Aktuelle Auslastungsrate: ", p_daten->auslastungsrate;
+	PRINT "Durchschnittliche Wartezeit: ", p_daten->durchschnittliche_wartezeit;
+	PRINT "Durchschnittliche Auslastung: ", p_daten->durchschnittliche_auslastung;
 END
 
