@@ -2,7 +2,7 @@
 #include "../include/Simulation.h"
 #include <stdio.h>
 
-
+//// Pseudocode für Main.c
 Function main()
     // Initialisiere Konfigurationsstrukt
     Simulationskonfiguration konfiguration
@@ -18,6 +18,6 @@ Function main()
     // Starte die Simulation mit der geladenen Konfiguration
     start_simulation(&konfiguration)
 
-    
+
     RETURN 0
 END
