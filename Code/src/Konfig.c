@@ -21,3 +21,5 @@ Function int_wert_einlesen(prompt, min_wert, max_wert, out_wert)
     END WHILE
 END
 
+
+Function konfiguration_einlesen(p_konfiguration)
