@@ -12,7 +12,7 @@ Function queue_enqueue(Queue *eineQueue, Fahrzeug *einFahrzeug, int enqueue_zeit
     QueueNode *Fahrzeugknoten <- malloc(sizeof *Fahrzeugknoten);
     IF (malloc() erfolgreich?)
         //Das Fahrzeug das der Schlange hinzugefügt werden soll wird hier dem Knoten zugewiesen
-        Fahrzeugknoten->einFahrzeug <- einFahrzeug;
+        Fahrzeugknoten->einFahrzeug <- *einFahrzeug;
         IF eineQueue.Length == 0    //Wenn die Warteschlange leer ist, dann ist das ankommende Fahrzeug head und tail der Warteschlange
             eineQueue.head <- Fahrzeugknoten;
             eineQueue.tail <- Fahrzeugknoten;
