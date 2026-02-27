@@ -11,3 +11,8 @@ Function int_wert_einlesen(prompt, min_wert, max_wert, out_wert)
         PRINT "Ungültige Eingabe. Bitte eine ganze Zahl eingeben."
             Eingabepuffer leeren
             CONTINUE
+        END IF
+        IF value < min_wert OR value > max_wert
+            PRINT "Wert außerhalb des erlaubten Bereichs (min_wert bis max_wert)."
+            CONTINUE
+        END IF
