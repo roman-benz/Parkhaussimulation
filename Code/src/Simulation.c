@@ -102,10 +102,8 @@ Function ausfuehren_simulationsschritt(
 	//Solange freie Plaetze vorhanden sind und die Queue nicht leer ist,
 	//wird immer das vorderste Fahrzeug aus der Queue geholt.
 	WHILE (p_garage->belegte_stellplaetze < p_garage->maximale_kapazitaet AND p_queue->length > 0)
-		wartendes_fahrzeug = queue_dequeue(p_queue, &enqueue_zeitschritt);
-
-		//Wartezeit = aktueller Zeitschritt - Zeitschritt des Queue-Eintritts
-		wartendes_fahrzeug.wartezeit = aktueller_schritt - enqueue_zeitschritt;
+		//Wartezeit wird in queue_dequeue berechnet und im Fahrzeug gesetzt
+		wartendes_fahrzeug = queue_dequeue(p_queue, &aktueller_schritt);
 
 		erfolg_einparken = einparken_fahrzeug(p_garage, &wartendes_fahrzeug);
 		IF (erfolg_einparken == 1)
@@ -175,7 +173,6 @@ Function simulationsschrittdaten_ausgeben(int aktueller_schritt, const Simulatio
 	PRINT "Gesamtankuenfte: ", p_daten->gesamt_ankuenfte;
 	PRINT "Gesamt geparkt: ", p_daten->gesamt_geparkt;
 	PRINT "Gesamtabfahrten: ", p_daten->gesamt_abfahrten;
-	PRINT "Gesamt abgewiesen: ", p_daten->gesamt_abgewiesen;
 	PRINT "Warteschlangenlaenge: ", p_daten->warteschlangen_laenge;
 	PRINT "Aktuelle Auslastungsrate: ", p_daten->auslastungsrate;
 	PRINT "Durchschnittliche Wartezeit: ", p_daten->durchschnittliche_wartezeit;
@@ -191,7 +188,6 @@ Function end_simulationsdaten_ausgeben(const Simulationdaten *p_daten) //gibt am
 	PRINT "Gesamtankuenfte: ", p_daten->gesamt_ankuenfte;
 	PRINT "Gesamt geparkt: ", p_daten->gesamt_geparkt;
 	PRINT "Gesamtabfahrten: ", p_daten->gesamt_abfahrten;
-	PRINT "Gesamt abgewiesen: ", p_daten->gesamt_abgewiesen;
 	PRINT "Warteschlangenlaenge (aktuell): ", p_daten->warteschlangen_laenge;
 	PRINT "Aktuelle Auslastungsrate: ", p_daten->auslastungsrate;
 	PRINT "Durchschnittliche Wartezeit: ", p_daten->durchschnittliche_wartezeit;
@@ -218,7 +214,6 @@ Function start_simulation(const Simulationskonfiguration *p_konfiguration)
 	daten.gesamt_ankuenfte = 0;
 	daten.gesamt_geparkt = 0;
 	daten.gesamt_abfahrten = 0;
-	daten.gesamt_abgewiesen = 0;
 	daten.warteschlangen_laenge = 0;
 	daten.auslastungsrate = 0.0;
 	daten.durchschnittliche_wartezeit = 0.0;

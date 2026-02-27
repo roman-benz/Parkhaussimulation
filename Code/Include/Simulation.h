@@ -9,7 +9,6 @@ typedef struct {
     int gesamt_ankuenfte;
     int gesamt_geparkt;
     int gesamt_abfahrten;
-    int gesamt_abgewiesen;
     int warteschlangen_laenge;
     double auslastungsrate;
     double durchschnittliche_wartezeit;
