@@ -32,8 +32,4 @@ Function konfiguration_einlesen(p_konfiguration)
     p_konfiguration.zufalls_seed <- benutzereingabe_seed
     RETURN TRUE
 
-
-
-
-
-
+END
