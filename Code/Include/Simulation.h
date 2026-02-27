@@ -5,14 +5,17 @@
 #include "Konfig.h"
 #include "Queue.h"
 
+/**
+ * @brief Speichert alle relevanten Kennzahlen der laufenden Simulation.
+ */
 typedef struct {
-    int gesamt_ankuenfte;
-    int gesamt_geparkt;
-    int gesamt_abfahrten;
-    int warteschlangen_laenge;
-    double auslastungsrate;
-    double durchschnittliche_wartezeit;
-    double durchschnittliche_auslastung;
+    int gesamt_ankuenfte;                /* Anzahl aller angekommenen Fahrzeuge */
+    int gesamt_geparkt;                  /* Anzahl aller erfolgreich eingeparkten Fahrzeuge */
+    int gesamt_abfahrten;                /* Anzahl aller ausgeparkten Fahrzeuge */
+    int warteschlangen_laenge;           /* Aktuelle Anzahl wartender Fahrzeuge in der Queue */
+    double auslastungsrate;              /* Aktuelle Auslastung des Parkhauses (0.0 bis 1.0) */
+    double durchschnittliche_wartezeit;  /* Durchschnittliche Wartezeit aller eingeparkten Fahrzeuge */
+    double durchschnittliche_auslastung; /* Durchschnittliche Auslastung ueber alle Simulationsschritte */
 } Simulationdaten;
 
 /**
