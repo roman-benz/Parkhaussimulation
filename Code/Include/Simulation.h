@@ -5,14 +5,17 @@
 #include "Konfig.h"
 #include "Queue.h"
 
+/**
+ * @brief Speichert alle relevanten Kennzahlen der laufenden Simulation.
+ */
 typedef struct {
-    int gesamt_ankuenfte;
-    int gesamt_geparkt;
-    int gesamt_abfahrten;
-    int gesamt_abgewiesen;
-    int warteschlangen_laenge;
-    double auslastungsrate;
-    double durchschnittliche_wartezeit;
+    int gesamt_ankuenfte;                //Anzahl aller angekommenen Fahrzeuge
+    int gesamt_geparkt;                  //Anzahl aller erfolgreich eingeparkten Fahrzeuge 
+    int gesamt_abfahrten;                //Anzahl aller ausgeparkten Fahrzeuge 
+    int warteschlangen_laenge;           //Aktuelle Anzahl wartender Fahrzeuge in der Queue
+    double auslastungsrate;              //Aktuelle Auslastung des Parkhauses (0.0 bis 1.0)
+    double durchschnittliche_wartezeit;  //Durchschnittliche Wartezeit aller eingeparkten Fahrzeuge
+    double durchschnittliche_auslastung; //Durchschnittliche Auslastung ueber alle Simulationsschritte
 } Simulationdaten;
 
 /**
@@ -20,8 +23,27 @@ typedef struct {
  * 
  * @param p_garage Zeiger auf die zu initialisierende Parkhausstruktur
  * @param maximale_kapazitaet Maximale Anzahl der Stellplätze
+ * @return 1 bei erfolgreicher Initialisierung, 0 bei Fehler
  */
-void initialisierung_garage(Parkhaus *p_garage, int maximale_kapazitaet);
+int initialisierung_garage(Parkhaus *p_garage, int maximale_kapazitaet);
+
+/**
+ * @brief Parkt ein Fahrzeug auf dem ersten freien Stellplatz ein.
+ *
+ * @param p_garage Zeiger auf das Parkhaus
+ * @param p_fahrzeug Zeiger auf das einzuparkende Fahrzeug
+ * @return 1 bei Erfolg, 0 falls kein Stellplatz frei ist oder Eingaben ungueltig sind
+ */
+int einparken_fahrzeug(Parkhaus *p_garage, const Fahrzeug *p_fahrzeug);
+
+/**
+ * @brief Parkt ein Fahrzeug anhand seiner Fahrzeug-ID aus.
+ *
+ * @param p_garage Zeiger auf das Parkhaus
+ * @param fahrzeug_id Eindeutige ID des auszuparkenden Fahrzeugs
+ * @return 1 bei Erfolg, 0 falls das Fahrzeug nicht gefunden wurde oder Eingaben ungueltig sind
+ */
+int ausparken_fahrzeug(Parkhaus *p_garage, int fahrzeug_id);
 
 /**
  * @brief Führt einen einzelnen Simulationsschritt aus.
@@ -47,6 +69,13 @@ void ausfuehren_simulationsschritt(
  * @param p_daten Zeiger auf die auszugebenden Simulationsdaten
  */
 void simulationsschrittdaten_ausgeben(int aktueller_schritt, const Simulationdaten *p_daten);
+
+/**
+ * @brief Gibt die Endergebnisse der gesamten Simulation aus.
+ *
+ * @param p_daten Zeiger auf die finalen Simulationsdaten
+ */
+void end_simulationsdaten_ausgeben(const Simulationdaten *p_daten);
 
 /**
  * @brief Führt die komplette Parkhaus-Simulation aus.
