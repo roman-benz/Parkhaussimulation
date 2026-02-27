@@ -12,7 +12,8 @@ Function main()
     IF NOT 
     konfiguration_einlesen(&konfiguration)
         PRINT "Konfiguration konnte nicht eingelesen werden"
+        RETURN 1
     END IF
-    
+
     RETURN 0
 END
