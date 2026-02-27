@@ -48,3 +48,28 @@ Function einparken_fahrzeug(Parkhaus *p_garage, const Fahrzeug *p_fahrzeug)
 	RETURN 0;   //Sicherheitsreturn (kein freier Platz gefunden)
 END
 
+Function ausparken_fahrzeug(Parkhaus *p_garage, int fahrzeug_id)
+	IF (p_garage == NULL OR fahrzeug_id < 0)
+		RETURN 0;   //Ungueltige Eingaben
+	END IF
+
+	//Fahrzeug mit passender ID suchen
+	FOR i = 0 TO p_garage->maximale_kapazitaet - 1 DO
+		IF (p_garage->p_stellplaetze[i].fahrzeug_id == fahrzeug_id)
+			//Stellplatz wieder auf Leerzustand setzen
+			p_garage->p_stellplaetze[i].fahrzeug_id = -1;
+			p_garage->p_stellplaetze[i].verbleibende_parkdauer = 0;
+			p_garage->p_stellplaetze[i].eintritts_zeit = 0;
+			p_garage->p_stellplaetze[i].wartezeit = 0;
+
+			IF (p_garage->belegte_stellplaetze > 0)
+				p_garage->belegte_stellplaetze = p_garage->belegte_stellplaetze - 1;
+			END IF
+
+			RETURN 1;   //Ausparken erfolgreich
+		END IF
+	END FOR
+
+	RETURN 0;   //Fahrzeug-ID wurde nicht gefunden
+END
+
