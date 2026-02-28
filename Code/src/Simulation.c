@@ -192,11 +192,18 @@ Function simulationsschrittdaten_ausgeben(int aktueller_schritt, const Simulatio
 	PRINT "Gesamt geparkt: ", p_daten->gesamt_geparkt;
 	PRINT "Gesamtabfahrten: ", p_daten->gesamt_abfahrten;
 	PRINT "Aktuell belegt: ", p_daten->aktuell_belegte_stellplaetze;
-	PRINT "Warteschlangenlaenge: ", p_daten->warteschlangen_laenge;
-	PRINT "Maximale Warteschlangenlaenge: ", p_daten->maximale_warteschlangen_laenge;
+	PRINT "Warteschlangenlange: ", p_daten->warteschlangen_laenge;
+	PRINT "Maximale Warteschlangenlange: ", p_daten->maximale_warteschlangen_laenge;
 	PRINT "Aktuelle Auslastungsrate: ", p_daten->auslastungsrate;
 	PRINT "Durchschnittliche Wartezeit: ", p_daten->durchschnittliche_wartezeit;
 	PRINT "Durchschnittliche Auslastung: ", p_daten->durchschnittliche_auslastung;
+
+	//Zeitschritt und Auslastungsrate an externe Datei fuer gnuplot uebergeben
+	datei_auslastung = fopen("auslastung_zeitreihe.dat", "a");
+	IF (datei_auslastung != NULL)
+		fprintf(datei_auslastung, "%d %.6f\n", aktueller_schritt, p_daten->auslastungsrate);
+		fclose(datei_auslastung);
+	END IF
 END
 
 Function end_simulationsdaten_ausgeben(const Simulationdaten *p_daten) //gibt am Ende der Simulation die Daten aus
@@ -214,6 +221,22 @@ Function end_simulationsdaten_ausgeben(const Simulationdaten *p_daten) //gibt am
 	PRINT "Aktuelle Auslastungsrate: ", p_daten->auslastungsrate;
 	PRINT "Durchschnittliche Wartezeit: ", p_daten->durchschnittliche_wartezeit;
 	PRINT "Durchschnittliche Auslastung: ", p_daten->durchschnittliche_auslastung;
+
+	//Endwerte extern in neuer Datei speichern (abstrakter Pseudocode)
+	datei_ende = DATEI_OEFFNEN("simulation_ende.txt", SCHREIBEN);
+	IF (datei_ende != NULL)
+		SCHREIBE_ZEILE(datei_ende, "===== ENDE DER SIMULATION =====");
+		SCHREIBE_WERT(datei_ende, "Gesamtankuenfte", p_daten->gesamt_ankuenfte);
+		SCHREIBE_WERT(datei_ende, "Gesamt geparkt", p_daten->gesamt_geparkt);
+		SCHREIBE_WERT(datei_ende, "Gesamtabfahrten", p_daten->gesamt_abfahrten);
+		SCHREIBE_WERT(datei_ende, "Aktuell belegt", p_daten->aktuell_belegte_stellplaetze);
+		SCHREIBE_WERT(datei_ende, "Warteschlangenlaenge (aktuell)", p_daten->warteschlangen_laenge);
+		SCHREIBE_WERT(datei_ende, "Maximale Warteschlangenlaenge", p_daten->maximale_warteschlangen_laenge);
+		SCHREIBE_WERT(datei_ende, "Aktuelle Auslastungsrate", p_daten->auslastungsrate);
+		SCHREIBE_WERT(datei_ende, "Durchschnittliche Wartezeit", p_daten->durchschnittliche_wartezeit);
+		SCHREIBE_WERT(datei_ende, "Durchschnittliche Auslastung", p_daten->durchschnittliche_auslastung);
+		DATEI_SCHLIESSEN(datei_ende);
+	END IF
 END
 
 Function start_simulation(const Simulationskonfiguration *p_konfiguration)
@@ -252,6 +275,13 @@ Function start_simulation(const Simulationskonfiguration *p_konfiguration)
 	daten.auslastungsrate = 0.0;
 	daten.durchschnittliche_wartezeit = 0.0;
 	daten.durchschnittliche_auslastung = 0.0;
+
+	//Datei fuer Auslastungszeitreihe neu anlegen/ueberschreiben
+	datei_auslastung = fopen("auslastung_zeitreihe.dat", "w");
+	IF (datei_auslastung != NULL)
+		fprintf(datei_auslastung, "#Zeitschritt Auslastungsrate\\n");
+		fclose(datei_auslastung);
+	END IF
 
 	//4) Alle Simulationsschritte nacheinander ausfuehren
 	FOR schritt = 1 TO p_konfiguration->anzahl_simulationsschritte DO
