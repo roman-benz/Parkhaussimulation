@@ -198,11 +198,11 @@ Function simulationsschrittdaten_ausgeben(int aktueller_schritt, const Simulatio
 	PRINT "Durchschnittliche Wartezeit: ", p_daten->durchschnittliche_wartezeit;
 	PRINT "Durchschnittliche Auslastung: ", p_daten->durchschnittliche_auslastung;
 
-	//Zeitschritt und Auslastungsrate an externe Datei fuer gnuplot uebergeben
-	datei_auslastung = fopen("auslastung_zeitreihe.dat", "a");
+	//Zeitschritt und Auslastungsrate an externe Datei für gnuplot übergeben mit "a" damit datei nicht überschreiben wird
+	datei_auslastung = DATEI_ÖFFNEN("auslastung_zeitreihe.dat", "a");
 	IF (datei_auslastung != NULL)
-		fprintf(datei_auslastung, "%d %.6f\n", aktueller_schritt, p_daten->auslastungsrate);
-		fclose(datei_auslastung);
+		SCHREIBE_WERT(datei_auslastung, "%d %.6f\n", aktueller_schritt, p_daten->auslastungsrate);
+		DATEI_SCHLIESSEN(datei_auslastung);
 	END IF
 END
 
@@ -212,30 +212,25 @@ Function end_simulationsdaten_ausgeben(const Simulationdaten *p_daten) //gibt am
 	END IF
 
 	PRINT "===== ENDE DER SIMULATION =====";
-	PRINT "Gesamtankuenfte: ", p_daten->gesamt_ankuenfte;
-	PRINT "Gesamt geparkt: ", p_daten->gesamt_geparkt;
-	PRINT "Gesamtabfahrten: ", p_daten->gesamt_abfahrten;
-	PRINT "Aktuell belegt: ", p_daten->aktuell_belegte_stellplaetze;
-	PRINT "Warteschlangenlaenge (aktuell): ", p_daten->warteschlangen_laenge;
-	PRINT "Maximale Warteschlangenlaenge: ", p_daten->maximale_warteschlangen_laenge;
-	PRINT "Aktuelle Auslastungsrate: ", p_daten->auslastungsrate;
-	PRINT "Durchschnittliche Wartezeit: ", p_daten->durchschnittliche_wartezeit;
-	PRINT "Durchschnittliche Auslastung: ", p_daten->durchschnittliche_auslastung;
+	PRINT "Simulationsergebnisse finden Sie in der externen Ergebnisdatei";
 
-	//Endwerte extern in neuer Datei speichern (abstrakter Pseudocode)
-	datei_ende = DATEI_OEFFNEN("simulation_ende.txt", SCHREIBEN);
+	//Endwerte extern in neuer Datei speichern um mit Gnuplot eine Ergebnissdatei m,it einem Auslastungsgraphen zu erstellen
+	datei_ende = DATEI_ÖFFNEN("simulation_ende.txt", "w");
 	IF (datei_ende != NULL)
-		SCHREIBE_ZEILE(datei_ende, "===== ENDE DER SIMULATION =====");
-		SCHREIBE_WERT(datei_ende, "Gesamtankuenfte", p_daten->gesamt_ankuenfte);
-		SCHREIBE_WERT(datei_ende, "Gesamt geparkt", p_daten->gesamt_geparkt);
-		SCHREIBE_WERT(datei_ende, "Gesamtabfahrten", p_daten->gesamt_abfahrten);
-		SCHREIBE_WERT(datei_ende, "Aktuell belegt", p_daten->aktuell_belegte_stellplaetze);
-		SCHREIBE_WERT(datei_ende, "Warteschlangenlaenge (aktuell)", p_daten->warteschlangen_laenge);
-		SCHREIBE_WERT(datei_ende, "Maximale Warteschlangenlaenge", p_daten->maximale_warteschlangen_laenge);
-		SCHREIBE_WERT(datei_ende, "Aktuelle Auslastungsrate", p_daten->auslastungsrate);
-		SCHREIBE_WERT(datei_ende, "Durchschnittliche Wartezeit", p_daten->durchschnittliche_wartezeit);
-		SCHREIBE_WERT(datei_ende, "Durchschnittliche Auslastung", p_daten->durchschnittliche_auslastung);
+		SCHREIBE_WERT(datei_ende, "gesamt_ankuenfte", p_daten->gesamt_ankuenfte);
+		SCHREIBE_WERT(datei_ende, "gesamt_geparkt", p_daten->gesamt_geparkt);
+		SCHREIBE_WERT(datei_ende, "gesamt_abfahrten", p_daten->gesamt_abfahrten);
+		SCHREIBE_WERT(datei_ende, "aktuell_belegte_stellplaetze", p_daten->aktuell_belegte_stellplaetze);
+		SCHREIBE_WERT(datei_ende, "warteschlangen_laenge", p_daten->warteschlangen_laenge);
+		SCHREIBE_WERT(datei_ende, "maximale_warteschlangen_laenge", p_daten->maximale_warteschlangen_laenge);
+		SCHREIBE_WERT(datei_ende, "auslastungsrate", p_daten->auslastungsrate);
+		SCHREIBE_WERT(datei_ende, "durchschnittliche_Wartezeit", p_daten->durchschnittliche_wartezeit);
+		SCHREIBE_WERT(datei_ende, "durchschnittliche_auslastung", p_daten->durchschnittliche_auslastung);
 		DATEI_SCHLIESSEN(datei_ende);
+		ERSTELLE_GNUPLOT_SKRIPT("plot_simulationsergebnis.gnuplot");
+		STARTE_GNUPLOT("plot_simulationsergebnis.gnuplot");
+		PRINT "Grafik simulationsergebnis.png erstellt";
+		
 	END IF
 END
 
@@ -276,7 +271,7 @@ Function start_simulation(const Simulationskonfiguration *p_konfiguration)
 	daten.durchschnittliche_wartezeit = 0.0;
 	daten.durchschnittliche_auslastung = 0.0;
 
-	//Datei fuer Auslastungszeitreihe neu anlegen/ueberschreiben
+	//Datei für Auslastungszeitreihe neu anlegen oder falls vorhanden überschreiben
 	datei_auslastung = fopen("auslastung_zeitreihe.dat", "w");
 	IF (datei_auslastung != NULL)
 		fprintf(datei_auslastung, "#Zeitschritt Auslastungsrate\\n");
