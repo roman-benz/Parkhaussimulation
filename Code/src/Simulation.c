@@ -7,7 +7,7 @@ Function initialisierung_garage(Parkhaus *p_garage, int maximale_kapazitaet)
 		RETURN 0;   //Ungueltiger Zeiger
 	END IF
 
-	//Immer zuerst in sicheren Grundzustand setzen
+	//Zuerst in sicheren Grundzustand setzen
 	p_garage->p_stellplaetze = NULL;
 	p_garage->maximale_kapazitaet = 0;
 	p_garage->belegte_stellplaetze = 0;
@@ -18,20 +18,17 @@ Function initialisierung_garage(Parkhaus *p_garage, int maximale_kapazitaet)
 
 	p_garage->maximale_kapazitaet = maximale_kapazitaet;
 
-	//Speicher fuer Stellplaetze reservieren
-	p_garage->p_stellplaetze = malloc(sizeof(Fahrzeug) * maximale_kapazitaet);
+	//Speicher fuer Stellplaetze reservieren (mit calloc direkt auf 0 initialisiert)
+	p_garage->p_stellplaetze = calloc(maximale_kapazitaet, sizeof(Fahrzeug));
 
 	IF (p_garage->p_stellplaetze == NULL)
 		p_garage->maximale_kapazitaet = 0;
 		RETURN 0;   //Speicher konnte nicht reserviert werden
 	END IF
 
-	//Alle Stellplaetze mit for Schleife mit Leerwerten initialisieren
+	//Alle Stellplaetze als leer markieren
 	FOR i = 0 TO maximale_kapazitaet - 1 DO
 		p_garage->p_stellplaetze[i].fahrzeug_id = -1; //-1 steht für einen leeren Parkplatz
-		p_garage->p_stellplaetze[i].verbleibende_parkdauer = 0;
-		p_garage->p_stellplaetze[i].eintritts_zeit = 0;
-		p_garage->p_stellplaetze[i].wartezeit = 0;
 	END FOR
 
 	RETURN 1;   //Initialisierung erfolgreich
@@ -199,9 +196,9 @@ Function simulationsschrittdaten_ausgeben(int aktueller_schritt, const Simulatio
 	PRINT "Durchschnittliche Auslastung: ", p_daten->durchschnittliche_auslastung;
 
 	//Zeitschritt und Auslastungsrate an externe Datei für gnuplot übergeben mit "a" damit datei nicht überschreiben wird
-	datei_auslastung = DATEI_ÖFFNEN("auslastung_zeitreihe.dat", "a");
+	datei_auslastung = DATEI_ÖFFNEN("auslastung.txt", "a");
 	IF (datei_auslastung != NULL)
-		SCHREIBE_WERT(datei_auslastung, "%d %.6f\n", aktueller_schritt, p_daten->auslastungsrate);
+		SCHREIBE_WERT(aktueller_schritt, p_daten->auslastungsrate) IN (datei_auslastung);
 		DATEI_SCHLIESSEN(datei_auslastung);
 	END IF
 END
@@ -217,19 +214,19 @@ Function end_simulationsdaten_ausgeben(const Simulationdaten *p_daten) //gibt am
 	//Endwerte extern in neuer Datei speichern um mit Gnuplot eine Ergebnissdatei m,it einem Auslastungsgraphen zu erstellen
 	datei_ende = DATEI_ÖFFNEN("simulation_ende.txt", "w");
 	IF (datei_ende != NULL)
-		SCHREIBE_WERT(datei_ende, "gesamt_ankuenfte", p_daten->gesamt_ankuenfte);
-		SCHREIBE_WERT(datei_ende, "gesamt_geparkt", p_daten->gesamt_geparkt);
-		SCHREIBE_WERT(datei_ende, "gesamt_abfahrten", p_daten->gesamt_abfahrten);
-		SCHREIBE_WERT(datei_ende, "aktuell_belegte_stellplaetze", p_daten->aktuell_belegte_stellplaetze);
-		SCHREIBE_WERT(datei_ende, "warteschlangen_laenge", p_daten->warteschlangen_laenge);
-		SCHREIBE_WERT(datei_ende, "maximale_warteschlangen_laenge", p_daten->maximale_warteschlangen_laenge);
-		SCHREIBE_WERT(datei_ende, "auslastungsrate", p_daten->auslastungsrate);
-		SCHREIBE_WERT(datei_ende, "durchschnittliche_Wartezeit", p_daten->durchschnittliche_wartezeit);
-		SCHREIBE_WERT(datei_ende, "durchschnittliche_auslastung", p_daten->durchschnittliche_auslastung);
+		SCHREIBE_WERT("gesamt_ankuenfte", p_daten->gesamt_ankuenfte) IN (datei_ende);
+		SCHREIBE_WERT("gesamt_geparkt", p_daten->gesamt_geparkt) IN (datei_ende);
+		SCHREIBE_WERT("gesamt_abfahrten", p_daten->gesamt_abfahrten) IN (datei_ende);
+		SCHREIBE_WERT("aktuell_belegte_stellplaetze", p_daten->aktuell_belegte_stellplaetze) IN (datei_ende);
+		SCHREIBE_WERT("warteschlangen_laenge", p_daten->warteschlangen_laenge) IN (datei_ende);
+		SCHREIBE_WERT("maximale_warteschlangen_laenge", p_daten->maximale_warteschlangen_laenge) IN (datei_ende);
+		SCHREIBE_WERT("auslastungsrate", p_daten->auslastungsrate) IN (datei_ende);
+		SCHREIBE_WERT("durchschnittliche_Wartezeit", p_daten->durchschnittliche_wartezeit) IN (datei_ende);
+		SCHREIBE_WERT("durchschnittliche_auslastung", p_daten->durchschnittliche_auslastung) IN (datei_ende);
 		DATEI_SCHLIESSEN(datei_ende);
-		ERSTELLE_GNUPLOT_SKRIPT("plot_simulationsergebnis.gnuplot");
-		STARTE_GNUPLOT("plot_simulationsergebnis.gnuplot");
-		PRINT "Grafik simulationsergebnis.png erstellt";
+
+		STARTE_GNUPLOT("plot_simulationsergebnis");
+		//Grafik mit Gnuplot erstellen
 		
 	END IF
 END
@@ -272,10 +269,10 @@ Function start_simulation(const Simulationskonfiguration *p_konfiguration)
 	daten.durchschnittliche_auslastung = 0.0;
 
 	//Datei für Auslastungszeitreihe neu anlegen oder falls vorhanden überschreiben
-	datei_auslastung = fopen("auslastung_zeitreihe.dat", "w");
+	datei_auslastung = DATEI_ÖFFNEN("auslastung.txt", "w");
 	IF (datei_auslastung != NULL)
-		fprintf(datei_auslastung, "#Zeitschritt Auslastungsrate\\n");
-		fclose(datei_auslastung);
+		SCHREIBE_ZEILE(datei_auslastung, "#Zeitschritt Auslastungsrate\\n");
+		DATEI_SCHLIESSEN(datei_auslastung);
 	END IF
 
 	//4) Alle Simulationsschritte nacheinander ausfuehren
