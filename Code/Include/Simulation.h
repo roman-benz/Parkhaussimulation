@@ -10,9 +10,11 @@
  */
 typedef struct {
     int gesamt_ankuenfte;                //Anzahl aller angekommenen Fahrzeuge
-    int gesamt_geparkt;                  //Anzahl aller erfolgreich eingeparkten Fahrzeuge 
+    int gesamt_geparkt;                  //Anzahl aller erfolgreich eingeparkten Fahrzeuge
     int gesamt_abfahrten;                //Anzahl aller ausgeparkten Fahrzeuge 
     int warteschlangen_laenge;           //Aktuelle Anzahl wartender Fahrzeuge in der Queue
+    int maximale_warteschlangen_laenge;  //Maximal erreichte Warteschlangenlaenge
+    int aktuell_belegte_stellplaetze;    //Aktuell belegte Stellplaetze im Parkhaus
     double auslastungsrate;              //Aktuelle Auslastung des Parkhauses (0.0 bis 1.0)
     double durchschnittliche_wartezeit;  //Durchschnittliche Wartezeit aller eingeparkten Fahrzeuge
     double durchschnittliche_auslastung; //Durchschnittliche Auslastung ueber alle Simulationsschritte

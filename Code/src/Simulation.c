@@ -159,6 +159,11 @@ Function ausfuehren_simulationsschritt(
 
 	//TEIL 4: Kennzahlen aktualisieren
 	p_daten->warteschlangen_laenge = p_queue->length;
+	p_daten->aktuell_belegte_stellplaetze = p_garage->belegte_stellplaetze;
+
+	IF (p_daten->warteschlangen_laenge > p_daten->maximale_warteschlangen_laenge)
+		p_daten->maximale_warteschlangen_laenge = p_daten->warteschlangen_laenge;
+	END IF
 
 	IF (p_garage->maximale_kapazitaet > 0) //um sicher eine division durch null zu vermeiden
 		p_daten->auslastungsrate = (double)p_garage->belegte_stellplaetze / p_garage->maximale_kapazitaet;
@@ -186,7 +191,9 @@ Function simulationsschrittdaten_ausgeben(int aktueller_schritt, const Simulatio
 	PRINT "Gesamtankuenfte: ", p_daten->gesamt_ankuenfte;
 	PRINT "Gesamt geparkt: ", p_daten->gesamt_geparkt;
 	PRINT "Gesamtabfahrten: ", p_daten->gesamt_abfahrten;
+	PRINT "Aktuell belegt: ", p_daten->aktuell_belegte_stellplaetze;
 	PRINT "Warteschlangenlaenge: ", p_daten->warteschlangen_laenge;
+	PRINT "Maximale Warteschlangenlaenge: ", p_daten->maximale_warteschlangen_laenge;
 	PRINT "Aktuelle Auslastungsrate: ", p_daten->auslastungsrate;
 	PRINT "Durchschnittliche Wartezeit: ", p_daten->durchschnittliche_wartezeit;
 	PRINT "Durchschnittliche Auslastung: ", p_daten->durchschnittliche_auslastung;
@@ -201,7 +208,9 @@ Function end_simulationsdaten_ausgeben(const Simulationdaten *p_daten) //gibt am
 	PRINT "Gesamtankuenfte: ", p_daten->gesamt_ankuenfte;
 	PRINT "Gesamt geparkt: ", p_daten->gesamt_geparkt;
 	PRINT "Gesamtabfahrten: ", p_daten->gesamt_abfahrten;
+	PRINT "Aktuell belegt: ", p_daten->aktuell_belegte_stellplaetze;
 	PRINT "Warteschlangenlaenge (aktuell): ", p_daten->warteschlangen_laenge;
+	PRINT "Maximale Warteschlangenlaenge: ", p_daten->maximale_warteschlangen_laenge;
 	PRINT "Aktuelle Auslastungsrate: ", p_daten->auslastungsrate;
 	PRINT "Durchschnittliche Wartezeit: ", p_daten->durchschnittliche_wartezeit;
 	PRINT "Durchschnittliche Auslastung: ", p_daten->durchschnittliche_auslastung;
@@ -238,6 +247,8 @@ Function start_simulation(const Simulationskonfiguration *p_konfiguration)
 	daten.gesamt_geparkt = 0;
 	daten.gesamt_abfahrten = 0;
 	daten.warteschlangen_laenge = 0;
+	daten.maximale_warteschlangen_laenge = 0;
+	daten.aktuell_belegte_stellplaetze = 0;
 	daten.auslastungsrate = 0.0;
 	daten.durchschnittliche_wartezeit = 0.0;
 	daten.durchschnittliche_auslastung = 0.0;
