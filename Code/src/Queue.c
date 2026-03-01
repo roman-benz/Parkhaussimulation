@@ -54,4 +54,4 @@ END
 Function queue_destroy(Queue *queue)
 int Platzhalter_Zeitschritt = 0;        //Platzhalter, da queue_dequeue einen Zeitschritt braucht
     while queue_dequeue(queue, &Platzhalter_Zeitschritt) IS NOT NULL       //Solange Queue_dequeue nicht NULL zurückliefert, wird die Funktion erneut aufgerufen
-END
+END     //ACHTUNG -> NUR AUFRUFEN WENN WARTEZEIT EINS FAHRZEUGES NICHT MEHR RELEVANT IST, da queue_destroy die Wartezeit falsch überschreibt
