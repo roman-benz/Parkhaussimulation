@@ -12,7 +12,7 @@ Function queue_enqueue(Queue *eineQueue, Fahrzeug *einFahrzeug, int enqueue_zeit
     QueueNode *Fahrzeugknoten <- malloc(sizeof *Fahrzeugknoten);
     IF (malloc() erfolgreich?)
         //Das Fahrzeug das der Schlange hinzugefügt werden soll wird hier dem Knoten zugewiesen
-        Fahrzeugknoten->einFahrzeug <- *einFahrzeug;
+        Fahrzeugknoten->einFahrzeug <- einFahrzeug;
         Fahrzeugknoten->next <- NULL;   //Um Garbage-Werte zu vermeiden
         Fahrzeugknoten->enqueue_zeitschritt <- enqueue_zeitschritt; //Fuer spätere Berechnung der Wartezeit
 
@@ -31,7 +31,7 @@ Function queue_enqueue(Queue *eineQueue, Fahrzeug *einFahrzeug, int enqueue_zeit
     END IF 
 END
 
-Function queue_dequeue(Queue *eineQueue, int *einparken_zeitschritt)
+Function queue_dequeue(Queue *eineQueue, int einparken_zeitschritt)
     //Wenn die Warteschlange leer ist -> Abbruch
     IF eineQueue->length == 0
         return NULL;        //Abbruch
@@ -39,7 +39,7 @@ Function queue_dequeue(Queue *eineQueue, int *einparken_zeitschritt)
     //Wenn Warteschlange nicht leer ist
     QueueNode *entfernterKnoten <- eineQueue->head;     //neuen Knoten definieren, der Head entspricht
     einparkendesFahrzeug <- entfernterKnoten->einFahrzeug;      //Das Fahrzeug festlegen, um später das Fahrzeug returnen zu können
-    einparkendesFahrzeug->wartezeit <- *einparken_zeitschritt - entfernterKnoten->enqueue_zeitschritt;       //Wartezeit ausrechnen (Zeitschritt beim Einfahren ins Parkhaus - Zeitschritt beim Eintritt in Warteschlange)
+    einparkendesFahrzeug->wartezeit <- einparken_zeitschritt - entfernterKnoten->enqueue_zeitschritt;       //Wartezeit ausrechnen (Zeitschritt beim Einfahren ins Parkhaus - Zeitschritt beim Eintritt in Warteschlange)
     
     eineQueue->head <- entfernterKnoten->next;      //Den Head auf das nächste Fahrzeug in der Warteschlange legen
     IF eineQueue->head == NULL
