@@ -13,16 +13,16 @@ Function queue_enqueue(Queue *eineQueue, Fahrzeug *einFahrzeug, int enqueue_zeit
     IF (malloc() erfolgreich?)
         //Das Fahrzeug das der Schlange hinzugefügt werden soll wird hier dem Knoten zugewiesen
         Fahrzeugknoten->einFahrzeug <- *einFahrzeug;
+        Fahrzeugknoten->next <- NULL;   //Um Garbage-Werte zu vermeiden
+        Fahrzeugknoten->enqueue_zeitschritt <- enqueue_zeitschritt; //Fuer spätere Berechnung der Wartezeit
+
         IF eineQueue.Length == 0    //Wenn die Warteschlange leer ist, dann ist das ankommende Fahrzeug head und tail der Warteschlange
             eineQueue.head <- Fahrzeugknoten;
             eineQueue.tail <- Fahrzeugknoten;
-            Fahrzeugknoten->next <- NULL;   //Um Garbage-Werte zu vermeiden
-            Fahrzeugknoten->enqueue_zeitschritt <- enqueue_zeitschritt; //Fuer spätere Berechnung der Wartezeit
         ELSE 
             eineQueue->tail->next <- Fahrzeugknoten;   //Wenn Fahrzeuge schon in der Warteschlange sind, dann soll das ankommende Fahrzeug an den Tail angehängt werden
             eineQueue->tail <- Fahrzeugknoten;
-            Fahrzeugknoten->next <- NULL;   //Garbage-Werte vermeiden
-            Fahrzeugknoten->enqueue_zeitschritt <- enqueue_zeitschritt; //Fuer spätere Berechnung der Wartezeit
+            
         END IF 
         eineQueue->length <- eineQueue->length + 1; //Warteschlangenlaenge um 1 erhöhen
 
