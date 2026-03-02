@@ -18,7 +18,7 @@ Function initialisierung_garage(Parkhaus *p_garage, int maximale_kapazitaet)
 
 	p_garage->maximale_kapazitaet = maximale_kapazitaet;
 
-	//Speicher fuer Stellplaetze reservieren (mit calloc direkt auf 0 initialisiert)
+	//Speicher fuer Stellplaetze reservieren (mit calloc da wir ein Array benutzen, da uns die größe des Parkhaus bereits bekannt ist)
 	p_garage->p_stellplaetze = calloc(maximale_kapazitaet, sizeof(Fahrzeug));
 
 	IF (p_garage->p_stellplaetze == NULL)
@@ -60,16 +60,16 @@ Function ausparken_fahrzeug(Parkhaus *p_garage, int fahrzeug_id)
 		RETURN 0;   //Ungueltige Eingaben
 	END IF
 
-	//Fahrzeug mit passender ID suchen
+	//Fahrzeug wird über die passende ID gesucht
 	FOR i = 0 TO p_garage->maximale_kapazitaet - 1 DO
 		IF (p_garage->p_stellplaetze[i].fahrzeug_id == fahrzeug_id)
 			//Stellplatz wieder auf Leerzustand setzen
 			p_garage->p_stellplaetze[i].fahrzeug_id = -1; //Stellplatz freigeben
 			p_garage->p_stellplaetze[i].verbleibende_parkdauer = 0;
-			p_garage->p_stellplaetze[i].eintritts_zeit = 0;
+			p_garage->p_stellplaetze[i].eintritts_zeit = 0; //Werte des Stellplatz zurücksetzten
 			p_garage->p_stellplaetze[i].wartezeit = 0;
 
-			IF (p_garage->belegte_stellplaetze > 0)
+			IF (p_garage->belegte_stellplaetze > 0)//Sicherheitsüberprüfung damit es nicht negativ wird
 				p_garage->belegte_stellplaetze = p_garage->belegte_stellplaetze - 1; 
 			END IF
 
@@ -92,32 +92,31 @@ Function ausfuehren_simulationsschritt(
 	END IF
 
 	//TEIL 1: Abfahrten bearbeiten
-	FOR i = 0 TO p_garage->maximale_kapazitaet - 1 DO
+	FOR i = 0 TO p_garage->maximale_kapazitaet - 1 DO //Parkhaus Array durch itterieren 
 		IF (p_garage->p_stellplaetze[i].fahrzeug_id != -1) //Stellplatz belegt?
-			p_garage->p_stellplaetze[i].verbleibende_parkdauer = p_garage->p_stellplaetze[i].verbleibende_parkdauer - 1;
+			p_garage->p_stellplaetze[i].verbleibende_parkdauer = p_garage->p_stellplaetze[i].verbleibende_parkdauer - 1; //Parkdauer inkrementieren
 
 			IF (p_garage->p_stellplaetze[i].verbleibende_parkdauer <= 0) //Parkdauer abgelaufen?
 				erfolg_ausparken = ausparken_fahrzeug(p_garage, p_garage->p_stellplaetze[i].fahrzeug_id); //ausführen der ausparken_fahrzeug Funktion
-				IF (erfolg_ausparken == 1)
-					p_daten->gesamt_abfahrten = p_daten->gesamt_abfahrten + 1;
+				IF (erfolg_ausparken == 1)//Sicherheitsüberprüfung
+					p_daten->gesamt_abfahrten = p_daten->gesamt_abfahrten + 1; //gesamte Abfahrten um eins erhöhen
 				END IF
 			END IF
 		END IF
 	END FOR
 
 	//TEIL 2: Fahrzeuge aus der Queue einparken
-	//Solange freie Plaetze vorhanden sind und die Queue nicht leer ist,
-	//wird immer das vorderste Fahrzeug aus der Queue geholt.
+	//Solange freie Plaetze vorhanden sind und die Queue nicht leer ist, wird immer das vorderste Fahrzeug aus der Queue geholt.
 	WHILE (p_garage->belegte_stellplaetze < p_garage->maximale_kapazitaet AND p_queue->length > 0)
-		//Separater Wert, damit aktueller_schritt nicht versehentlich ueberschrieben wird
+		//Separater Wert, zur Sicherheit damit aktueller_schritt nicht versehentlich ueberschrieben wird
 		einparken_zeitschritt = aktueller_schritt;
 
-		//Wartezeit wird in queue_dequeue berechnet und im Fahrzeug gesetzt
+		//Wartezeit wird in queue_dequeue berechnet und im Fahrzeug gespeichert
 		wartendes_fahrzeug = queue_dequeue(p_queue, &einparken_zeitschritt);
 
 		erfolg_einparken = einparken_fahrzeug(p_garage, &wartendes_fahrzeug);
-		IF (erfolg_einparken == 1)
-			p_daten->gesamt_geparkt = p_daten->gesamt_geparkt + 1;
+		IF (erfolg_einparken == 1)//Sicherheitsüberprüfung
+			p_daten->gesamt_geparkt = p_daten->gesamt_geparkt + 1; //gesamt geparkt um eins erhöhen
 			//Durchschnittliche Wartezeit als laufender Mittelwert aktualisieren
 			p_daten->durchschnittliche_wartezeit = (
 				(p_daten->durchschnittliche_wartezeit * (p_daten->gesamt_geparkt - 1))
@@ -128,13 +127,13 @@ Function ausfuehren_simulationsschritt(
 
 	//TEIL 3: Neue Ankunft verarbeiten
 	//Pro Zeitschritt wird per Zufall entschieden, ob ein neues Fahrzeug ankommt.
-	zufallswert = rand() % 100;
+	zufallswert = rand() % 100;//Modulo 100, damit man es mit dem Zufallswert von 0-100 vergleichen kann
 	IF (zufallswert < p_konfiguration->ankunftswahrscheinlichkeit_prozent)
-		p_daten->gesamt_ankuenfte = p_daten->gesamt_ankuenfte + 1;
+		p_daten->gesamt_ankuenfte = p_daten->gesamt_ankuenfte + 1; //Ankünfte um eins erhöhen
 
 		//Neues Fahrzeug mit Basisdaten vorbereiten
 		neues_fahrzeug.fahrzeug_id = p_daten->gesamt_ankuenfte;
-		neues_fahrzeug.verbleibende_parkdauer = (rand() % p_konfiguration->max_parkdauer_minuten) + 1; //durch das +1 wird eine unrealistische Parkdauer von 0 vermiden
+		neues_fahrzeug.verbleibende_parkdauer = (rand() % p_konfiguration->max_parkdauer_minuten) + 1; //durch das +1 wird eine unrealistische Parkdauer von 0 vermieden
 		neues_fahrzeug.eintritts_zeit = aktueller_schritt;
 		neues_fahrzeug.wartezeit = 0;
 
@@ -149,33 +148,29 @@ Function ausfuehren_simulationsschritt(
 					+ neues_fahrzeug.wartezeit
 				) / p_daten->gesamt_geparkt;
 			END IF
-		ELSE
+		ELSE //In Warteschlange parken
 			queue_enqueue(p_queue, &neues_fahrzeug, aktueller_schritt);
 		END IF
 	END IF
 
-	//TEIL 4: Kennzahlen aktualisieren
+	//TEIL 4: Kennzahlen aktualisieren und in Datenstruct einheitlich abspeichern
 	p_daten->warteschlangen_laenge = p_queue->length;
 	p_daten->aktuell_belegte_stellplaetze = p_garage->belegte_stellplaetze;
 
-	IF (p_daten->warteschlangen_laenge > p_daten->maximale_warteschlangen_laenge)
+	IF (p_daten->warteschlangen_laenge > p_daten->maximale_warteschlangen_laenge)//Maximale Wartschlange aktualisieren
 		p_daten->maximale_warteschlangen_laenge = p_daten->warteschlangen_laenge;
 	END IF
 
 	IF (p_garage->maximale_kapazitaet > 0) //um sicher eine division durch null zu vermeiden
-		p_daten->auslastungsrate = (double)p_garage->belegte_stellplaetze / p_garage->maximale_kapazitaet;
-	ELSE
-		p_daten->auslastungsrate = 0.0;
+		p_daten->auslastungsrate = (double)p_garage->belegte_stellplaetze / p_garage->maximale_kapazitaet;//Momentanauslastung berechnen (belegt/kapazitaet)
+	
 	END IF
 
 	//Durchschnittliche Auslastung als laufenden Mittelwert ueber alle Schritte berechnen
-	IF (aktueller_schritt > 0)
-		p_daten->durchschnittliche_auslastung = (
-			(p_daten->durchschnittliche_auslastung * (aktueller_schritt - 1))
-			+ p_daten->auslastungsrate
-		) / aktueller_schritt;
+	IF (aktueller_schritt > 1)
+		p_daten->durchschnittliche_auslastung = ((p_daten->durchschnittliche_auslastung * (aktueller_schritt - 1)) + p_daten->auslastungsrate) / aktueller_schritt;
 	ELSE
-		p_daten->durchschnittliche_auslastung = p_daten->auslastungsrate;
+		p_daten->durchschnittliche_auslastung = p_daten->auslastungsrate;//beim ersten Schrit ist die durchschnittliche Auslastung die Momentanauslastung
 	END IF
 END
 
@@ -183,13 +178,13 @@ Function simulationsschrittdaten_ausgeben(int aktueller_schritt, const Simulatio
 	IF (p_daten == NULL)
 		RETURN;     //Ohne Daten keine Ausgabe moeglich
 	END IF
-
+	//Ausgabe im Terminal
 	PRINT "===== SIMULATIONSSCHRITT ", aktueller_schritt, " =====";
 	PRINT "Gesamtankuenfte: ", p_daten->gesamt_ankuenfte;
 	PRINT "Gesamt geparkt: ", p_daten->gesamt_geparkt;
 	PRINT "Gesamtabfahrten: ", p_daten->gesamt_abfahrten;
 	PRINT "Aktuell belegt: ", p_daten->aktuell_belegte_stellplaetze;
-	PRINT "Warteschlangenlange: ", p_daten->warteschlangen_laenge;
+	PRINT "Warteschlangenlaenge: ", p_daten->warteschlangen_laenge;
 	PRINT "Maximale Warteschlangenlange: ", p_daten->maximale_warteschlangen_laenge;
 	PRINT "Aktuelle Auslastungsrate: ", p_daten->auslastungsrate;
 	PRINT "Durchschnittliche Wartezeit: ", p_daten->durchschnittliche_wartezeit;
@@ -207,7 +202,7 @@ Function end_simulationsdaten_ausgeben(const Simulationdaten *p_daten) //gibt am
 	IF (p_daten == NULL)
 		RETURN;     //Ohne Daten keine Ausgabe moeglich
 	END IF
-
+	//Ausgabe ins Terminal
 	PRINT "===== ENDE DER SIMULATION =====";
 	PRINT "Simulationsergebnisse finden Sie in der externen Ergebnisdatei";
 
@@ -255,7 +250,7 @@ Function start_simulation(const Simulationskonfiguration *p_konfiguration)
 		RETURN;     //Bei fehlgeschlagener Initialisierung Simulation abbrechen
 	END IF
 
-	queue_init(&warteschlange);
+	queue_init(&warteschlange);//Wartschlange initialisieren
 
 	//3) Simulationsdaten auf Startwerte setzen
 	daten.gesamt_ankuenfte = 0;
@@ -268,15 +263,15 @@ Function start_simulation(const Simulationskonfiguration *p_konfiguration)
 	daten.durchschnittliche_wartezeit = 0.0;
 	daten.durchschnittliche_auslastung = 0.0;
 
-	//Datei für Auslastungszeitreihe neu anlegen oder falls vorhanden überschreiben
+	//Datei für Auslastungszeitreihe neu anlegen oder falls vorhanden überschreiben mit "w"
 	datei_auslastung = DATEI_ÖFFNEN("auslastung.txt", "w");
 	IF (datei_auslastung != NULL)
-		SCHREIBE_ZEILE(datei_auslastung, "#Zeitschritt Auslastungsrate\\n");
+		SCHREIBE_ZEILE(datei_auslastung, Zeitschritt Auslastungsrate\n);
 		DATEI_SCHLIESSEN(datei_auslastung);
 	END IF
 
 	//4) Alle Simulationsschritte nacheinander ausfuehren
-	FOR schritt = 1 TO p_konfiguration->anzahl_simulationsschritte DO
+	FOR schritt = 1 TO p_konfiguration->anzahl_simulationsschritte DO //läuft ganze Simulation durch
 		ausfuehren_simulationsschritt(schritt, p_konfiguration, &garage, &warteschlange, &daten);
 		simulationsschrittdaten_ausgeben(schritt, &daten);
 	END FOR
