@@ -9,8 +9,7 @@ Function main()
 
     PRINT " Parkhaus-Simulation "
     
-    IF NOT 
-    konfiguration_einlesen(&konfiguration)
+    IF NOT konfiguration_einlesen(&konfiguration)
         PRINT "Konfiguration konnte nicht eingelesen werden"
         RETURN 1
     END IF
