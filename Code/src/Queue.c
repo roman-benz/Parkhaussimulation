@@ -13,7 +13,7 @@ END
 
 Function queue_enqueue(Queue *eineQueue, Fahrzeug *einFahrzeug, int enqueue_zeitschritt)
     //Neuer Listenelement für das Fahrzeug mit Malloc reserviert
-    QueueNode *Fahrzeugknoten <- malloc(sizeof *Fahrzeugknoten);
+    QueueNode *fahrzeugknoten <- malloc(sizeof fFahrzeugknoten);
     IF (malloc() erfolgreich?)
         //Das Fahrzeug das der Schlange hinzugefügt werden soll wird hier dem Knoten zugewiesen
         Fahrzeugknoten->einFahrzeug <- einFahrzeug;
@@ -56,6 +56,6 @@ Function queue_dequeue(Queue *eineQueue, int einparken_zeitschritt)
 END
 
 Function queue_destroy(Queue *queue)
-int Platzhalter_Zeitschritt = 0;        //Platzhalter, da queue_dequeue einen Zeitschritt braucht
+int platzhalter_Zeitschritt = 0;        //Platzhalter, da queue_dequeue einen Zeitschritt braucht
     while queue_dequeue(queue, Platzhalter_Zeitschritt) IS NOT NULL       //Solange Queue_dequeue nicht NULL zurückliefert, wird die Funktion erneut aufgerufen
 END     //ACHTUNG -> NUR AUFRUFEN WENN WARTEZEIT EINS FAHRZEUGES NICHT MEHR RELEVANT IST, da queue_destroy die Wartezeit falsch überschreibt
