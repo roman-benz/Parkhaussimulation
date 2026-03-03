@@ -3,7 +3,7 @@
 
 // Pseudocode für Konfig.c
 
-Function int_wert_einlesen(prompt, min_wert, max_wert, out_wert)
+Function int_wert_einlesen(prompt, min_wert, max_wert, p_out_wert)
     WHILE TRUE  // Endlosschleife, Wiederholt Eingabe bis eine gültige ankommt
         PRINT "..."
         value <- Benutzereingabe als int
@@ -16,7 +16,7 @@ Function int_wert_einlesen(prompt, min_wert, max_wert, out_wert)
             PRINT "Wert außerhalb des erlaubten Bereichs (min_wert bis max_wert)."
             CONTINUE While   // Schleife springt zum Anfang zurück und fragt erneut nach Eingabe
         END IF
-        out_wert <- value
+        p_out_wert <- value
         RETURN TRUE
     END WHILE
 END
