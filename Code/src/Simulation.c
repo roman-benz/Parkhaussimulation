@@ -2,6 +2,19 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+/*
+ * File: Simulation.c
+ * Description:
+ *   Implementiert die Kernlogik der Parkhaussimulation.
+ *   Die Datei verwaltet die Initialisierung des Parkhauses,
+ *   das Ein- und Ausparken von Fahrzeugen sowie die Ausführung
+ *   einzelner Simulationsschritte (Abfahrten, Queue-Verarbeitung,
+ *   Neuzugänge und Kennzahlenberechnung).
+ *   Zusätzlich werden Schritt- und Endergebnisse im Terminal
+ *   ausgegeben und in Ausgabedateien für die spätere Auswertung
+ *   (z. B. mit Gnuplot) geschrieben.
+*/
+
 Function initialisierung_garage(Parkhaus *p_garage, int maximale_kapazitaet)
 	IF (p_garage == NULL)
 		RETURN 0;   //Ungueltiger Zeiger
@@ -28,7 +41,8 @@ Function initialisierung_garage(Parkhaus *p_garage, int maximale_kapazitaet)
 
 	//Alle Stellplaetze als leer markieren
 	FOR i = 0 TO maximale_kapazitaet - 1 DO
-		p_garage->p_stellplaetze[i].fahrzeug_id = -1; //-1 steht für einen leeren Parkplatz
+		p_garage->p_stellplaetze[i].fahrzeug_id = -1; //-1 steht für einen leeren Parkplatz, da -1 auserhalb des gültigen ID Bereichs ist und so mit sicher gestellt wird,
+		//das ein belegter Parkplatz als frei angesehen wird
 	END FOR
 
 	RETURN 1;   //Initialisierung erfolgreich
@@ -94,7 +108,7 @@ Function ausfuehren_simulationsschritt(
 	//TEIL 1: Abfahrten bearbeiten
 	FOR i = 0 TO p_garage->maximale_kapazitaet - 1 DO //Parkhaus Array durch itterieren 
 		IF (p_garage->p_stellplaetze[i].fahrzeug_id != -1) //Stellplatz belegt?
-			p_garage->p_stellplaetze[i].verbleibende_parkdauer = p_garage->p_stellplaetze[i].verbleibende_parkdauer - 1; //Parkdauer inkrementieren
+			p_garage->p_stellplaetze[i].verbleibende_parkdauer = p_garage->p_stellplaetze[i].verbleibende_parkdauer - 1; //Parkdauer dekrementieren
 
 			IF (p_garage->p_stellplaetze[i].verbleibende_parkdauer <= 0) //Parkdauer abgelaufen?
 				erfolg_ausparken = ausparken_fahrzeug(p_garage, p_garage->p_stellplaetze[i].fahrzeug_id); //ausführen der ausparken_fahrzeug Funktion
@@ -170,7 +184,7 @@ Function ausfuehren_simulationsschritt(
 	IF (aktueller_schritt > 1)
 		p_daten->durchschnittliche_auslastung = ((p_daten->durchschnittliche_auslastung * (aktueller_schritt - 1)) + p_daten->auslastungsrate) / aktueller_schritt;
 	ELSE
-		p_daten->durchschnittliche_auslastung = p_daten->auslastungsrate;//beim ersten Schrit ist die durchschnittliche Auslastung die Momentanauslastung
+		p_daten->durchschnittliche_auslastung = p_daten->auslastungsrate;//beim ersten Schritt ist die durchschnittliche Auslastung die Momentanauslastung
 	END IF
 END
 

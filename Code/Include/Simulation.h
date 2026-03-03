@@ -5,6 +5,11 @@
 #include "Konfig.h"
 #include "Queue.h"
 
+/*
+ * File: Simulation.h
+ * Description: Datentypdefinitionen für Simulationsdaten Struct und benötigte Funktionsprototype für das ausführen der Simulation
+*/
+
 /**
  * @brief Speichert alle relevanten Kennzahlen der laufenden Simulation.
  */
