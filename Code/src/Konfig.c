@@ -1,7 +1,10 @@
 #include "../include/Konfig.h"
 #include <stdio.h>
 
-// Pseudocode für Konfig.c
+/*
+ * File: Konfig.c
+ * Description: Implementierung der Funktionen zur Eingabe und Validierung der Simulationskonfiguration.
+ */
 
 Function int_wert_einlesen(prompt, min_wert, max_wert, p_out_wert)
     WHILE TRUE  // Endlosschleife, Wiederholt Eingabe bis eine gültige ankommt
