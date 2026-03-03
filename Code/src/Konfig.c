@@ -6,7 +6,12 @@
  * Description: Implementierung der Funktionen zur Eingabe und Validierung der Simulationskonfiguration.
  */
 
-Function int_wert_einlesen(prompt, min_wert, max_wert, p_out_wert)
+Function int_wert_einlesen(prompt, min_wert, max_wert, p_out_wert) 
+
+/* 
+    Liest eine Ganzzahl vom Benutzer ein und prüft, ob sie gültig ist. Fragt bei falscher Eingabe erneut nach.
+    Die Schleife stellt sicher, dass nur gültige Werte akzeptiert werden und verhindert fehlerhafe Simulationen durch falsche Eingaben.
+*/
     WHILE TRUE  // Endlosschleife, Wiederholt Eingabe bis eine gültige ankommt
         PRINT "..."
         value <- Benutzereingabe als int
