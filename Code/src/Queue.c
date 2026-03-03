@@ -31,7 +31,7 @@ Function queue_enqueue(Queue *p_eineQueue, Fahrzeug *einFahrzeug, int enqueue_ze
         p_eineQueue->length <- p_eineQueue->length + 1; //Warteschlangenlaenge um 1 erhöhen
 
     ELSE 
-        END //Abbruch
+        END //Abbruch -> Programmende
     END IF 
 END
 
