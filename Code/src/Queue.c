@@ -11,12 +11,12 @@ Function queue_init(Queue *queue)
     queue->length <- 0;
 END 
 
-Function queue_enqueue(Queue *p_eineQueue, Fahrzeug *einFahrzeug, int enqueue_zeitschritt)
+Function queue_enqueue(Queue *p_eineQueue, Fahrzeug *p_einFahrzeug, int enqueue_zeitschritt)
     //Neuer Listenelement für das Fahrzeug mit Malloc reserviert
     QueueNode *fahrzeugknoten <- malloc(sizeof fFahrzeugknoten);
     IF (malloc() erfolgreich?)
         //Das Fahrzeug das der Schlange hinzugefügt werden soll wird hier dem Knoten zugewiesen
-        fahrzeugknoten->einFahrzeug <- einFahrzeug;
+        fahrzeugknoten->p_einFahrzeug <- p_einFahrzeug;
         fahrzeugknoten->next <- NULL;   //Um Garbage-Werte zu vermeiden
         fahrzeugknoten->enqueue_zeitschritt <- enqueue_zeitschritt; //Fuer spätere Berechnung der Wartezeit
 
