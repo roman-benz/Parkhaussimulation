@@ -23,7 +23,7 @@ END
 */
 Function queue_enqueue(Queue *p_eineQueue, Fahrzeug *p_einFahrzeug, int enqueue_zeitschritt)
     //Neues Listenelement für das Fahrzeug mit Malloc reserviert
-    QueueNode *fahrzeugknoten <- malloc(sizeof fFahrzeugknoten);
+    QueueNode *fahrzeugknoten <- malloc(sizeof QueueNode);
     IF (malloc() erfolgreich?)
         //Das Fahrzeug das der Schlange hinzugefügt werden soll wird hier dem Knoten zugewiesen
         fahrzeugknoten->p_einFahrzeug <- p_einFahrzeug;
@@ -52,11 +52,11 @@ END
 */
 Function queue_dequeue(Queue *p_eineQueue, int einparken_zeitschritt)
     //Wenn die Warteschlange leer ist -> Abbruch
-    IF eineQueue->length == 0
+    IF p_eineQueue->length == 0
         return NULL;        //Abbruch
     END IF
     //Wenn Warteschlange nicht leer ist
-    QueueNode *entfernterKnoten <- eineQueue->head;     //neuen Knoten definieren, der Head entspricht
+    QueueNode *entfernterKnoten <- p_eineQueue->head;     //neuen Knoten definieren, der Head entspricht
     einparkendesFahrzeug <- entfernterKnoten->p_einFahrzeug;      //Das Fahrzeug festlegen, um später das Fahrzeug returnen zu können
     einparkendesFahrzeug->wartezeit <- einparken_zeitschritt - entfernterKnoten->enqueue_zeitschritt;       //Wartezeit ausrechnen (Zeitschritt beim Einfahren ins Parkhaus - Zeitschritt beim Eintritt in Warteschlange)
     
