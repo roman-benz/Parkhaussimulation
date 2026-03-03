@@ -3,20 +3,26 @@
 #include <stdio.h>
 
 /*
- * File: Simulation.c
- * Description:
- *   Implementiert die Kernlogik der Parkhaussimulation.
- *   Die Datei verwaltet die Initialisierung des Parkhauses,
- *   das Ein- und Ausparken von Fahrzeugen sowie die Ausführung
- *   einzelner Simulationsschritte (Abfahrten, Queue-Verarbeitung,
- *   Neuzugänge und Kennzahlenberechnung).
- *   Zusätzlich werden Schritt- und Endergebnisse im Terminal
- *   ausgegeben und in Ausgabedateien für die spätere Auswertung
- *   (z. B. mit Gnuplot) geschrieben.
+File: Simulation.c
+Description:
+Implementiert die Kernlogik der Parkhaussimulation.
+Die Datei verwaltet die Initialisierung des Parkhauses,
+das Ein- und Ausparken von Fahrzeugen sowie die Ausführung
+einzelner Simulationsschritte (Abfahrten, Queue-Verarbeitung,
+Neuzugänge und Kennzahlenberechnung).
+Zusätzlich werden Schritt- und Endergebnisse im Terminal
+ausgegeben und in Ausgabedateien für die spätere Auswertung
+(mit Gnuplot) geschrieben.
 */
 
 Function initialisierung_garage(Parkhaus *p_garage, int maximale_kapazitaet)
-	IF (p_garage == NULL)
+/*
+Sicherer Startzustand mit Eingabeprüfung und Speicherreservierung,
+damit bei Fehlern keine inkonsistenten Zustände oder ungültigen
+Speicherzugriffe entstehen.
+*/
+
+IF (p_garage == NULL)
 		RETURN 0;   //Ungueltiger Zeiger
 	END IF
 
@@ -49,6 +55,10 @@ Function initialisierung_garage(Parkhaus *p_garage, int maximale_kapazitaet)
 END
 
 Function einparken_fahrzeug(Parkhaus *p_garage, const Fahrzeug *p_fahrzeug)
+/*
+Frühe Validierung, damit nur gültige Fahrzeuge in freie Plätze übernommen werden
+und der Belegungszähler konsistent bleibt.
+*/
 	IF (p_garage == NULL OR p_fahrzeug == NULL)
 		RETURN 0;   //Ungueltige Eingaben
 	END IF
@@ -70,6 +80,11 @@ Function einparken_fahrzeug(Parkhaus *p_garage, const Fahrzeug *p_fahrzeug)
 END
 
 Function ausparken_fahrzeug(Parkhaus *p_garage, int fahrzeug_id)
+/*
+Fahrzeugentfernung über eindeutige ID und vollständiges Zurücksetzen
+des Platzes, da die Werte, wie Eintrittszeit oder Parkdauer nicht auf dem 
+Fahrzeug sondern auf dem Stellplatz gespeichert werden.
+*/
 	IF (p_garage == NULL OR fahrzeug_id < 0)
 		RETURN 0;   //Ungueltige Eingaben
 	END IF
@@ -95,6 +110,11 @@ Function ausparken_fahrzeug(Parkhaus *p_garage, int fahrzeug_id)
 END
 
 Function ausfuehren_simulationsschritt(
+/*
+Feste Reihenfolge des Schritts (Abfahrten, Queue, Ankünfte, Kennzahlen),
+damit jeder Zeitschritt deterministisch und fachlich korrekt
+verarbeitet wird.
+*/
 	int aktueller_schritt,
 	const Simulationskonfiguration *p_konfiguration,
 	Parkhaus *p_garage,
@@ -189,6 +209,10 @@ Function ausfuehren_simulationsschritt(
 END
 
 Function simulationsschrittdaten_ausgeben(int aktueller_schritt, const Simulationdaten *p_daten)
+	/*
+	Trennung von Simulationslogik und Ausgabe,
+	damit Laufdaten sichtbar bleiben,für bessere Erweiterbarkeit und Übersicht.
+	*/
 	IF (p_daten == NULL)
 		RETURN;     //Ohne Daten keine Ausgabe moeglich
 	END IF
@@ -213,6 +237,10 @@ Function simulationsschrittdaten_ausgeben(int aktueller_schritt, const Simulatio
 END
 
 Function end_simulationsdaten_ausgeben(const Simulationdaten *p_daten) //gibt am Ende der Simulation die Daten aus
+	/*
+	Zentralisierte Endausgabe in Datei und Terminal.
+	Durch die externe Gnuplot ausgabe entsteht eine bessere Visualisierung.
+	*/
 	IF (p_daten == NULL)
 		RETURN;     //Ohne Daten keine Ausgabe moeglich
 	END IF
@@ -241,6 +269,11 @@ Function end_simulationsdaten_ausgeben(const Simulationdaten *p_daten) //gibt am
 END
 
 Function start_simulation(const Simulationskonfiguration *p_konfiguration)
+	/*
+	Führt alles strukturiert zusammen: Initialisierung, Simulationsschleife und Aufräumen,
+	damit der gesamte Ablauf robust, nachvollziehbar und
+	speichersicher bleibt.
+	*/
 	IF (p_konfiguration == NULL)
 		RETURN;     //Ohne Konfiguration kann keine Simulation gestartet werden
 	END IF
