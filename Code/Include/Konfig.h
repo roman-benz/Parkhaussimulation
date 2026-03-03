@@ -1,5 +1,10 @@
-#ifndef CONFIG_H
-#define CONFIG_H
+#ifndef KONFIG_H
+#define KONFIG_H
+
+/*
+ * File: Konfig.h
+* Description: Definition der Struktur und Parameter für die Konfiguration der Parkhaussimulation.
+ */
 
 
 /**
