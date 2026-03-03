@@ -45,6 +45,11 @@ Function queue_enqueue(Queue *p_eineQueue, Fahrzeug *p_einFahrzeug, int enqueue_
     END IF 
 END
 
+/*
+    Die Funktion queue_dequeue stellt ebenfalls das FIFO-Prinzip sicher. Sie entfernt immer das am längsten wartende Auto aus der Liste,
+    in dem Fall das erste Element der Liste, den Head. Sie returnt ein Pointer auf das Fahrzeug, dass nun in das Parkhaus einfahren darf.
+    Wichtig ist den Speicher des entfernten Knotens freizugeben!
+*/
 Function queue_dequeue(Queue *eineQueue, int einparken_zeitschritt)
     //Wenn die Warteschlange leer ist -> Abbruch
     IF eineQueue->length == 0
