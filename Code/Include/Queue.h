@@ -68,7 +68,7 @@ Fahrzeug* queue_dequeue(Queue *p_eineQueue, int einparken_zeitschritt);
  * 
  * Die Funktion entfernt alle Knoten der Queue und gibt den Speicher frei.
  * 
- * @param[in, out] queue Zeiger auf die Queue, deren Speicher freigegeben werden soll
+ * @param[in, out] p_queue Zeiger auf die Queue, deren Speicher freigegeben werden soll
  * @return void
  */
 void queue_destroy(Queue *p_queue);   
