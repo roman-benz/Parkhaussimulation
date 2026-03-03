@@ -142,11 +142,9 @@ verarbeitet wird.
 	//TEIL 2: Fahrzeuge aus der Queue einparken
 	//Solange freie Plaetze vorhanden sind und die Queue nicht leer ist, wird immer das vorderste Fahrzeug aus der Queue geholt.
 	WHILE (p_garage->belegte_stellplaetze < p_garage->maximale_kapazitaet AND p_queue->length > 0)
-		//Separater Wert, zur Sicherheit damit aktueller_schritt nicht versehentlich ueberschrieben wird
-		einparken_zeitschritt = aktueller_schritt;
 
 		//Wartezeit wird in queue_dequeue berechnet und im Fahrzeug gespeichert
-		wartendes_fahrzeug = queue_dequeue(p_queue, &einparken_zeitschritt);
+		wartendes_fahrzeug = queue_dequeue(p_queue,aktueller_zeitschritt);
 
 		erfolg_einparken = einparken_fahrzeug(p_garage, &wartendes_fahrzeug);
 		IF (erfolg_einparken == 1)//Sicherheitsüberprüfung
