@@ -11,24 +11,24 @@ Function queue_init(Queue *queue)
     queue->length <- 0;
 END 
 
-Function queue_enqueue(Queue *eineQueue, Fahrzeug *einFahrzeug, int enqueue_zeitschritt)
+Function queue_enqueue(Queue *p_eineQueue, Fahrzeug *einFahrzeug, int enqueue_zeitschritt)
     //Neuer Listenelement für das Fahrzeug mit Malloc reserviert
     QueueNode *fahrzeugknoten <- malloc(sizeof fFahrzeugknoten);
     IF (malloc() erfolgreich?)
         //Das Fahrzeug das der Schlange hinzugefügt werden soll wird hier dem Knoten zugewiesen
-        Fahrzeugknoten->einFahrzeug <- einFahrzeug;
-        Fahrzeugknoten->next <- NULL;   //Um Garbage-Werte zu vermeiden
-        Fahrzeugknoten->enqueue_zeitschritt <- enqueue_zeitschritt; //Fuer spätere Berechnung der Wartezeit
+        fahrzeugknoten->einFahrzeug <- einFahrzeug;
+        fahrzeugknoten->next <- NULL;   //Um Garbage-Werte zu vermeiden
+        fahrzeugknoten->enqueue_zeitschritt <- enqueue_zeitschritt; //Fuer spätere Berechnung der Wartezeit
 
-        IF eineQueue.Length == 0    //Wenn die Warteschlange leer ist, dann ist das ankommende Fahrzeug head und tail der Warteschlange
-            eineQueue.head <- Fahrzeugknoten;
-            eineQueue.tail <- Fahrzeugknoten;
+        IF p_eineQueue->length == 0    //Wenn die Warteschlange leer ist, dann ist das ankommende Fahrzeug head und tail der Warteschlange
+            p_eineQueue->head <- fahrzeugknoten;
+            p_eineQueue->tail <- fahrzeugknoten;
         ELSE 
-            eineQueue->tail->next <- Fahrzeugknoten;   //Wenn Fahrzeuge schon in der Warteschlange sind, dann soll das ankommende Fahrzeug an den Tail angehängt werden
-            eineQueue->tail <- Fahrzeugknoten;
+            p_eineQueue->tail->next <- fahrzeugknoten;   //Wenn Fahrzeuge schon in der Warteschlange sind, dann soll das ankommende Fahrzeug an den Tail angehängt werden
+            p_eineQueue->tail <- fahrzeugknoten;    //Der Tail der Warteschlange wird auf das neu hinzugefügte Fahrzeug gesetzt
             
         END IF 
-        eineQueue->length <- eineQueue->length + 1; //Warteschlangenlaenge um 1 erhöhen
+        p_eineQueue->length <- p_eineQueue->length + 1; //Warteschlangenlaenge um 1 erhöhen
 
     ELSE 
         END //Abbruch
