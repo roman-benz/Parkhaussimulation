@@ -70,6 +70,10 @@ Function queue_dequeue(Queue *eineQueue, int einparken_zeitschritt)
     
 END
 
+/*
+    Am Simulationsende muss jeglicher Speicher freigegeben werden. Das passiert hier, in dem wir jeden Knoten mithilfe von queue_dequeue freigeben.
+    queue_dequeue gibt den Speicher des jeweiligen Knotens frei.
+*/
 Function queue_destroy(Queue *queue)
 int platzhalter_Zeitschritt = 0;        //Platzhalter, da queue_dequeue einen Zeitschritt braucht
     while queue_dequeue(queue, Platzhalter_Zeitschritt) IS NOT NULL       //Solange Queue_dequeue nicht NULL zurückliefert, wird die Funktion erneut aufgerufen
