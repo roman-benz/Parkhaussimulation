@@ -11,7 +11,9 @@
 */
 
 /**
- * @brief Speichert alle relevanten Kennzahlen der laufenden Simulation.
+ * @brief Speichert alle relevanten Kennzahlen der laufenden Simulation, 
+ * das vereinfacht die Ausgabe sehr, da in den Ausgabefunktionen nun 
+ * nurnoch ein Pointer auf die Daten übergeben werden muss.
  */
 typedef struct {
     int gesamt_ankuenfte;                //Anzahl aller angekommenen Fahrzeuge
