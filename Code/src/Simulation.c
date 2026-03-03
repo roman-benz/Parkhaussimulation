@@ -95,7 +95,7 @@ Fahrzeug sondern auf dem Stellplatz gespeichert werden.
 			//Stellplatz wieder auf Leerzustand setzen
 			p_garage->p_stellplaetze[i].fahrzeug_id = -1; //Stellplatz freigeben
 			p_garage->p_stellplaetze[i].verbleibende_parkdauer = 0;
-			p_garage->p_stellplaetze[i].eintritts_zeit = 0; //Werte des Stellplatz zurücksetzten
+			p_garage->p_stellplaetze[i].eintritts_zeit = 0; //Werte des Stellplatz zurücksetzen
 			p_garage->p_stellplaetze[i].wartezeit = 0;
 
 			IF (p_garage->belegte_stellplaetze > 0)//Sicherheitsüberprüfung damit es nicht negativ wird
@@ -126,7 +126,7 @@ verarbeitet wird.
 	END IF
 
 	//TEIL 1: Abfahrten bearbeiten
-	FOR i = 0 TO p_garage->maximale_kapazitaet - 1 DO //Parkhaus Array durch itterieren 
+	FOR i = 0 TO p_garage->maximale_kapazitaet - 1 DO //Parkhaus Array durch iterieren 
 		IF (p_garage->p_stellplaetze[i].fahrzeug_id != -1) //Stellplatz belegt?
 			p_garage->p_stellplaetze[i].verbleibende_parkdauer = p_garage->p_stellplaetze[i].verbleibende_parkdauer - 1; //Parkdauer dekrementieren
 
@@ -142,6 +142,7 @@ verarbeitet wird.
 	//TEIL 2: Fahrzeuge aus der Queue einparken
 	//Solange freie Plaetze vorhanden sind und die Queue nicht leer ist, wird immer das vorderste Fahrzeug aus der Queue geholt.
 	WHILE (p_garage->belegte_stellplaetze < p_garage->maximale_kapazitaet AND p_queue->length > 0)
+
 
 		//Wartezeit wird in queue_dequeue berechnet und im Fahrzeug gespeichert
 		wartendes_fahrzeug = queue_dequeue(p_queue,aktueller_zeitschritt);
@@ -246,7 +247,7 @@ Function end_simulationsdaten_ausgeben(const Simulationdaten *p_daten) //gibt am
 	PRINT "===== ENDE DER SIMULATION =====";
 	PRINT "Simulationsergebnisse finden Sie in der externen Ergebnisdatei";
 
-	//Endwerte extern in neuer Datei speichern um mit Gnuplot eine Ergebnissdatei m,it einem Auslastungsgraphen zu erstellen
+	//Endwerte extern in neuer Datei speichern um mit Gnuplot eine Ergebnissdatei mit einem Auslastungsgraphen zu erstellen
 	datei_ende = DATEI_ÖFFNEN("simulation_ende.txt", "w");
 	IF (datei_ende != NULL)
 		SCHREIBE_WERT("gesamt_ankuenfte", p_daten->gesamt_ankuenfte) IN (datei_ende);
