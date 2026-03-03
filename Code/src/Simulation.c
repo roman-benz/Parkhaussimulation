@@ -146,7 +146,7 @@ verarbeitet wird.
 		einparken_zeitschritt = aktueller_schritt;
 
 		//Wartezeit wird in queue_dequeue berechnet und im Fahrzeug gespeichert
-		wartendes_fahrzeug = queue_dequeue(p_queue, &einparken_zeitschritt);
+		wartendes_fahrzeug = queue_dequeue(p_queue, einparken_zeitschritt);
 
 		erfolg_einparken = einparken_fahrzeug(p_garage, &wartendes_fahrzeug);
 		IF (erfolg_einparken == 1)//Sicherheitsüberprüfung
