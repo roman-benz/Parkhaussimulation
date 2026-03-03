@@ -1,3 +1,7 @@
+/*
+ * File: Queue.c
+ * Description: Pseudocoder der Funktionen für Warteschlangenverwaltung im Parkhaus
+*/
 #include "../Include/Queue.h"
 #include <stdlib.h>
 
