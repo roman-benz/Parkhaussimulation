@@ -1,5 +1,10 @@
-#ifndef CONFIG_H
-#define CONFIG_H
+#ifndef KONFIG_H
+#define KONFIG_H
+
+/*
+ * File: Konfig.h
+* Description: Definition der Struktur und Parameter für die Konfiguration der Parkhaussimulation.
+ */
 
 
 /**
@@ -22,6 +27,18 @@ typedef struct
  * @return true, wenn eine gültige Konfiguration eingelesen wurde.
  */
 int konfiguration_einlesen(Simulationskonfiguration *p_konfiguration);
+
+
+/**
+ * @brief Liest einen ganzzahligen Wert vom Terminal ein und prüft, ob er im erlaubten Bereich liegt.
+ *
+ * @param[in] prompt Der Text, der dem Benutzer angezeigt wird.
+ * @param[in] min_wert Der minimale erlaubte Wert.
+ * @param[in] max_wert Der maximale erlaubte Wert.
+ * @param[out] p_out_wert Zeiger auf die Variable, in die der eingelesene Wert geschrieben wird.
+ * @return true, wenn ein gültiger Wert eingelesen wurde, sonst false.
+ */
+int int_wert_einlesen(prompt, min_wert, max_wert, p_out_wert);
 
 
 #endif

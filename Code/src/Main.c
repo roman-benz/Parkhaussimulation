@@ -2,7 +2,11 @@
 #include "../include/Simulation.h"
 #include <stdio.h>
 
-//// Pseudocode für Main.c
+/*
+ * File: Main.c
+* Description: Initialisiert die Konfiguration, startet die Simulation und steuert den Ablauf.
+ */
+
 Function main()
     // Initialisiere Konfigurationsstrukt
     Simulationskonfiguration konfiguration
