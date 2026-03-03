@@ -50,22 +50,22 @@ END
     in dem Fall das erste Element der Liste, den Head. Sie returnt ein Pointer auf das Fahrzeug, das nun in das Parkhaus einfahren darf.
     Wichtig ist den Speicher des entfernten Knotens freizugeben!
 */
-Function queue_dequeue(Queue *eineQueue, int einparken_zeitschritt)
+Function queue_dequeue(Queue *p_eineQueue, int einparken_zeitschritt)
     //Wenn die Warteschlange leer ist -> Abbruch
     IF eineQueue->length == 0
         return NULL;        //Abbruch
     END IF
     //Wenn Warteschlange nicht leer ist
     QueueNode *entfernterKnoten <- eineQueue->head;     //neuen Knoten definieren, der Head entspricht
-    einparkendesFahrzeug <- entfernterKnoten->einFahrzeug;      //Das Fahrzeug festlegen, um später das Fahrzeug returnen zu können
+    einparkendesFahrzeug <- entfernterKnoten->p_einFahrzeug;      //Das Fahrzeug festlegen, um später das Fahrzeug returnen zu können
     einparkendesFahrzeug->wartezeit <- einparken_zeitschritt - entfernterKnoten->enqueue_zeitschritt;       //Wartezeit ausrechnen (Zeitschritt beim Einfahren ins Parkhaus - Zeitschritt beim Eintritt in Warteschlange)
     
-    eineQueue->head <- entfernterKnoten->next;      //Den Head auf das nächste Fahrzeug in der Warteschlange legen
-    IF eineQueue->head == NULL
-        eineQueue->tail = NULL;
+    p_eineQueue->head <- entfernterKnoten->next;      //Den Head auf das nächste Fahrzeug in der Warteschlange legen
+    IF p_eineQueue->head == NULL
+        p_eineQueue->tail <- NULL;
     END IF
     free(entfernterKnoten);     //Den Speicher des Knoten des einparkenden Autos freigeben
-    eineQueue->length <- eineQueue->length - 1;     //Die Länge der Warteschlange um 1 reduzieren
+    p_eineQueue->length <- p_eineQueue->length - 1;     //Die Länge der Warteschlange um 1 reduzieren
     return einparkendesFahrzeug;        //Das einzuparkende Auto returnen
     
 END
@@ -74,7 +74,7 @@ END
     Am Simulationsende muss jeglicher Speicher freigegeben werden. Das passiert hier, in dem wir jeden Knoten mithilfe von queue_dequeue freigeben.
     queue_dequeue gibt den Speicher des jeweiligen Knotens frei.
 */
-Function queue_destroy(Queue *queue)
+Function queue_destroy(Queue *p_queue)
 int platzhalter_zeitschritt = 0;        //Platzhalter, da queue_dequeue einen Zeitschritt braucht
-    while queue_dequeue(queue, platzhalter_zeitschritt) IS NOT NULL       //Solange Queue_dequeue nicht NULL zurückliefert, wird die Funktion erneut aufgerufen
+    while queue_dequeue(p_queue, platzhalter_zeitschritt) IS NOT NULL       //Solange Queue_dequeue nicht NULL zurückliefert, wird die Funktion erneut aufgerufen
 END     //ACHTUNG -> NUR AUFRUFEN WENN WARTEZEIT EINES FAHRZEUGES NICHT MEHR RELEVANT IST, da queue_destroy die Wartezeit falsch überschreibt
