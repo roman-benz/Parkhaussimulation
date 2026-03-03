@@ -5,12 +5,22 @@
 #include "../Include/Queue.h"
 #include <stdlib.h>
 
+/*
+    Due Funktion queue_init verhindert das die Zeiger auf Garbage-Werte zeigen.
+    Das könnte später zu Fehlern und Abstürzen führen, wenn sie nicht vorher mit NULL initalisiert werden.
+*/
 Function queue_init(Queue *queue) 
     queue->head <- NULL;
     queue->tail <- NULL;
     queue->length <- 0;
 END 
 
+/*
+    Die Aufgabenstellung verlangt eine Warteschlange vorm Parkhaus bei vollem Parkhaus. 
+    Da die Anzahl der ankommenden Fahrzeuge dynamisch (dynamisch wegen des Zufallprinzips) ist, braucht man eine dynamische Datengröße.
+    Eine LinkedList operiert nach dem FIFO (First in First out) Prinzip und ist in ihrer Größe dynamisch. Somit ist sie ein idealer Datentyp für die Warteschlange
+    Bei queue_enqueue wird ein Fahrzeug immer an das Ende der Liste gehängt, was das FIFO Prinzip sicher stellt.
+*/
 Function queue_enqueue(Queue *p_eineQueue, Fahrzeug *p_einFahrzeug, int enqueue_zeitschritt)
     //Neuer Listenelement für das Fahrzeug mit Malloc reserviert
     QueueNode *fahrzeugknoten <- malloc(sizeof fFahrzeugknoten);
