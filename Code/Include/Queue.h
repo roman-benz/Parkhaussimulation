@@ -58,7 +58,6 @@ void queue_enqueue(Queue *p_eineQueue, Fahrzeug *p_einFahrzeug, int enqueue_zeit
  * Die Funktion entfernt den Knoten am Anfang der Queue und gibt das darin enthaltene Fahrzeug zurück.
  * 
  * @param[in, out] p_eineQueue Zeiger auf die Queue, aus der das Fahrzeug entfernt werden soll
- * @param[out] einparkendesFahrzeug Zeiger auf das Fahrzeug, das aus der Queue entfernt werden soll
  * @param[in] einparken_zeitschritt Zeitschritt, zu dem das Fahrzeug aus der Queue entfernt wurde (fuer spaetere Berechnung der Wartezeit!)
  * @return Das entfernte Fahrzeug
  */
