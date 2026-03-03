@@ -6,8 +6,8 @@
 #include <stdlib.h>
 
 /*
-    Due Funktion queue_init verhindert das die Zeiger auf Garbage-Werte zeigen.
-    Das könnte später zu Fehlern und Abstürzen führen, wenn sie nicht vorher mit NULL initalisiert werden.
+    Die Funktion queue_init verhindert, dass die Zeiger auf Garbage-Werte zeigen.
+    Das könnte später zu Fehlern und Abstürzen führen, wenn sie nicht vorher mit NULL initialisiert werden.
 */
 Function queue_init(Queue *queue) 
     queue->head <- NULL;
@@ -47,7 +47,7 @@ END
 
 /*
     Die Funktion queue_dequeue stellt ebenfalls das FIFO-Prinzip sicher. Sie entfernt immer das am längsten wartende Auto aus der Liste,
-    in dem Fall das erste Element der Liste, den Head. Sie returnt ein Pointer auf das Fahrzeug, dass nun in das Parkhaus einfahren darf.
+    in dem Fall das erste Element der Liste, den Head. Sie returnt ein Pointer auf das Fahrzeug, das nun in das Parkhaus einfahren darf.
     Wichtig ist den Speicher des entfernten Knotens freizugeben!
 */
 Function queue_dequeue(Queue *eineQueue, int einparken_zeitschritt)
@@ -76,5 +76,5 @@ END
 */
 Function queue_destroy(Queue *queue)
 int platzhalter_Zeitschritt = 0;        //Platzhalter, da queue_dequeue einen Zeitschritt braucht
-    while queue_dequeue(queue, Platzhalter_Zeitschritt) IS NOT NULL       //Solange Queue_dequeue nicht NULL zurückliefert, wird die Funktion erneut aufgerufen
+    while queue_dequeue(queue, platzhalter_Zeitschritt) IS NOT NULL       //Solange Queue_dequeue nicht NULL zurückliefert, wird die Funktion erneut aufgerufen
 END     //ACHTUNG -> NUR AUFRUFEN WENN WARTEZEIT EINS FAHRZEUGES NICHT MEHR RELEVANT IST, da queue_destroy die Wartezeit falsch überschreibt
