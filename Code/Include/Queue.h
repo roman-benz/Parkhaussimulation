@@ -59,7 +59,7 @@ void queue_enqueue(Queue *eineQueue, Fahrzeug *einFahrzeug, int enqueue_zeitschr
  * 
  * @param[in, out] eineQueue Zeiger auf die Queue, aus der das Fahrzeug entfernt werden soll
  * @param[out] einparkendesFahrzeug Zeiger auf das Fahrzeug, das aus der Queue entfernt werden soll
- * @param[out] einparken_zeitschritt Zeiger auf den Zeitschritt, zu dem das Fahrzeug aus der Queue entfernt wurde (fuer spaetere Berechnung der Wartezeit!)
+ * @param[in] einparken_zeitschritt Zeitschritt, zu dem das Fahrzeug aus der Queue entfernt wurde (fuer spaetere Berechnung der Wartezeit!)
  * @return Das entfernte Fahrzeug
  */
 Fahrzeug* queue_dequeue(Queue *eineQueue, int einparken_zeitschritt);
