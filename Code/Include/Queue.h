@@ -1,9 +1,9 @@
-#ifndef QUEUE_H
 /*
  * File: Queue.h
  * Description: Datentypdefinitionen für Warteschlangenverwaltung im Parkhaus
 */
 
+#ifndef QUEUE_H
 #define QUEUE_H
 
 #include "Parkhaus.h"
