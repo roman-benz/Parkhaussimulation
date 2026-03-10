@@ -6,7 +6,13 @@
  * Description: Implementierung der Funktionen zur Eingabe und Validierung der Simulationskonfiguration.
  */
 
-
+int int_wert_einlesen(const char *prompt, int min_wert, int max_wert, int *p_out_wert)
+{
+    int value;
+    int eingabe_erfolg;
+    char c;
+    
+}
 
 
 
@@ -16,7 +22,7 @@
 
 /*
                                        PSEUDOCODE 
-------------------------------------------------
+
 Function int_wert_einlesen(prompt, min_wert, max_wert, p_out_wert) 
 
 
