@@ -93,3 +93,8 @@
         while queue_dequeue(p_queue, platzhalter_zeitschritt) IS NOT NULL       //Solange Queue_dequeue nicht NULL zurückliefert, wird die Funktion erneut aufgerufen
     END     //ACHTUNG -> NUR AUFRUFEN WENN WARTEZEIT EINES FAHRZEUGES NICHT MEHR RELEVANT IST, da queue_destroy die Wartezeit falsch überschreibt
 */
+void queue_init(Queue *queue){
+    queue->head = NULL;
+    queue->tail = NULL;
+    queue->length = 0;
+}
