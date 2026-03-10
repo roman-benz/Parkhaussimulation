@@ -1,5 +1,5 @@
 set terminal pngcairo size 1000,700
-set output 'plot_endergebnis.png'
+set output 'Output/data/plot_endergebnis.png'
 
 if (!exists("werte_datei")) werte_datei='simulation_ende.txt'
 if (!exists("auslastung_datei")) auslastung_datei='auslastung.txt'
@@ -25,7 +25,7 @@ set label 3 sprintf('%-31s %6d', 'Aktuell belegt:', (exists("aktuell_belegt") ? 
 set label 4 sprintf('%-31s %6.0f %%', 'Auslastungsrate:', auslastungsrate*100.0) at 0.06,0.08 left font 'Consolas,12'
 set label 5 sprintf('%-31s %6d', 'Warteschlangen Laenge:', warteschlangen_laenge) at 0.53,0.66 left font 'Consolas,12'
 set label 6 sprintf('%-31s %6d', 'Maximale Warteschlange:', (exists("maximale_warteschlange") ? maximale_warteschlange : maximale_warteschlangen_laenge)) at 0.53,0.46 left font 'Consolas,12'
-set label 7 sprintf('%-31s %6.1f min', 'Durchschnittliche Wartezeit:', durchschnittliche_wartezeit) at 0.53,0.26 left font 'Consolas,12'
+set label 7 sprintf('%-31s %6.1f ZE', 'Durchschnittliche Wartezeit:', durchschnittliche_wartezeit) at 0.53,0.26 left font 'Consolas,12'
 set label 8 sprintf('%-31s %6.0f %%', 'Durchschnittliche Auslastung:', davg) at 0.53,0.08 left font 'Consolas,12'
 plot NaN notitle
 
