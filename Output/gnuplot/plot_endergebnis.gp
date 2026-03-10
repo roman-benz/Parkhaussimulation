@@ -37,4 +37,6 @@ set xrange [0:xmax]; set yrange [0:100]
 plot auslastung_datei using 1:2 with linespoints lw 2 pt 7 title 'Momentanauslastung', \
 	avg with lines lw 2 dt 2 title 'Durchschnitt'
 
+unset multiplot
 set output
+print 'Fertig: plot_endergebnis.png wurde erstellt.'
