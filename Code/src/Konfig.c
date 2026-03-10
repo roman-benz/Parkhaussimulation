@@ -22,6 +22,11 @@ int int_wert_einlesen(const char *prompt, int min_wert, int max_wert, int *p_out
             while ((c = getchar()) != '\n' && c != EOF) {}
             continue;
         }
+        if (value < min_wert || value > max_wert)
+        {
+            printf("Wert außerhalb des erlaubten Bereichs (%d bis %d).\n", min_wert, max_wert);
+            continue;
+        }
         
     }
     
