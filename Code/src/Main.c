@@ -10,9 +10,20 @@
 
 int main(void)
 {
+    Simulationskonfiguration konfiguration; 
+
+    printf("\n==== Parkhaus-Simulation ===="\n);
+
+    if (!konfiguration_einlesen(&konfiguration))
+    {
+        printf("Fehler: Konfiguration konnte nicht eingelesen werden.\n");
+        return 1; 
+    }
+   
+    start_simulation(&konfiguration);
+
+    return 0; 
     
-
-
 }
 
 /*
