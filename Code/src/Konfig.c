@@ -37,6 +37,10 @@ int konfiguration_einlesen(Simulationskonfiguration *p_konfiguration)
     int benutzereingabe_seed = 0;
     if (!int_wert_einlesen("Anzahl Parkplätze (1-1000): ", 1, 1000, &p_konfiguration->anzahl_parkplaetze))
         return 0;
+    if (!int_wert_einlesen("Maximale Parkdauer (1-1000): ", 1, 1000, &p_konfiguration->max_parkdauer_minuten))
+        return 0;
+    if (!int_wert_einlesen("Simulationsdauer in Schritten (1-100000): ", 1, 100000, &p_konfiguration->anzahl_simulationsschritte))
+        return 0;
     
 }
 
