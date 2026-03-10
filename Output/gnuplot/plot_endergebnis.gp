@@ -39,4 +39,4 @@ plot auslastung_datei using 1:2 with linespoints lw 2 pt 7 title 'Momentanauslas
 
 unset multiplot
 set output
-print 'Fertig: plot_endergebnis.png wurde erstellt.'
+print 'Fertig: plot_endergebnis.png wurde erstellt. '
