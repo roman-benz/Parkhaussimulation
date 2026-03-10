@@ -29,4 +29,12 @@ set label 7 sprintf('%-31s %6.1f min', 'Durchschnittliche Wartezeit:', durchschn
 set label 8 sprintf('%-31s %6.0f %%', 'Durchschnittliche Auslastung:', davg) at 0.53,0.08 left font 'Consolas,12'
 plot NaN notitle
 
+unset title; unset label
+set size 1,0.70; set origin 0,0
+set key outside right; set border; set xtics; set ytics; set grid
+set xlabel 'x'; set ylabel 'Auslastung (%)'
+set xrange [0:xmax]; set yrange [0:100]
+plot auslastung_datei using 1:2 with linespoints lw 2 pt 7 title 'Momentanauslastung', \
+	avg with lines lw 2 dt 2 title 'Durchschnitt'
+
 set output
