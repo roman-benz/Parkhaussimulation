@@ -8,21 +8,28 @@
  */
 
 
+/**
+ * @brief Hauptfunktion der Parkhaus-Simulation
+ *
+ * Initialisiert die Konfiguration, prüft die Benutzereingaben und startet die Simulation.
+ *
+ * @return 0 bei regulärem Programmende, 1 bei Fehler
+ */
 int main(void)
 {
     Simulationskonfiguration konfiguration; 
 
-    printf("\n==== Parkhaus-Simulation ===="\n);
+    printf("\n==== Parkhaus-Simulation ====\n");
 
-    if (!konfiguration_einlesen(&konfiguration))
+    if (!konfiguration_einlesen(&konfiguration))  // Konfiguration einlesen und prüfen
     {
         printf("Fehler: Konfiguration konnte nicht eingelesen werden.\n");
-        return 1; 
+        return 1;   // Fehlercode zurückgeben
     }
    
-    start_simulation(&konfiguration);
+    start_simulation(&konfiguration); // Simulation starten
 
-    return 0; 
+    return 0;  // Programm erfolgreich beendet
     
 }
 
