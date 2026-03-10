@@ -7,6 +7,17 @@
 * Description: Initialisiert die Konfiguration, startet die Simulation und steuert den Ablauf.
  */
 
+
+int main(void)
+{
+    
+
+
+}
+
+/*
+                                    PSEUDOCODE     
+
 Function main()
     // Initialisiere Konfigurationsstrukt
     Simulationskonfiguration konfiguration
@@ -21,6 +32,6 @@ Function main()
     // Starte die Simulation mit der geladenen Konfiguration
     start_simulation(&konfiguration)
 
-
     RETURN 0
 END
+*/
