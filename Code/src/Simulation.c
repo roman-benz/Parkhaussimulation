@@ -264,37 +264,65 @@ void simulationsschrittdaten_ausgeben(int aktueller_schritt, const Simulationdat
 	*/
 }
 
-Function end_simulationsdaten_ausgeben(const Simulationdaten *p_daten) //gibt am Ende der Simulation die Daten aus
+void end_simulationsdaten_ausgeben(const Simulationdaten *p_daten)
+{
+	FILE *datei_ende;
+
+	if (p_daten == NULL)
+	{
+		return;
+	}
+
+	printf("===== ENDE DER SIMULATION =====\n");
+	printf("Simulationsergebnisse finden Sie in der externen Ergebnisdatei.\n");
+
+	datei_ende = fopen("simulation_ende.txt", "w");
+	if (datei_ende != NULL)
+	{
+		fprintf(datei_ende, "metrik\twert\n");
+		fprintf(datei_ende, "gesamt_ankuenfte\t%d\n", p_daten->gesamt_ankuenfte);
+		fprintf(datei_ende, "gesamt_geparkt\t%d\n", p_daten->gesamt_geparkt);
+		fprintf(datei_ende, "gesamt_abfahrten\t%d\n", p_daten->gesamt_abfahrten);
+		fprintf(datei_ende, "aktuell_belegte_stellplaetze\t%d\n", p_daten->aktuell_belegte_stellplaetze);
+		fprintf(datei_ende, "warteschlangen_laenge\t%d\n", p_daten->warteschlangen_laenge);
+		fprintf(datei_ende, "maximale_warteschlangen_laenge\t%d\n", p_daten->maximale_warteschlangen_laenge);
+		fprintf(datei_ende, "auslastungsrate\t%.4f\n", p_daten->auslastungsrate);
+		fprintf(datei_ende, "durchschnittliche_wartezeit\t%.4f\n", p_daten->durchschnittliche_wartezeit);
+		fprintf(datei_ende, "durchschnittliche_auslastung\t%.4f\n", p_daten->durchschnittliche_auslastung);
+		fclose(datei_ende);
+	}
+
 	/*
-	Zentralisierte Endausgabe in Datei und Terminal.
-	Durch die externe Gnuplot ausgabe entsteht eine bessere Visualisierung.
+	Function end_simulationsdaten_ausgeben(const Simulationdaten *p_daten) //gibt am Ende der Simulation die Daten aus
+		Zentralisierte Endausgabe in Datei und Terminal.
+		Durch die externe Gnuplot ausgabe entsteht eine bessere Visualisierung.
+		IF (p_daten == NULL)
+			RETURN;     //Ohne Daten keine Ausgabe moeglich
+		END IF
+		//Ausgabe ins Terminal
+		PRINT "===== ENDE DER SIMULATION =====";
+		PRINT "Simulationsergebnisse finden Sie in der externen Ergebnisdatei";
+
+		//Endwerte extern in neuer Datei speichern um mit Gnuplot eine Ergebnissdatei mit einem Auslastungsgraphen zu erstellen
+		datei_ende = DATEI_ÖFFNEN("simulation_ende.txt", "w");
+		IF (datei_ende != NULL)
+			SCHREIBE_WERT("gesamt_ankuenfte", p_daten->gesamt_ankuenfte) IN (datei_ende);
+			SCHREIBE_WERT("gesamt_geparkt", p_daten->gesamt_geparkt) IN (datei_ende);
+			SCHREIBE_WERT("gesamt_abfahrten", p_daten->gesamt_abfahrten) IN (datei_ende);
+			SCHREIBE_WERT("aktuell_belegte_stellplaetze", p_daten->aktuell_belegte_stellplaetze) IN (datei_ende);
+			SCHREIBE_WERT("warteschlangen_laenge", p_daten->warteschlangen_laenge) IN (datei_ende);
+			SCHREIBE_WERT("maximale_warteschlangen_laenge", p_daten->maximale_warteschlangen_laenge) IN (datei_ende);
+			SCHREIBE_WERT("auslastungsrate", p_daten->auslastungsrate) IN (datei_ende);
+			SCHREIBE_WERT("durchschnittliche_wartezeit", p_daten->durchschnittliche_wartezeit) IN (datei_ende);
+			SCHREIBE_WERT("durchschnittliche_auslastung", p_daten->durchschnittliche_auslastung) IN (datei_ende);
+			DATEI_SCHLIESSEN(datei_ende);
+
+			STARTE_GNUPLOT("plot_simulationsergebnis");
+			//Grafik mit Gnuplot erstellen
+		END IF
+	END
 	*/
-	IF (p_daten == NULL)
-		RETURN;     //Ohne Daten keine Ausgabe moeglich
-	END IF
-	//Ausgabe ins Terminal
-	PRINT "===== ENDE DER SIMULATION =====";
-	PRINT "Simulationsergebnisse finden Sie in der externen Ergebnisdatei";
-
-	//Endwerte extern in neuer Datei speichern um mit Gnuplot eine Ergebnissdatei mit einem Auslastungsgraphen zu erstellen
-	datei_ende = DATEI_ÖFFNEN("simulation_ende.txt", "w");
-	IF (datei_ende != NULL)
-		SCHREIBE_WERT("gesamt_ankuenfte", p_daten->gesamt_ankuenfte) IN (datei_ende);
-		SCHREIBE_WERT("gesamt_geparkt", p_daten->gesamt_geparkt) IN (datei_ende);
-		SCHREIBE_WERT("gesamt_abfahrten", p_daten->gesamt_abfahrten) IN (datei_ende);
-		SCHREIBE_WERT("aktuell_belegte_stellplaetze", p_daten->aktuell_belegte_stellplaetze) IN (datei_ende);
-		SCHREIBE_WERT("warteschlangen_laenge", p_daten->warteschlangen_laenge) IN (datei_ende);
-		SCHREIBE_WERT("maximale_warteschlangen_laenge", p_daten->maximale_warteschlangen_laenge) IN (datei_ende);
-		SCHREIBE_WERT("auslastungsrate", p_daten->auslastungsrate) IN (datei_ende);
-		SCHREIBE_WERT("durchschnittliche_wartezeit", p_daten->durchschnittliche_wartezeit) IN (datei_ende);
-		SCHREIBE_WERT("durchschnittliche_auslastung", p_daten->durchschnittliche_auslastung) IN (datei_ende);
-		DATEI_SCHLIESSEN(datei_ende);
-
-		STARTE_GNUPLOT("plot_simulationsergebnis");
-		//Grafik mit Gnuplot erstellen
-		
-	END IF
-END
+}
 
 Function start_simulation(const Simulationskonfiguration *p_konfiguration)
 	/*
