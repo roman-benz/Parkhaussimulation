@@ -228,7 +228,7 @@ void simulationsschrittdaten_ausgeben(int aktueller_schritt, const Simulationdat
 	printf("Durchschnittliche Auslastung: %.4f\n", p_daten->durchschnittliche_auslastung);
 
 	
-	datei_auslastung = fopen("auslastung.txt", "a");
+	datei_auslastung = fopen("Output/data/auslastung.txt", "a");
 	if (datei_auslastung != NULL)
 	{
 		fprintf(datei_auslastung, "%d\t%.4f\n", aktueller_schritt, p_daten->auslastungsrate);
@@ -276,7 +276,7 @@ void end_simulationsdaten_ausgeben(const Simulationdaten *p_daten)
 	printf("===== ENDE DER SIMULATION =====\n");
 	printf("Simulationsergebnisse finden Sie in der externen Ergebnisdatei.\n");
 
-	datei_ende = fopen("simulation_ende.txt", "w");
+	datei_ende = fopen("Output/data/simulation_ende.txt", "w");
 	if (datei_ende != NULL)
 	{
 		fprintf(datei_ende, "metrik\twert\n");
