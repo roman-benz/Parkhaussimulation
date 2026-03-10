@@ -11,26 +11,24 @@ int int_wert_einlesen(const char *prompt, int min_wert, int max_wert, int *p_out
     int value;
     int eingabe_erfolg;
     char c;
-    while (1)
+    while (1) // Endlosschleife bis gültige Eingabe
     {
-        printf("%s", prompt);
-        eingabe_erfolg = scanf("%d", &value);
-        if (eingabe_erfolg != 1)
+        printf("%s", prompt); // Eingabeaufforderung ausgeben
+        eingabe_erfolg = scanf("%d", &value); 
+        if (eingabe_erfolg != 1) // Prüfen, ob Eingabe eine gültige Zahl ist
         {
             printf("Ungültige Eingabe. Bitte eine ganze Zahl eingeben.\n");
-            // Eingabepuffer leeren
-            while ((c = getchar()) != '\n' && c != EOF) {}
+            while ((c = getchar()) != '\n' && c != EOF) {} // Eingabepuffer leeren
             continue;
         }
-        if (value < min_wert || value > max_wert)
+        if (value < min_wert || value > max_wert) // Bereichsprüfung
         {
             printf("Wert außerhalb des erlaubten Bereichs (%d bis %d).\n", min_wert, max_wert);
             continue;
         }
-        p_out_wert = value;
-        return 1;
+        *p_out_wert = value; // Speichert den gültigen Wert an der übergebenen Speicheradresse
+        return 1; // Erfolgreiche Eingabe
     }
-    
 }
 
 
