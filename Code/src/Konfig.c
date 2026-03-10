@@ -11,6 +11,12 @@ int int_wert_einlesen(const char *prompt, int min_wert, int max_wert, int *p_out
     int value;
     int eingabe_erfolg;
     char c;
+    while (1)
+    {
+        printf("%s", prompt);
+        eingabe_erfolg = scanf("%d", &value);
+        
+    }
     
 }
 
