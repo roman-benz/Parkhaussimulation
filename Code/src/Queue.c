@@ -94,6 +94,10 @@
     END     //ACHTUNG -> NUR AUFRUFEN WENN WARTEZEIT EINES FAHRZEUGES NICHT MEHR RELEVANT IST, da queue_destroy die Wartezeit falsch überschreibt
 */
 void queue_init(Queue *queue){
+    if (queue = NULL)
+    {
+        return;
+    }
     queue->head = NULL;
     queue->tail = NULL;
     queue->length = 0;
