@@ -15,12 +15,11 @@ ausgegeben und in Ausgabedateien für die spätere Auswertung
 (mit Gnuplot) geschrieben.
 */
 
-Function initialisierung_garage(Parkhaus *p_garage, int maximale_kapazitaet)
 /*
-Sicherer Startzustand mit Eingabeprüfung und Speicherreservierung,
-damit bei Fehlern keine inkonsistenten Zustände oder ungültigen
-Speicherzugriffe entstehen.
-*/
+Function initialisierung_garage(Parkhaus *p_garage, int maximale_kapazitaet)
+// Sicherer Startzustand mit Eingabeprüfung und Speicherreservierung,
+// damit bei Fehlern keine inkonsistenten Zustände oder ungültigen
+// Speicherzugriffe entstehen.
 
 IF (p_garage == NULL)
 		RETURN 0;   //Ungueltiger Zeiger
@@ -53,12 +52,12 @@ IF (p_garage == NULL)
 
 	RETURN 1;   //Initialisierung erfolgreich
 END
-
-Function einparken_fahrzeug(Parkhaus *p_garage, const Fahrzeug *p_fahrzeug)
-/*
-Frühe Validierung, damit nur gültige Fahrzeuge in freie Plätze übernommen werden
-und der Belegungszähler konsistent bleibt.
 */
+
+/*
+Function einparken_fahrzeug(Parkhaus *p_garage, const Fahrzeug *p_fahrzeug)
+// Frühe Validierung, damit nur gültige Fahrzeuge in freie Plätze übernommen werden
+// und der Belegungszähler konsistent bleibt.
 	IF (p_garage == NULL OR p_fahrzeug == NULL)
 		RETURN 0;   //Ungueltige Eingaben
 	END IF
@@ -78,13 +77,13 @@ und der Belegungszähler konsistent bleibt.
 
 	RETURN 0;   //Sicherheitsreturn (kein freier Platz gefunden)
 END
-
-Function ausparken_fahrzeug(Parkhaus *p_garage, int fahrzeug_id)
-/*
-Fahrzeugentfernung über eindeutige ID und vollständiges Zurücksetzen
-des Platzes, da die Werte, wie Eintrittszeit oder Parkdauer nicht auf dem 
-Fahrzeug sondern auf dem Stellplatz gespeichert werden.
 */
+
+/*
+Function ausparken_fahrzeug(Parkhaus *p_garage, int fahrzeug_id)
+// Fahrzeugentfernung über eindeutige ID und vollständiges Zurücksetzen
+// des Platzes, da die Werte, wie Eintrittszeit oder Parkdauer nicht auf dem
+// Fahrzeug sondern auf dem Stellplatz gespeichert werden.
 	IF (p_garage == NULL OR fahrzeug_id < 0)
 		RETURN 0;   //Ungueltige Eingaben
 	END IF
@@ -108,13 +107,13 @@ Fahrzeug sondern auf dem Stellplatz gespeichert werden.
 
 	RETURN 0;   //Fahrzeug-ID wurde nicht gefunden
 END
-
-Function ausfuehren_simulationsschritt(
-/*
-Feste Reihenfolge des Schritts (Abfahrten, Queue, Ankünfte, Kennzahlen),
-damit jeder Zeitschritt deterministisch und fachlich korrekt
-verarbeitet wird.
 */
+
+/*
+Function ausfuehren_simulationsschritt(
+// Feste Reihenfolge des Schritts (Abfahrten, Queue, Ankünfte, Kennzahlen),
+// damit jeder Zeitschritt deterministisch und fachlich korrekt
+// verarbeitet wird.
 	int aktueller_schritt,
 	const Simulationskonfiguration *p_konfiguration,
 	Parkhaus *p_garage,
@@ -206,6 +205,7 @@ verarbeitet wird.
 		p_daten->durchschnittliche_auslastung = p_daten->auslastungsrate;//beim ersten Schritt ist die durchschnittliche Auslastung die Momentanauslastung
 	END IF
 END
+*/
 
 void simulationsschrittdaten_ausgeben(int aktueller_schritt, const Simulationdaten *p_daten)
 {
@@ -279,7 +279,6 @@ void end_simulationsdaten_ausgeben(const Simulationdaten *p_daten)
 	datei_ende = fopen("Output/data/simulation_ende.txt", "w");
 	if (datei_ende != NULL)
 	{
-		fprintf(datei_ende, "metrik\twert\n");
 		fprintf(datei_ende, "gesamt_ankuenfte\t%d\n", p_daten->gesamt_ankuenfte);
 		fprintf(datei_ende, "gesamt_geparkt\t%d\n", p_daten->gesamt_geparkt);
 		fprintf(datei_ende, "gesamt_abfahrten\t%d\n", p_daten->gesamt_abfahrten);
@@ -324,12 +323,11 @@ void end_simulationsdaten_ausgeben(const Simulationdaten *p_daten)
 	*/
 }
 
+/*
 Function start_simulation(const Simulationskonfiguration *p_konfiguration)
-	/*
-	Führt alles strukturiert zusammen: Initialisierung, Simulationsschleife und Aufräumen,
-	damit der gesamte Ablauf robust, nachvollziehbar und
-	speichersicher bleibt.
-	*/
+	// Führt alles strukturiert zusammen: Initialisierung, Simulationsschleife und Aufräumen,
+	// damit der gesamte Ablauf robust, nachvollziehbar und
+	// speichersicher bleibt.
 	IF (p_konfiguration == NULL)
 		RETURN;     //Ohne Konfiguration kann keine Simulation gestartet werden
 	END IF
@@ -386,4 +384,5 @@ Function start_simulation(const Simulationskonfiguration *p_konfiguration)
 	queue_destroy(&warteschlange);
 	free(garage.p_stellplaetze);
 END
+*/
 
