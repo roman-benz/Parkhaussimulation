@@ -226,10 +226,11 @@ void simulationsschrittdaten_ausgeben(int aktueller_schritt, const Simulationdat
 	printf("Durchschnittliche Wartezeit: %.4f\n", p_daten->durchschnittliche_wartezeit);
 	printf("Durchschnittliche Auslastung: %.4f\n", p_daten->durchschnittliche_auslastung);
 
+	
 	datei_auslastung = fopen("auslastung.txt", "a");
 	if (datei_auslastung != NULL)
 	{
-		fprintf(datei_auslastung, "%d\t%.6f\n", aktueller_schritt, p_daten->auslastungsrate);
+		fprintf(datei_auslastung, "%d\t%.4f\n", aktueller_schritt, p_daten->auslastungsrate);
 		fclose(datei_auslastung);
 	}
 
