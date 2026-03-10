@@ -41,7 +41,12 @@ int konfiguration_einlesen(Simulationskonfiguration *p_konfiguration)
         return 0;
     if (!int_wert_einlesen("Simulationsdauer in Schritten (1-100000): ", 1, 100000, &p_konfiguration->anzahl_simulationsschritte))
         return 0;
-    
+    if (!int_wert_einlesen("Ankunftswahrscheinlichkeit in % (0-100): ", 0, 100, &p_konfiguration->ankunftswahrscheinlichkeit_prozent))
+        return 0;
+    if (!int_wert_einlesen("Zufalls-Seed (0-2147483647): ", 0, 2147483647, &benutzereingabe_seed))
+        return 0;
+    p_konfiguration->zufalls_seed = (unsigned int)benutzereingabe_seed;
+    return 1;
 }
 
 
