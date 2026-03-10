@@ -15,6 +15,13 @@ int int_wert_einlesen(const char *prompt, int min_wert, int max_wert, int *p_out
     {
         printf("%s", prompt);
         eingabe_erfolg = scanf("%d", &value);
+        if (eingabe_erfolg != 1)
+        {
+            printf("Ungültige Eingabe. Bitte eine ganze Zahl eingeben.\n");
+            // Eingabepuffer leeren
+            while ((c = getchar()) != '\n' && c != EOF) {}
+            continue;
+        }
         
     }
     
