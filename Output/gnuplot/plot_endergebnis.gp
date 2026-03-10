@@ -1,1 +1,3 @@
-hier kommt der code zum Ploten des Endergebnis rein.
+set terminal pngcairo size 1000,700
+set output 'plot_endergebnis.png'
+set output
