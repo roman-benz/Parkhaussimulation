@@ -34,6 +34,9 @@ int int_wert_einlesen(const char *prompt, int min_wert, int max_wert, int *p_out
 
 int konfiguration_einlesen(Simulationskonfiguration *p_konfiguration)
 {
+    int benutzereingabe_seed = 0;
+    if (!int_wert_einlesen("Anzahl Parkplätze (1-1000): ", 1, 1000, &p_konfiguration->anzahl_parkplaetze))
+        return 0;
     
 }
 
