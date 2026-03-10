@@ -48,7 +48,7 @@ IF (p_garage == NULL)
 	//Alle Stellplaetze als leer markieren
 	FOR i = 0 TO maximale_kapazitaet - 1 DO
 		p_garage->p_stellplaetze[i].fahrzeug_id = -1; //-1 steht für einen leeren Parkplatz, da -1 auserhalb des gültigen ID Bereichs ist und so mit sicher gestellt wird,
-		//das ein belegter Parkplatz als frei angesehen wird
+		//das ein freier Parkplatz als frei angesehen wird
 	END FOR
 
 	RETURN 1;   //Initialisierung erfolgreich
@@ -70,7 +70,7 @@ und der Belegungszähler konsistent bleibt.
 	//Ersten freien Stellplatz suchen (frei = fahrzeug_id == -1)
 	FOR i = 0 TO p_garage->maximale_kapazitaet - 1 DO
 		IF (p_garage->p_stellplaetze[i].fahrzeug_id == -1) //Prüfung ob Parkplatz frei ist
-			p_garage->p_stellplaetze[i] = *p_fahrzeug; //Fahrzeugdaten auf Parkplatzplatz kopieren
+			p_garage->p_stellplaetze[i] = *p_fahrzeug; //Fahrzeugdaten auf Parkplatz kopieren
 			p_garage->belegte_stellplaetze = p_garage->belegte_stellplaetze + 1;
 			RETURN 1;   //Einparken erfolgreich
 		END IF
@@ -144,7 +144,7 @@ verarbeitet wird.
 	WHILE (p_garage->belegte_stellplaetze < p_garage->maximale_kapazitaet AND p_queue->length > 0)
 
 		//Wartezeit wird in queue_dequeue berechnet und im Fahrzeug gespeichert
-		wartendes_fahrzeug = queue_dequeue(p_queue,aktueller_zeitschritt);
+		wartendes_fahrzeug = queue_dequeue(p_queue,aktueller_schritt);
 
 		erfolg_einparken = einparken_fahrzeug(p_garage, &wartendes_fahrzeug);
 		IF (erfolg_einparken == 1)//Sicherheitsüberprüfung
@@ -206,33 +206,61 @@ verarbeitet wird.
 	END IF
 END
 
-Function simulationsschrittdaten_ausgeben(int aktueller_schritt, const Simulationdaten *p_daten)
-	/*
-	Trennung von Simulationslogik und Ausgabe,
-	damit Laufdaten sichtbar bleiben,für bessere Erweiterbarkeit und Übersicht.
-	*/
-	IF (p_daten == NULL)
-		RETURN;     //Ohne Daten keine Ausgabe moeglich
-	END IF
-	//Ausgabe im Terminal
-	PRINT "===== SIMULATIONSSCHRITT ", aktueller_schritt, " =====";
-	PRINT "Gesamtankuenfte: ", p_daten->gesamt_ankuenfte;
-	PRINT "Gesamt geparkt: ", p_daten->gesamt_geparkt;
-	PRINT "Gesamtabfahrten: ", p_daten->gesamt_abfahrten;
-	PRINT "Aktuell belegt: ", p_daten->aktuell_belegte_stellplaetze;
-	PRINT "Warteschlangenlaenge: ", p_daten->warteschlangen_laenge;
-	PRINT "Maximale Warteschlangenlange: ", p_daten->maximale_warteschlangen_laenge;
-	PRINT "Aktuelle Auslastungsrate: ", p_daten->auslastungsrate;
-	PRINT "Durchschnittliche Wartezeit: ", p_daten->durchschnittliche_wartezeit;
-	PRINT "Durchschnittliche Auslastung: ", p_daten->durchschnittliche_auslastung;
+void simulationsschrittdaten_ausgeben(int aktueller_schritt, const Simulationdaten *p_daten)
+{
+	FILE *datei_auslastung;
 
-	//Zeitschritt und Auslastungsrate an externe Datei für gnuplot übergeben mit "a" damit datei nicht überschreiben wird
-	datei_auslastung = DATEI_ÖFFNEN("auslastung.txt", "a");
-	IF (datei_auslastung != NULL)
-		SCHREIBE_WERT(aktueller_schritt, p_daten->auslastungsrate) IN (datei_auslastung);
-		DATEI_SCHLIESSEN(datei_auslastung);
-	END IF
-END
+	if (p_daten == NULL)
+	{
+		return;
+	}
+
+	printf("===== SIMULATIONSSCHRITT %d =====\n", aktueller_schritt);
+	printf("Gesamtankuenfte: %d\n", p_daten->gesamt_ankuenfte);
+	printf("Gesamt geparkt: %d\n", p_daten->gesamt_geparkt);
+	printf("Gesamtabfahrten: %d\n", p_daten->gesamt_abfahrten);
+	printf("Aktuell belegt: %d\n", p_daten->aktuell_belegte_stellplaetze);
+	printf("Warteschlangenlaenge: %d\n", p_daten->warteschlangen_laenge);
+	printf("Maximale Warteschlangenlaenge: %d\n", p_daten->maximale_warteschlangen_laenge);
+	printf("Aktuelle Auslastungsrate: %.4f\n", p_daten->auslastungsrate);
+	printf("Durchschnittliche Wartezeit: %.4f\n", p_daten->durchschnittliche_wartezeit);
+	printf("Durchschnittliche Auslastung: %.4f\n", p_daten->durchschnittliche_auslastung);
+
+	datei_auslastung = fopen("auslastung.txt", "a");
+	if (datei_auslastung != NULL)
+	{
+		fprintf(datei_auslastung, "%d\t%.6f\n", aktueller_schritt, p_daten->auslastungsrate);
+		fclose(datei_auslastung);
+	}
+
+	/*
+	Function simulationsschrittdaten_ausgeben(int aktueller_schritt, const Simulationdaten *p_daten)
+		Trennung von Simulationslogik und Ausgabe,
+		damit Laufdaten sichtbar bleiben,für bessere Erweiterbarkeit und Übersicht.
+		IF (p_daten == NULL)
+			RETURN;     //Ohne Daten keine Ausgabe moeglich
+		END IF
+		//Ausgabe im Terminal
+		PRINT "===== SIMULATIONSSCHRITT ", aktueller_schritt, " =====";
+		PRINT "Gesamtankuenfte: ", p_daten->gesamt_ankuenfte;
+		PRINT "Gesamt geparkt: ", p_daten->gesamt_geparkt;
+		PRINT "Gesamtabfahrten: ", p_daten->gesamt_abfahrten;
+		PRINT "Aktuell belegt: ", p_daten->aktuell_belegte_stellplaetze;
+		PRINT "Warteschlangenlaenge: ", p_daten->warteschlangen_laenge;
+		PRINT "Maximale Warteschlangenlange: ", p_daten->maximale_warteschlangen_laenge;
+		PRINT "Aktuelle Auslastungsrate: ", p_daten->auslastungsrate;
+		PRINT "Durchschnittliche Wartezeit: ", p_daten->durchschnittliche_wartezeit;
+		PRINT "Durchschnittliche Auslastung: ", p_daten->durchschnittliche_auslastung;
+
+		//Zeitschritt und Auslastungsrate an externe Datei für gnuplot übergeben mit "a" damit datei nicht überschreiben wird
+		datei_auslastung = DATEI_ÖFFNEN("auslastung.txt", "a");
+		IF (datei_auslastung != NULL)
+			SCHREIBE_WERT(aktueller_schritt, p_daten->auslastungsrate) IN (datei_auslastung);
+			DATEI_SCHLIESSEN(datei_auslastung);
+		END IF
+	END
+	*/
+}
 
 Function end_simulationsdaten_ausgeben(const Simulationdaten *p_daten) //gibt am Ende der Simulation die Daten aus
 	/*
@@ -256,7 +284,7 @@ Function end_simulationsdaten_ausgeben(const Simulationdaten *p_daten) //gibt am
 		SCHREIBE_WERT("warteschlangen_laenge", p_daten->warteschlangen_laenge) IN (datei_ende);
 		SCHREIBE_WERT("maximale_warteschlangen_laenge", p_daten->maximale_warteschlangen_laenge) IN (datei_ende);
 		SCHREIBE_WERT("auslastungsrate", p_daten->auslastungsrate) IN (datei_ende);
-		SCHREIBE_WERT("durchschnittliche_Wartezeit", p_daten->durchschnittliche_wartezeit) IN (datei_ende);
+		SCHREIBE_WERT("durchschnittliche_wartezeit", p_daten->durchschnittliche_wartezeit) IN (datei_ende);
 		SCHREIBE_WERT("durchschnittliche_auslastung", p_daten->durchschnittliche_auslastung) IN (datei_ende);
 		DATEI_SCHLIESSEN(datei_ende);
 
