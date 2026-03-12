@@ -40,6 +40,33 @@ void queue_enqueue(Queue *p_eineQueue, Fahrzeug *p_einFahrzeug, int enqueue_zeit
         return;
     }
 }
+
+Fahrzeug* queue_dequeue(Queue *p_eineQueue, int einparken_zeitschritt){
+    Fahrzeug *einparkendesFahrzeug = malloc(sizeof (einparkendesFahrzeug));
+    if (p_eineQueue->length == 0)
+    {
+        return NULL;
+    }
+    QueueNode *entfernterKnoten = p_eineQueue->head;     
+    einparkendesFahrzeug = entfernterKnoten->p_einFahrzeug;      
+    einparkendesFahrzeug->wartezeit = einparken_zeitschritt - entfernterKnoten->enqueue_zeitschritt;
+    
+    p_eineQueue->head = entfernterKnoten->next;
+    if (p_eineQueue->head == NULL)
+    {
+        p_eineQueue->tail = NULL;
+    }
+    free(entfernterKnoten);
+    p_eineQueue->length = p_eineQueue->length - 1;
+    return einparkendesFahrzeug;
+    
+}
+
+void queue_destroy(Queue *p_queue){
+    int platzhalter_zeitschritt = 0;
+    while (queue_dequeue(p_queue, platzhalter_zeitschritt) != NULL);
+    //ACHTUNG -> NUR AUFRUFEN WENN WARTEZEIT EINES FAHRZEUGES NICHT MEHR RELEVANT IST, da queue_destroy die Wartezeit falsch überschreibt
+}
 /*
     Die Funktion queue_init verhindert, dass die Zeiger auf Garbage-Werte zeigen.
     Das könnte später zu Fehlern und Abstürzen führen, wenn sie nicht vorher mit NULL initialisiert werden.
