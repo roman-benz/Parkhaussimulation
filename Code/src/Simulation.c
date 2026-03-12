@@ -273,9 +273,7 @@ void end_simulationsdaten_ausgeben(const Simulationdaten *p_daten)
 		return;
 	}
 
-	printf("===== ENDE DER SIMULATION =====\n");
-	printf("Simulationsergebnisse finden Sie in der externen Ergebnisdatei.\n");
-
+	
 	datei_ende = fopen("Output/data/simulation_ende.txt", "w");
 	if (datei_ende != NULL)
 	{
@@ -289,6 +287,10 @@ void end_simulationsdaten_ausgeben(const Simulationdaten *p_daten)
 		fprintf(datei_ende, "durchschnittliche_wartezeit\t%.4f\n", p_daten->durchschnittliche_wartezeit);
 		fprintf(datei_ende, "durchschnittliche_auslastung\t%.4f\n", p_daten->durchschnittliche_auslastung);
 		fclose(datei_ende);
+
+		printf("===== ENDE DER SIMULATION =====\n");
+		printf("Simulationsergebnisse finden Sie in der externen Ergebnisdatei.\n");
+
 	}
 
 	/*
