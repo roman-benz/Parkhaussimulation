@@ -108,6 +108,10 @@ int einparken_fahrzeug(Parkhaus *p_garage, const Fahrzeug *p_fahrzeug)
 	{
 		return 0;
 	}
+		if (p_garage->belegte_stellplaetze >= p_garage->maximale_kapazitaet)
+	{
+		return 0;
+	}
 }
 
 /*
