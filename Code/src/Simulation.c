@@ -36,6 +36,19 @@ int initialisierung_garage(Parkhaus *p_garage, int maximale_kapazitaet)
 	{
 		return 0;
 	}
+
+	p_garage->maximale_kapazitaet = maximale_kapazitaet;
+
+	for (int i = 0; i < maximale_kapazitaet; i++)
+	{
+		p_garage->p_stellplaetze[i].fahrzeug_id = -1;
+		p_garage->p_stellplaetze[i].verbleibende_parkdauer = 0;
+		p_garage->p_stellplaetze[i].eintritts_zeit = 0;
+		p_garage->p_stellplaetze[i].wartezeit = 0;
+	}
+
+	return 1;
+
 }
 
 /*
