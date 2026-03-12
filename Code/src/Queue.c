@@ -5,6 +5,41 @@
 #include "../Include/Queue.h"
 #include <stdlib.h>
 
+
+void queue_init(Queue *p_queue){
+    if (p_queue = NULL)
+    {
+        return;
+    }
+    p_queue->head = NULL;
+    p_queue->tail = NULL;
+    p_queue->length = 0;
+}
+
+
+void queue_enqueue(Queue *p_eineQueue, Fahrzeug *p_einFahrzeug, int enqueue_zeitschritt){
+    QueueNode *fahrzeugknoten = malloc(sizeof (*fahrzeugknoten));
+    if (fahrzeugknoten != NULL)
+    {
+        fahrzeugknoten->p_einFahrzeug = p_einFahrzeug;
+        fahrzeugknoten->next = NULL;
+        fahrzeugknoten->enqueue_zeitschritt = enqueue_zeitschritt;
+        if (p_eineQueue->length == 0)
+        {
+            p_eineQueue->head = fahrzeugknoten;
+            p_eineQueue->tail = fahrzeugknoten;
+        }
+        else
+        {
+            p_eineQueue->tail->next = fahrzeugknoten;
+            p_eineQueue->tail = fahrzeugknoten;
+        }
+        p_eineQueue->length = p_eineQueue->length + 1;
+    }
+    else{
+        return;
+    }
+}
 /*
     Die Funktion queue_init verhindert, dass die Zeiger auf Garbage-Werte zeigen.
     Das könnte später zu Fehlern und Abstürzen führen, wenn sie nicht vorher mit NULL initialisiert werden.
@@ -93,12 +128,3 @@
         while queue_dequeue(p_queue, platzhalter_zeitschritt) IS NOT NULL       //Solange Queue_dequeue nicht NULL zurückliefert, wird die Funktion erneut aufgerufen
     END     //ACHTUNG -> NUR AUFRUFEN WENN WARTEZEIT EINES FAHRZEUGES NICHT MEHR RELEVANT IST, da queue_destroy die Wartezeit falsch überschreibt
 */
-void queue_init(Queue *p_queue){
-    if (p_queue = NULL)
-    {
-        return;
-    }
-    p_queue->head = NULL;
-    p_queue->tail = NULL;
-    p_queue->length = 0;
-}
