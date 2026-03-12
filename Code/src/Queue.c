@@ -40,28 +40,7 @@ void queue_enqueue(Queue *p_eineQueue, Fahrzeug *p_einFahrzeug, int enqueue_zeit
         return;
     }
 }
-/*
-    Pseudocode:
-    Function queue_dequeue(Queue *p_eineQueue, int einparken_zeitschritt)
-    //Wenn die Warteschlange leer ist -> Abbruch
-    IF p_eineQueue->length == 0
-        return NULL;        //Abbruch
-    END IF
-    //Wenn Warteschlange nicht leer ist
-    QueueNode *entfernterKnoten <- p_eineQueue->head;     //neuen Knoten definieren, der Head entspricht
-    einparkendesFahrzeug <- entfernterKnoten->p_einFahrzeug;      //Das Fahrzeug festlegen, um später das Fahrzeug returnen zu können
-    einparkendesFahrzeug->wartezeit <- einparken_zeitschritt - entfernterKnoten->enqueue_zeitschritt;       //Wartezeit ausrechnen (Zeitschritt beim Einfahren ins Parkhaus - Zeitschritt beim Eintritt in Warteschlange)
-    
-    p_eineQueue->head <- entfernterKnoten->next;      //Den Head auf das nächste Fahrzeug in der Warteschlange legen
-    IF p_eineQueue->head == NULL
-        p_eineQueue->tail <- NULL;
-    END IF
-    free(entfernterKnoten);     //Den Speicher des Knoten des einparkenden Autos freigeben
-    p_eineQueue->length <- p_eineQueue->length - 1;     //Die Länge der Warteschlange um 1 reduzieren
-    return einparkendesFahrzeug;        //Das einzuparkende Auto returnen
-    
-    END
-*/
+
 Fahrzeug* queue_dequeue(Queue *p_eineQueue, int einparken_zeitschritt){
     Fahrzeug *einparkendesFahrzeug = malloc(sizeof (einparkendesFahrzeug));
     if (p_eineQueue->length == 0)
@@ -81,6 +60,10 @@ Fahrzeug* queue_dequeue(Queue *p_eineQueue, int einparken_zeitschritt){
     p_eineQueue->length = p_eineQueue->length - 1;
     return einparkendesFahrzeug;
     
+}
+
+void queue_destroy(Queue *p_queue){
+
 }
 /*
     Die Funktion queue_init verhindert, dass die Zeiger auf Garbage-Werte zeigen.
