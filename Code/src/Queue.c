@@ -136,6 +136,11 @@ void queue_enqueue(Queue *p_eineQueue, Fahrzeug *p_einFahrzeug, int enqueue_zeit
         fahrzeugknoten->p_einFahrzeug = p_einFahrzeug;
         fahrzeugknoten->next = NULL;
         fahrzeugknoten->enqueue_zeitschritt = enqueue_zeitschritt;
+        if (p_eineQueue->length == 0)
+        {
+            p_eineQueue->head = fahrzeugknoten;
+            p_eineQueue->tail = fahrzeugknoten;
+        }
 
         
     
