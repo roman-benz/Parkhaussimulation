@@ -22,6 +22,14 @@ int initialisierung_garage(Parkhaus *p_garage, int maximale_kapazitaet)
 		return 0;
 	}
 
+	p_garage->p_stellplaetze = NULL;
+	p_garage->maximale_kapazitaet = 0;
+	p_garage->belegte_stellplaetze = 0;
+
+	if (maximale_kapazitaet <= 0)
+	{
+		return 0;
+	}
 
 }
 
