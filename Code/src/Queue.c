@@ -70,7 +70,9 @@ Fahrzeug* queue_dequeue(Queue *p_eineQueue, int einparken_zeitschritt){
     }
     QueueNode *entfernterKnoten = p_eineQueue->head;     
     einparkendesFahrzeug = entfernterKnoten->p_einFahrzeug;      
-    einparkendesFahrzeug->wartezeit = einparken_zeitschritt - entfernterKnoten->enqueue_zeitschritt;      
+    einparkendesFahrzeug->wartezeit = einparken_zeitschritt - entfernterKnoten->enqueue_zeitschritt;
+    
+    p_eineQueue->head = entfernterKnoten->next;
 }
 /*
     Die Funktion queue_init verhindert, dass die Zeiger auf Garbage-Werte zeigen.
