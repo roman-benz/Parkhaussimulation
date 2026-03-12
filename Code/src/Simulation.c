@@ -31,6 +31,11 @@ int initialisierung_garage(Parkhaus *p_garage, int maximale_kapazitaet)
 		return 0;
 	}
 
+	p_garage->p_stellplaetze = calloc((size_t)maximale_kapazitaet, sizeof(Fahrzeug));
+	if (p_garage->p_stellplaetze == NULL)
+	{
+		return 0;
+	}
 }
 
 /*
