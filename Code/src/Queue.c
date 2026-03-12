@@ -63,7 +63,11 @@ void queue_enqueue(Queue *p_eineQueue, Fahrzeug *p_einFahrzeug, int enqueue_zeit
     END
 */
 Fahrzeug* queue_dequeue(Queue *p_eineQueue, int einparken_zeitschritt){
-
+    if (p_eineQueue->length == 0)
+    {
+        return NULL;
+    }
+    
 }
 /*
     Die Funktion queue_init verhindert, dass die Zeiger auf Garbage-Werte zeigen.
