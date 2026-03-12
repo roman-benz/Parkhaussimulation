@@ -38,7 +38,7 @@ int konfiguration_einlesen(Simulationskonfiguration *p_konfiguration);
  * @param[out] p_out_wert Zeiger auf die Variable, in die der eingelesene Wert geschrieben wird.
  * @return true, wenn ein gültiger Wert eingelesen wurde, sonst false.
  */
-int int_wert_einlesen(prompt, min_wert, max_wert, p_out_wert);
+int int_wert_einlesen(const char *prompt, int min_wert, int max_wert, int *p_out_wert);
 
 
 #endif
