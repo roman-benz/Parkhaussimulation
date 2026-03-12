@@ -15,6 +15,11 @@ ausgegeben und in Ausgabedateien für die spätere Auswertung
 (mit Gnuplot) geschrieben.
 */
 
+int initialisierung_garage(Parkhaus *p_garage, int maximale_kapazitaet)
+{
+	
+}
+
 /*
 Function initialisierung_garage(Parkhaus *p_garage, int maximale_kapazitaet)
 // Sicherer Startzustand mit Eingabeprüfung und Speicherreservierung,
