@@ -17,7 +17,12 @@ ausgegeben und in Ausgabedateien für die spätere Auswertung
 
 int initialisierung_garage(Parkhaus *p_garage, int maximale_kapazitaet)
 {
-	
+	if (p_garage == NULL)
+	{
+		return 0;
+	}
+
+
 }
 
 /*
