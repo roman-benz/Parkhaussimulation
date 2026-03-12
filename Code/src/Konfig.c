@@ -11,29 +11,45 @@ int int_wert_einlesen(const char *prompt, int min_wert, int max_wert, int *p_out
     int value;
     int eingabe_erfolg;
     char c;
-    while (1) // Endlosschleife bis gültige Eingabe
+
+    if (p_out_wert == NULL)  //Null-Pointer-Schutz
     {
-        printf("%s", prompt); // Eingabeaufforderung ausgeben
-        eingabe_erfolg = scanf("%d", &value); 
-        if (eingabe_erfolg != 1) // Prüfen, ob Eingabe eine gültige Zahl ist
-        {
-            printf("Ungültige Eingabe. Bitte eine ganze Zahl eingeben.\n");
-            while ((c = getchar()) != '\n' && c != EOF) {} // Eingabepuffer leeren
-            continue;
-        }
-        if (value < min_wert || value > max_wert) // Bereichsprüfung
-        {
-            printf("Wert außerhalb des erlaubten Bereichs (%d bis %d).\n", min_wert, max_wert);
-            continue;
-        }
-        *p_out_wert = value; // Speichert den gültigen Wert an der übergebenen Speicheradresse
-        return 1; // Erfolgreiche Eingabe
+        return 0;
     }
+
+    printf("%s", prompt); // Eingabeaufforderung ausgeben
+    eingabe_erfolg = scanf("%d", &value);
+    if (eingabe_erfolg == EOF)
+    {
+        printf("Eingabe abgebrochen.\n");
+        return 0;
+    }
+
+    if (eingabe_erfolg != 1) // Ungültige Eingabe: sofortiger Abbruch
+    {
+        printf("Ungültige Eingabe. Bitte eine ganze Zahl eingeben.\n");
+        while ((c = getchar()) != '\n' && c != EOF) {}  // Eingabepuffer leeren
+        return 0;
+    }
+
+    if (value < min_wert || value > max_wert) // Bereichsprüfung
+    {
+        printf("Wert außerhalb des erlaubten Bereichs (%d bis %d).\n", min_wert, max_wert);
+        return 0;
+    }
+
+    *p_out_wert = value; // Speichert den gültigen Wert an der übergebenen Speicheradresse
+    return 1; // Erfolgreiche Eingabe
 }
 
 
 int konfiguration_einlesen(Simulationskonfiguration *p_konfiguration)
 {
+    if (p_konfiguration == NULL)  //Null-Pointer-Schutz
+    {
+        return 0;
+    }
+    
     int benutzereingabe_seed = 0;
     if (!int_wert_einlesen("Anzahl Parkplätze (1-10000): ", 1, 10000, &p_konfiguration->anzahl_parkplaetze))
         return 0; 
