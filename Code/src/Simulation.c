@@ -112,6 +112,17 @@ int einparken_fahrzeug(Parkhaus *p_garage, const Fahrzeug *p_fahrzeug)
 	{
 		return 0;
 	}
+	for (int i = 0; i < p_garage->maximale_kapazitaet; i++)
+	{
+		if (p_garage->p_stellplaetze[i].fahrzeug_id == -1)
+		{
+			p_garage->p_stellplaetze[i] = *p_fahrzeug;
+			p_garage->belegte_stellplaetze = p_garage->belegte_stellplaetze + 1;
+			return 1;
+		}
+	}
+
+	return 0;
 }
 
 /*
