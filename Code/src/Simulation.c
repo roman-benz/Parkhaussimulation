@@ -99,24 +99,26 @@ int einparken_fahrzeug(Parkhaus *p_garage, const Fahrzeug *p_fahrzeug)
 		return 0;
 	}
 
-	if (p_garage->p_stellplaetze == NULL)
+	if (p_garage->p_stellplaetze == NULL) // Keine Stellplätze initialisiert
 	{
 		return 0;
 	}
 
-	if (p_garage->maximale_kapazitaet <= 0)
+	if (p_garage->maximale_kapazitaet <= 0) // Ungültige Kapazität
 	{
 		return 0;
 	}
-		if (p_garage->belegte_stellplaetze >= p_garage->maximale_kapazitaet)
+
+	if (p_garage->belegte_stellplaetze >= p_garage->maximale_kapazitaet) // Parkhaus ist voll
 	{
 		return 0;
 	}
+
 	for (int i = 0; i < p_garage->maximale_kapazitaet; i++)
 	{
-		if (p_garage->p_stellplaetze[i].fahrzeug_id == -1)
+		if (p_garage->p_stellplaetze[i].fahrzeug_id == -1) 
 		{
-			p_garage->p_stellplaetze[i] = *p_fahrzeug;
+			p_garage->p_stellplaetze[i] = *p_fahrzeug; // Ganzes Fahrzeug auf Platz kopieren
 			p_garage->belegte_stellplaetze = p_garage->belegte_stellplaetze + 1;
 			return 1;
 		}
