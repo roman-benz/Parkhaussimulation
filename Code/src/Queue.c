@@ -77,6 +77,9 @@ Fahrzeug* queue_dequeue(Queue *p_eineQueue, int einparken_zeitschritt){
     {
         p_eineQueue->tail = NULL;
     }
+    free(entfernterKnoten);
+    p_eineQueue->length = p_eineQueue->length - 1;
+    return einparkendesFahrzeug;
     
 }
 /*
