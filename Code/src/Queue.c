@@ -62,8 +62,17 @@ Fahrzeug* queue_dequeue(Queue *p_eineQueue, int einparken_zeitschritt){
     
 }
 
+/*
+    Pseudocode:
+    Function queue_destroy(Queue *p_queue)
+    int platzhalter_zeitschritt = 0;        //Platzhalter, da queue_dequeue einen Zeitschritt braucht
+        while queue_dequeue(p_queue, platzhalter_zeitschritt) IS NOT NULL       //Solange Queue_dequeue nicht NULL zurückliefert, wird die Funktion erneut aufgerufen
+    END     //ACHTUNG -> NUR AUFRUFEN WENN WARTEZEIT EINES FAHRZEUGES NICHT MEHR RELEVANT IST, da queue_destroy die Wartezeit falsch überschreibt
+*/
 void queue_destroy(Queue *p_queue){
-
+    int platzhalter_zeitschritt = 0;
+    while (queue_dequeue(p_queue, platzhalter_zeitschritt) != NULL);
+    //ACHTUNG -> NUR AUFRUFEN WENN WARTEZEIT EINES FAHRZEUGES NICHT MEHR RELEVANT IST, da queue_destroy die Wartezeit falsch überschreibt
 }
 /*
     Die Funktion queue_init verhindert, dass die Zeiger auf Garbage-Werte zeigen.
