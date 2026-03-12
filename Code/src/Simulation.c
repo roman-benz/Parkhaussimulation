@@ -22,6 +22,7 @@ int initialisierung_garage(Parkhaus *p_garage, int maximale_kapazitaet)
 		return 0;
 	}
 
+	// Erst auf sicheren Grundzustand setzen
 	p_garage->p_stellplaetze = NULL;
 	p_garage->maximale_kapazitaet = 0;
 	p_garage->belegte_stellplaetze = 0;
@@ -31,6 +32,7 @@ int initialisierung_garage(Parkhaus *p_garage, int maximale_kapazitaet)
 		return 0;
 	}
 
+	// Speicher für alle Stellplaetze reservieren. 
 	p_garage->p_stellplaetze = calloc((size_t)maximale_kapazitaet, sizeof(Fahrzeug));
 	if (p_garage->p_stellplaetze == NULL)
 	{
@@ -41,7 +43,7 @@ int initialisierung_garage(Parkhaus *p_garage, int maximale_kapazitaet)
 
 	for (int i = 0; i < maximale_kapazitaet; i++)
 	{
-		p_garage->p_stellplaetze[i].fahrzeug_id = -1;
+		p_garage->p_stellplaetze[i].fahrzeug_id = -1; // -1 bedeutet, dass der Platz frei ist 
 		p_garage->p_stellplaetze[i].verbleibende_parkdauer = 0;
 		p_garage->p_stellplaetze[i].eintritts_zeit = 0;
 		p_garage->p_stellplaetze[i].wartezeit = 0;
