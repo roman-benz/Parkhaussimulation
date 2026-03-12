@@ -102,3 +102,41 @@ void queue_init(Queue *p_queue){
     p_queue->tail = NULL;
     p_queue->length = 0;
 }
+
+/*
+    Pseudocode:
+    Function queue_enqueue(Queue *p_eineQueue, Fahrzeug *p_einFahrzeug, int enqueue_zeitschritt)
+        //Neues Listenelement für das Fahrzeug mit Malloc reserviert
+        QueueNode *fahrzeugknoten <- malloc(sizeof QueueNode);
+        IF (malloc() erfolgreich?)
+            //Das Fahrzeug das der Schlange hinzugefügt werden soll wird hier dem Knoten zugewiesen
+            fahrzeugknoten->p_einFahrzeug <- p_einFahrzeug;
+            fahrzeugknoten->next <- NULL;   //Um Garbage-Werte zu vermeiden
+            fahrzeugknoten->enqueue_zeitschritt <- enqueue_zeitschritt; //Fuer spätere Berechnung der Wartezeit
+
+            IF p_eineQueue->length == 0    //Wenn die Warteschlange leer ist, dann ist das ankommende Fahrzeug head und tail der Warteschlange
+                p_eineQueue->head <- fahrzeugknoten;
+                p_eineQueue->tail <- fahrzeugknoten;
+            ELSE 
+                p_eineQueue->tail->next <- fahrzeugknoten;   //Wenn Fahrzeuge schon in der Warteschlange sind, dann soll das ankommende Fahrzeug an den Tail angehängt werden
+                p_eineQueue->tail <- fahrzeugknoten;    //Der Tail der Warteschlange wird auf das neu hinzugefügte Fahrzeug gesetzt
+                
+            END IF 
+            p_eineQueue->length <- p_eineQueue->length + 1; //Warteschlangenlaenge um 1 erhöhen
+
+        ELSE 
+            END //Abbruch -> Programmende
+        END IF 
+    END
+*/
+void queue_enqueue(Queue *p_eineQueue, Fahrzeug *p_einFahrzeug, int enqueue_zeitschritt){
+    QueueNode *fahrzeugknoten = malloc(sizeof QueueNode);
+    if (*fahrzeugknoten != NULL)
+    {
+        fahrzeugknoten->p_einFahrzeug = p_einFahrzeug;
+        fahrzeugknoten->next = NULL;
+        fahrzeugknoten->enqueue_zeitschritt = enqueue_zeitschritt;
+
+        
+    
+}
