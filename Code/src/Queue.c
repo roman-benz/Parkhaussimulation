@@ -130,8 +130,8 @@ void queue_init(Queue *p_queue){
     END
 */
 void queue_enqueue(Queue *p_eineQueue, Fahrzeug *p_einFahrzeug, int enqueue_zeitschritt){
-    QueueNode *fahrzeugknoten = malloc(sizeof QueueNode);
-    if (*fahrzeugknoten != NULL)
+    QueueNode *fahrzeugknoten = malloc(sizeof (*fahrzeugknoten));
+    if (fahrzeugknoten != NULL)
     {
         fahrzeugknoten->p_einFahrzeug = p_einFahrzeug;
         fahrzeugknoten->next = NULL;
@@ -149,8 +149,6 @@ void queue_enqueue(Queue *p_eineQueue, Fahrzeug *p_einFahrzeug, int enqueue_zeit
         p_eineQueue->length = p_eineQueue->length + 1;
     }
     else{
-        return 0;
+        return;
     }
-        
-    
 }
