@@ -292,6 +292,10 @@ void end_simulationsdaten_ausgeben(const Simulationdaten *p_daten)
 		printf("Simulationsergebnisse finden Sie in der externen Ergebnisdatei.\n");
 
 	}
+	else
+	{
+		printf("Fehler: Datei 'Output/data/simulation_ende.txt' konnte nicht geoeffnet werden.\n");
+	}
 
 	/*
 	Function end_simulationsdaten_ausgeben(const Simulationdaten *p_daten) //gibt am Ende der Simulation die Daten aus
