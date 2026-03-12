@@ -15,12 +15,11 @@ ausgegeben und in Ausgabedateien für die spätere Auswertung
 (mit Gnuplot) geschrieben.
 */
 
-Function initialisierung_garage(Parkhaus *p_garage, int maximale_kapazitaet)
 /*
-Sicherer Startzustand mit Eingabeprüfung und Speicherreservierung,
-damit bei Fehlern keine inkonsistenten Zustände oder ungültigen
-Speicherzugriffe entstehen.
-*/
+Function initialisierung_garage(Parkhaus *p_garage, int maximale_kapazitaet)
+// Sicherer Startzustand mit Eingabeprüfung und Speicherreservierung,
+// damit bei Fehlern keine inkonsistenten Zustände oder ungültigen
+// Speicherzugriffe entstehen.
 
 IF (p_garage == NULL)
 		RETURN 0;   //Ungueltiger Zeiger
@@ -53,12 +52,12 @@ IF (p_garage == NULL)
 
 	RETURN 1;   //Initialisierung erfolgreich
 END
-
-Function einparken_fahrzeug(Parkhaus *p_garage, const Fahrzeug *p_fahrzeug)
-/*
-Frühe Validierung, damit nur gültige Fahrzeuge in freie Plätze übernommen werden
-und der Belegungszähler konsistent bleibt.
 */
+
+/*
+Function einparken_fahrzeug(Parkhaus *p_garage, const Fahrzeug *p_fahrzeug)
+// Frühe Validierung, damit nur gültige Fahrzeuge in freie Plätze übernommen werden
+// und der Belegungszähler konsistent bleibt.
 	IF (p_garage == NULL OR p_fahrzeug == NULL)
 		RETURN 0;   //Ungueltige Eingaben
 	END IF
@@ -78,13 +77,13 @@ und der Belegungszähler konsistent bleibt.
 
 	RETURN 0;   //Sicherheitsreturn (kein freier Platz gefunden)
 END
-
-Function ausparken_fahrzeug(Parkhaus *p_garage, int fahrzeug_id)
-/*
-Fahrzeugentfernung über eindeutige ID und vollständiges Zurücksetzen
-des Platzes, da die Werte, wie Eintrittszeit oder Parkdauer nicht auf dem 
-Fahrzeug sondern auf dem Stellplatz gespeichert werden.
 */
+
+/*
+Function ausparken_fahrzeug(Parkhaus *p_garage, int fahrzeug_id)
+// Fahrzeugentfernung über eindeutige ID und vollständiges Zurücksetzen
+// des Platzes, da die Werte, wie Eintrittszeit oder Parkdauer nicht auf dem
+// Fahrzeug sondern auf dem Stellplatz gespeichert werden.
 	IF (p_garage == NULL OR fahrzeug_id < 0)
 		RETURN 0;   //Ungueltige Eingaben
 	END IF
@@ -108,13 +107,13 @@ Fahrzeug sondern auf dem Stellplatz gespeichert werden.
 
 	RETURN 0;   //Fahrzeug-ID wurde nicht gefunden
 END
-
-Function ausfuehren_simulationsschritt(
-/*
-Feste Reihenfolge des Schritts (Abfahrten, Queue, Ankünfte, Kennzahlen),
-damit jeder Zeitschritt deterministisch und fachlich korrekt
-verarbeitet wird.
 */
+
+/*
+Function ausfuehren_simulationsschritt(
+// Feste Reihenfolge des Schritts (Abfahrten, Queue, Ankünfte, Kennzahlen),
+// damit jeder Zeitschritt deterministisch und fachlich korrekt
+// verarbeitet wird.
 	int aktueller_schritt,
 	const Simulationskonfiguration *p_konfiguration,
 	Parkhaus *p_garage,
@@ -206,6 +205,7 @@ verarbeitet wird.
 		p_daten->durchschnittliche_auslastung = p_daten->auslastungsrate;//beim ersten Schritt ist die durchschnittliche Auslastung die Momentanauslastung
 	END IF
 END
+*/
 
 void simulationsschrittdaten_ausgeben(int aktueller_schritt, const Simulationdaten *p_daten)
 {
@@ -228,7 +228,7 @@ void simulationsschrittdaten_ausgeben(int aktueller_schritt, const Simulationdat
 	printf("Durchschnittliche Auslastung: %.4f\n", p_daten->durchschnittliche_auslastung);
 
 	
-	datei_auslastung = fopen("auslastung.txt", "a");
+	datei_auslastung = fopen("Output/data/auslastung.txt", "a");
 	if (datei_auslastung != NULL)
 	{
 		fprintf(datei_auslastung, "%d\t%.4f\n", aktueller_schritt, p_daten->auslastungsrate);
@@ -264,44 +264,76 @@ void simulationsschrittdaten_ausgeben(int aktueller_schritt, const Simulationdat
 	*/
 }
 
-Function end_simulationsdaten_ausgeben(const Simulationdaten *p_daten) //gibt am Ende der Simulation die Daten aus
+void end_simulationsdaten_ausgeben(const Simulationdaten *p_daten)
+{
+	FILE *datei_ende;
+
+	if (p_daten == NULL)
+	{
+		return;
+	}
+
+	
+	datei_ende = fopen("Output/data/simulation_ende.txt", "w");
+	if (datei_ende != NULL)
+	{
+		fprintf(datei_ende, "gesamt_ankuenfte\t%d\n", p_daten->gesamt_ankuenfte);
+		fprintf(datei_ende, "gesamt_geparkt\t%d\n", p_daten->gesamt_geparkt);
+		fprintf(datei_ende, "gesamt_abfahrten\t%d\n", p_daten->gesamt_abfahrten);
+		fprintf(datei_ende, "aktuell_belegte_stellplaetze\t%d\n", p_daten->aktuell_belegte_stellplaetze);
+		fprintf(datei_ende, "warteschlangen_laenge\t%d\n", p_daten->warteschlangen_laenge);
+		fprintf(datei_ende, "maximale_warteschlangen_laenge\t%d\n", p_daten->maximale_warteschlangen_laenge);
+		fprintf(datei_ende, "auslastungsrate\t%.4f\n", p_daten->auslastungsrate);
+		fprintf(datei_ende, "durchschnittliche_wartezeit\t%.4f\n", p_daten->durchschnittliche_wartezeit);
+		fprintf(datei_ende, "durchschnittliche_auslastung\t%.4f\n", p_daten->durchschnittliche_auslastung);
+		fclose(datei_ende);
+
+		printf("===== ENDE DER SIMULATION =====\n");
+		printf("Simulationsergebnisse finden Sie in der externen Ergebnisdatei.\n");
+
+	}
+	else
+	{
+		printf("Fehler: Datei 'Output/data/simulation_ende.txt' konnte nicht geoeffnet werden.\n");
+	}
+
 	/*
-	Zentralisierte Endausgabe in Datei und Terminal.
-	Durch die externe Gnuplot ausgabe entsteht eine bessere Visualisierung.
+	Function end_simulationsdaten_ausgeben(const Simulationdaten *p_daten) //gibt am Ende der Simulation die Daten aus
+		Zentralisierte Endausgabe in Datei und Terminal.
+		Durch die externe Gnuplot ausgabe entsteht eine bessere Visualisierung.
+		IF (p_daten == NULL)
+			RETURN;     //Ohne Daten keine Ausgabe moeglich
+		END IF
+		//Ausgabe ins Terminal
+		PRINT "===== ENDE DER SIMULATION =====";
+		PRINT "Simulationsergebnisse finden Sie in der externen Ergebnisdatei";
+
+		//Endwerte extern in neuer Datei speichern um mit Gnuplot eine Ergebnissdatei mit einem Auslastungsgraphen zu erstellen
+		datei_ende = DATEI_ÖFFNEN("simulation_ende.txt", "w");
+		IF (datei_ende != NULL)
+			SCHREIBE_WERT("gesamt_ankuenfte", p_daten->gesamt_ankuenfte) IN (datei_ende);
+			SCHREIBE_WERT("gesamt_geparkt", p_daten->gesamt_geparkt) IN (datei_ende);
+			SCHREIBE_WERT("gesamt_abfahrten", p_daten->gesamt_abfahrten) IN (datei_ende);
+			SCHREIBE_WERT("aktuell_belegte_stellplaetze", p_daten->aktuell_belegte_stellplaetze) IN (datei_ende);
+			SCHREIBE_WERT("warteschlangen_laenge", p_daten->warteschlangen_laenge) IN (datei_ende);
+			SCHREIBE_WERT("maximale_warteschlangen_laenge", p_daten->maximale_warteschlangen_laenge) IN (datei_ende);
+			SCHREIBE_WERT("auslastungsrate", p_daten->auslastungsrate) IN (datei_ende);
+			SCHREIBE_WERT("durchschnittliche_wartezeit", p_daten->durchschnittliche_wartezeit) IN (datei_ende);
+			SCHREIBE_WERT("durchschnittliche_auslastung", p_daten->durchschnittliche_auslastung) IN (datei_ende);
+			DATEI_SCHLIESSEN(datei_ende);
+
+			STARTE_GNUPLOT("plot_simulationsergebnis");
+			//Grafik mit Gnuplot erstellen
+		END IF
+	END
 	*/
-	IF (p_daten == NULL)
-		RETURN;     //Ohne Daten keine Ausgabe moeglich
-	END IF
-	//Ausgabe ins Terminal
-	PRINT "===== ENDE DER SIMULATION =====";
-	PRINT "Simulationsergebnisse finden Sie in der externen Ergebnisdatei";
+}
 
-	//Endwerte extern in neuer Datei speichern um mit Gnuplot eine Ergebnissdatei mit einem Auslastungsgraphen zu erstellen
-	datei_ende = DATEI_ÖFFNEN("simulation_ende.txt", "w");
-	IF (datei_ende != NULL)
-		SCHREIBE_WERT("gesamt_ankuenfte", p_daten->gesamt_ankuenfte) IN (datei_ende);
-		SCHREIBE_WERT("gesamt_geparkt", p_daten->gesamt_geparkt) IN (datei_ende);
-		SCHREIBE_WERT("gesamt_abfahrten", p_daten->gesamt_abfahrten) IN (datei_ende);
-		SCHREIBE_WERT("aktuell_belegte_stellplaetze", p_daten->aktuell_belegte_stellplaetze) IN (datei_ende);
-		SCHREIBE_WERT("warteschlangen_laenge", p_daten->warteschlangen_laenge) IN (datei_ende);
-		SCHREIBE_WERT("maximale_warteschlangen_laenge", p_daten->maximale_warteschlangen_laenge) IN (datei_ende);
-		SCHREIBE_WERT("auslastungsrate", p_daten->auslastungsrate) IN (datei_ende);
-		SCHREIBE_WERT("durchschnittliche_wartezeit", p_daten->durchschnittliche_wartezeit) IN (datei_ende);
-		SCHREIBE_WERT("durchschnittliche_auslastung", p_daten->durchschnittliche_auslastung) IN (datei_ende);
-		DATEI_SCHLIESSEN(datei_ende);
-
-		STARTE_GNUPLOT("plot_simulationsergebnis");
-		//Grafik mit Gnuplot erstellen
-		
-	END IF
-END
-
+/*
 Function start_simulation(const Simulationskonfiguration *p_konfiguration)
-	/*
-	Führt alles strukturiert zusammen: Initialisierung, Simulationsschleife und Aufräumen,
-	damit der gesamte Ablauf robust, nachvollziehbar und
-	speichersicher bleibt.
-	*/
+	// Führt alles strukturiert zusammen: Initialisierung, Simulationsschleife und Aufräumen,
+	// damit der gesamte Ablauf robust, nachvollziehbar und
+	// speichersicher bleibt.
 	IF (p_konfiguration == NULL)
 		RETURN;     //Ohne Konfiguration kann keine Simulation gestartet werden
 	END IF
@@ -358,4 +390,5 @@ Function start_simulation(const Simulationskonfiguration *p_konfiguration)
 	queue_destroy(&warteschlange);
 	free(garage.p_stellplaetze);
 END
+*/
 
