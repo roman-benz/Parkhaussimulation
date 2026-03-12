@@ -1,0 +1,8 @@
+gesamt_ankuenfte = 128
+gesamt_abfahrten = 119
+aktuell_belegt = 9
+auslastungsrate = 0.72
+warteschlangen_laenge = 3
+maximale_warteschlange = 11
+durchschnittliche_wartezeit = 4.6
+durchschnittliche_auslastung = 0.58
