@@ -92,6 +92,41 @@ IF (p_garage == NULL)
 END
 */
 
+int einparken_fahrzeug(Parkhaus *p_garage, const Fahrzeug *p_fahrzeug)
+{
+	if (p_garage == NULL || p_fahrzeug == NULL)
+	{
+		return 0;
+	}
+
+	if (p_garage->p_stellplaetze == NULL) // Keine Stellplätze initialisiert
+	{
+		return 0;
+	}
+
+	if (p_garage->maximale_kapazitaet <= 0) // Ungültige Kapazität
+	{
+		return 0;
+	}
+
+	if (p_garage->belegte_stellplaetze >= p_garage->maximale_kapazitaet) // Parkhaus ist voll
+	{
+		return 0;
+	}
+
+	for (int i = 0; i < p_garage->maximale_kapazitaet; i++)
+	{
+		if (p_garage->p_stellplaetze[i].fahrzeug_id == -1) 
+		{
+			p_garage->p_stellplaetze[i] = *p_fahrzeug; // Ganzes Fahrzeug auf Platz kopieren
+			p_garage->belegte_stellplaetze = p_garage->belegte_stellplaetze + 1;
+			return 1;
+		}
+	}
+
+	return 0;
+}
+
 /*
 Function einparken_fahrzeug(Parkhaus *p_garage, const Fahrzeug *p_fahrzeug)
 // Frühe Validierung, damit nur gültige Fahrzeuge in freie Plätze übernommen werden
