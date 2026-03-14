@@ -48,11 +48,35 @@ void test_queue_enqueue_fifo_verkettung(void)
     printf("test_queue_enqueue_fifo_verkettung: OK\n");     //Ausgabe
 }
 
+//Testet ob queue_enqueue den enqueue_zeitschritt korrekt in jedem Knoten speichert,
+//da er spaeter in queue_dequeue fuer die Wartezeit-Berechnung benoetigt wird
+void test_queue_enqueue_zeitschritt_gespeichert(void)
+{
+    Queue q;
+    queue_init(&q);
+
+    Fahrzeug a1 = {1, 10, 0, 0};
+    Fahrzeug a2 = {2, 10, 0, 0};
+    Fahrzeug a3 = {3, 10, 0, 0};
+
+    queue_enqueue(&q, &a1, 10);
+    queue_enqueue(&q, &a2, 25);
+    queue_enqueue(&q, &a3, 42);
+
+    assert(q.head->enqueue_zeitschritt == 10);              //Erster Knoten
+    assert(q.head->next->enqueue_zeitschritt == 25);        //Zweiter Knoten
+    assert(q.tail->enqueue_zeitschritt == 42);              //Dritter Knoten
+
+    queue_destroy(&q);
+    printf("test_queue_enqueue_zeitschritt_gespeichert: OK\n");
+}
+
 int main(void)
 {
     test_queue_init_setzt_felder_auf_null();
     test_queue_init_null_pointer_kein_crash();
     test_queue_enqueue_fifo_verkettung();
+    test_queue_enqueue_zeitschritt_gespeichert();
 
     printf("Alle Tests erfolgreich!\n");
     return 0;
