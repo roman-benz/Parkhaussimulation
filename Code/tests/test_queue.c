@@ -99,6 +99,7 @@ void test_queue_dequeue_wartezeit_und_reihenfolge(void)
     printf("test_queue_dequeue_wartezeit_und_reihenfolge: OK\n");
 }
 
+//Wenn nur noch ein Fahrzeug in der queue ist und man es dequeued, muessen head und tail beide null sein
 void test_queue_dequeue_letztes_element(void)
 {
     Queue q;
@@ -107,13 +108,14 @@ void test_queue_dequeue_letztes_element(void)
     Fahrzeug a1 = {1, 10, 0, 0};
     queue_enqueue(&q, &a1, 2);
 
+    //einziges Fahrzeug faehrt bei Zeitschritt 6 ein -> Wartezeit 6-2=4
     Fahrzeug *ergebnis = queue_dequeue(&q, 6);
 
     assert(ergebnis->fahrzeug_id == 1);
-    assert(ergebnis->wartezeit == 4);
+    assert(ergebnis->wartezeit == 4);   //6 - 2 = 4
     assert(q.length == 0);
-    assert(q.head == NULL);
-    assert(q.tail == NULL);
+    assert(q.head == NULL);             //queue muss wirklich leer sein
+    assert(q.tail == NULL);             //tail muss auch null sein, nicht nur head
 
     printf("test_queue_dequeue_letztes_element: OK\n");
 }
