@@ -1,4 +1,4 @@
-/* test_alle.c – Unit Tests fuer Parkhaussimulation */
+/* test_queue.c – Unit Tests fuer Parkhaussimulation der Queue.c*/
 
 #include <assert.h>
 #include <stdio.h>
@@ -18,9 +18,16 @@ void test_queue_init_setzt_felder_auf_null(void)
     printf("test_queue_init_setzt_felder_auf_null: OK\n");
 }
 
+void test_queue_init_null_pointer_kein_crash(void)
+{
+    queue_init(NULL); // darf nicht crashen
+    printf("test_queue_init_null_pointer_kein_crash: OK\n");
+}
+
 int main(void)
 {
     test_queue_init_setzt_felder_auf_null();
+    test_queue_init_null_pointer_kein_crash();
 
     printf("Alle Tests erfolgreich!\n");
     return 0;
