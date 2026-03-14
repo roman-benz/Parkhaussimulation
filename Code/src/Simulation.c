@@ -439,6 +439,23 @@ void start_simulation(const Simulationskonfiguration *p_konfiguration)
 	daten.durchschnittliche_wartezeit = 0.0;
 	daten.durchschnittliche_auslastung = 0.0;
 
+	// Datei zu Beginn neu anlegen, damit nur Werte der aktuellen Simulation enthalten sind
+	datei_auslastung = fopen("Output/data/auslastung.txt", "w");
+	if (datei_auslastung != NULL)
+	{
+		fprintf(datei_auslastung, "Zeitschritt\tAuslastungsrate\n");
+		fclose(datei_auslastung);
+	}
+	for (int schritt = 1; schritt <= p_konfiguration->anzahl_simulationsschritte; schritt++)
+	{
+		ausfuehren_simulationsschritt(schritt, p_konfiguration, &garage, &warteschlange, &daten);
+		simulationsschrittdaten_ausgeben(schritt, &daten);
+	}
+
+	end_simulationsdaten_ausgeben(&daten);
+
+	queue_destroy(&warteschlange);
+	free(garage.p_stellplaetze);
 }
 
 /*
