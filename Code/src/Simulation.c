@@ -259,11 +259,28 @@ void ausfuehren_simulationsschritt(int aktueller_schritt, const Simulationskonfi
 		} 	
 	}
 
-	
-	 
-		
-	
+	//TEIL 4: Kennzahlen aktualisieren und in Datenstruct einheitlich abspeichern
+	p_daten->warteschlangen_laenge = p_queue->length;
+	p_daten->aktuell_belegte_stellplaetze = p_garage->belegte_stellplaetze;
 
+	if(p_daten->warteschlangen_laenge > p_daten->maximale_warteschlangen_laenge)	//Maximale Wartschlange aktualisieren
+	{	
+		p_daten->maximale_warteschlangen_laenge = p_daten->warteschlangen_laenge;
+	}
+
+	if(p_garage->maximale_kapazitaet > 0) //um sicher eine division durch null zu vermeiden
+	{
+		p_daten->auslastungsrate = (double)p_garage->belegte_stellplaetze / p_garage->maximale_kapazitaet;//Momentanauslastung berechnen (belegt/kapazitaet)
+	}
+
+	//Durchschnittliche Auslastung als laufenden Mittelwert ueber alle Schritte berechnen
+	if(aktueller_schritt > 1)
+	{
+		p_daten->durchschnittliche_auslastung = ((p_daten->durchschnittliche_auslastung * (aktueller_schritt - 1)) + p_daten->auslastungsrate) / aktueller_schritt;
+	}
+	else {
+		p_daten->durchschnittliche_auslastung = p_daten->auslastungsrate;//beim ersten Schritt ist die durchschnittliche Auslastung die Momentanauslastung
+	}
 }
 
 /*
