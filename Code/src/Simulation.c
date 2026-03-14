@@ -426,6 +426,19 @@ void start_simulation(const Simulationskonfiguration *p_konfiguration)
 	{
 		return; // Ohne initialisierte Garage darf die Simulation nicht starten
 	}
+
+	queue_init(&warteschlange);
+
+	daten.gesamt_ankuenfte = 0;
+	daten.gesamt_geparkt = 0;
+	daten.gesamt_abfahrten = 0;
+	daten.warteschlangen_laenge = 0;
+	daten.maximale_warteschlangen_laenge = 0;
+	daten.aktuell_belegte_stellplaetze = 0;
+	daten.auslastungsrate = 0.0;
+	daten.durchschnittliche_wartezeit = 0.0;
+	daten.durchschnittliche_auslastung = 0.0;
+
 }
 
 /*
