@@ -164,6 +164,7 @@ int ausparken_fahrzeug(Parkhaus *p_garage, int fahrzeug_id)
 		return 0;
 	}
 
+	// Gesuchtes Fahrzeug über die ID im Parkhaus finden
 	for (int i = 0; i < p_garage->maximale_kapazitaet; i++)
 	{
 		if (p_garage->p_stellplaetze[i].fahrzeug_id == fahrzeug_id)
