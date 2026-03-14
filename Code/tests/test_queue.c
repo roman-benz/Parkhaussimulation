@@ -73,23 +73,27 @@ void test_queue_enqueue_zeitschritt_gespeichert(void)
     printf("test_queue_enqueue_zeitschritt_gespeichert: OK\n");
 }
 
+//Prueft ob das richtige Auto returnt wird und ob die wartezeit stimmt
+//Prueft auch, ob die queue danach korrekt aktualisiert wird (laenge, head, tail)
 void test_queue_dequeue_wartezeit_und_reihenfolge(void)
 {
     Queue q;
     queue_init(&q);
 
+    //a1 kommt bei zeitschritt 3 an, a2 bei 5
     Fahrzeug a1 = {1, 10, 0, 0};
     Fahrzeug a2 = {2, 10, 0, 0};
     queue_enqueue(&q, &a1, 3);
     queue_enqueue(&q, &a2, 5);
 
+    //bei zeitschritt 10 faehrt a1 ein -> wartezeit muss 10-3=7 sein
     Fahrzeug *ergebnis = queue_dequeue(&q, 10);
 
-    assert(ergebnis->fahrzeug_id == 1);
-    assert(ergebnis->wartezeit == 7);
-    assert(q.length == 1);
+    assert(ergebnis->fahrzeug_id == 1);     //a1 war zuerst drin, muss also zuerst raus
+    assert(ergebnis->wartezeit == 7);       //10 - 3 = 7
+    assert(q.length == 1);                  //a2 ist noch drin
     assert(q.head->p_einFahrzeug->fahrzeug_id == 2);
-    assert(q.head == q.tail);
+    assert(q.head == q.tail);              //nur noch ein element, head und tail zeigen auf dasselbe
 
     queue_destroy(&q);
     printf("test_queue_dequeue_wartezeit_und_reihenfolge: OK\n");
