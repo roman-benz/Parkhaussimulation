@@ -143,12 +143,13 @@ void test_queue_destroy_leert_queue(void)
     printf("test_queue_destroy_leert_queue: OK\n");
 }
 
+//Destroy darf bei einer schon leeren queue nicht crashen
 void test_queue_destroy_leere_queue(void)
 {
     Queue q;
     queue_init(&q);
 
-    queue_destroy(&q);
+    queue_destroy(&q);  //darf nicht abstuerzen
 
     assert(q.length == 0);
     assert(q.head == NULL);
@@ -166,7 +167,7 @@ int main(void)
     test_queue_dequeue_wartezeit_und_reihenfolge();
     test_queue_dequeue_letztes_element();
     test_queue_destroy_leert_queue();
-
+    test_queue_destroy_leere_queue();
     printf("Alle Tests erfolgreich!\n");
     return 0;
 }
