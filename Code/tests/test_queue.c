@@ -48,13 +48,14 @@ void test_queue_enqueue_fifo_verkettung(void)
     printf("test_queue_enqueue_fifo_verkettung: OK\n");     //Ausgabe
 }
 
-//Testet ob queue_enqueue den enqueue_zeitschritt korrekt in jedem Knoten speichert,
-//da er spaeter in queue_dequeue fuer die Wartezeit-Berechnung benoetigt wird
+//wichtig weil queue_dequeue den zeitschritt braucht um wartezeit auszurechnen
+//wenn der Wert falsch gespeichert wird merkt man das erstmal gar nicht
 void test_queue_enqueue_zeitschritt_gespeichert(void)
 {
     Queue q;
     queue_init(&q);
 
+    //3 Autos, unterschiedliche Zeitschritte damit man sie auseinanderhalten kann
     Fahrzeug a1 = {1, 10, 0, 0};
     Fahrzeug a2 = {2, 10, 0, 0};
     Fahrzeug a3 = {3, 10, 0, 0};
@@ -63,9 +64,10 @@ void test_queue_enqueue_zeitschritt_gespeichert(void)
     queue_enqueue(&q, &a2, 25);
     queue_enqueue(&q, &a3, 42);
 
-    assert(q.head->enqueue_zeitschritt == 10);              //Erster Knoten
-    assert(q.head->next->enqueue_zeitschritt == 25);        //Zweiter Knoten
-    assert(q.tail->enqueue_zeitschritt == 42);              //Dritter Knoten
+    //jeder Knoten muss seinen eigenen Zeitschritt behalten
+    assert(q.head->enqueue_zeitschritt == 10);
+    assert(q.head->next->enqueue_zeitschritt == 25);
+    assert(q.tail->enqueue_zeitschritt == 42);
 
     queue_destroy(&q);
     printf("test_queue_enqueue_zeitschritt_gespeichert: OK\n");
