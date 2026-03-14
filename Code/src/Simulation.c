@@ -224,6 +224,42 @@ void ausfuehren_simulationsschritt(int aktueller_schritt, const Simulationskonfi
 			p_daten->durchschnittliche_wartezeit = ((p_daten->durchschnittliche_wartezeit * (p_daten->gesamt_geparkt - 1))+ wartendes_fahrzeug->wartezeit) / p_daten->gesamt_geparkt;
 		}
 	}
+
+	//TEIL 3: Neue Ankunft verarbeiten
+	//Pro Zeitschritt wird per Zufall entschieden, ob ein neues Fahrzeug ankommt.
+	int zufallswert = rand() % 100; //Modulo 100, damit man es mit dem Zufallswert von 0-100 vergleichen kann
+	if (zufallswert < p_konfiguration->ankunftswahrscheinlichkeit_prozent)
+	{
+		p_daten->gesamt_ankuenfte = p_daten->gesamt_ankuenfte + 1; //Ankünfte um eins erhöhen
+
+		//Neues Fahrzeug mit Basisdaten vorbereiten
+		Fahrzeug neues_fahrzeug;
+		neues_fahrzeug.fahrzeug_id = p_daten->gesamt_ankuenfte;
+		neues_fahrzeug.verbleibende_parkdauer = (rand() % p_konfiguration->max_parkdauer_minuten) + 1; //durch das +1 wird eine unrealistische Parkdauer von 0 vermieden
+		neues_fahrzeug.eintritts_zeit = aktueller_schritt;
+		neues_fahrzeug.wartezeit = 0;
+
+		//Wenn ein Platz frei ist, direkt einparken. Sonst in die Queue stellen.
+		if(p_garage->belegte_stellplaetze < p_garage->maximale_kapazitaet)
+		{
+			int erfolg_einparken = einparken_fahrzeug(p_garage, &neues_fahrzeug);
+			if(erfolg_einparken == 1)
+			{
+				p_daten->gesamt_geparkt = p_daten->gesamt_geparkt + 1;
+				//Direkte Einfahrt hat Wartezeit 0, geht aber in den Mittelwert ein
+				p_daten->durchschnittliche_wartezeit = (
+					(p_daten->durchschnittliche_wartezeit * (p_daten->gesamt_geparkt - 1))
+					+ neues_fahrzeug.wartezeit
+				) / p_daten->gesamt_geparkt;
+			}
+		}
+		else //In Warteschlange parken
+		{	
+			queue_enqueue(p_queue, &neues_fahrzeug, aktueller_schritt);
+		} 	
+	}
+
+	
 	 
 		
 	
