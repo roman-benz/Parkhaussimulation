@@ -414,6 +414,13 @@ void start_simulation(const Simulationskonfiguration *p_konfiguration)
 	{
 		return;
 	}
+
+	srand(p_konfiguration->zufalls_seed);   // Zufallsgenerator mit Seed initialisieren
+
+	garage.p_stellplaetze = NULL;
+	garage.maximale_kapazitaet = 0;
+	garage.belegte_stellplaetze = 0;
+	
 }
 
 /*
