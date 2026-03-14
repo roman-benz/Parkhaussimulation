@@ -184,6 +184,33 @@ END
 
 void ausfuehren_simulationsschritt(int aktueller_schritt, const Simulationskonfiguration *p_konfiguration, Parkhaus *p_garage, Queue *p_queue, Simulationdaten *p_daten)
 {
+	// Feste Reihenfolge des Schritts (Abfahrten, Queue, Ankünfte, Kennzahlen),
+	// damit jeder Zeitschritt deterministisch und fachlich korrekt
+	// verarbeitet wird.
+	if (p_konfiguration == NULL || p_garage == NULL || p_queue == NULL || p_daten == NULL){
+		return;     //Ungueltige Eingaben abfangen
+	}
+
+	//TEIL 1: Abfahrten bearbeiten
+	for (int i = 0; i < p_garage->maximale_kapazitaet; i++)	//Parkplatz array durchitterien
+	{
+		if (p_garage->p_stellplaetze[i].fahrzeug_id != -1) //Stellplatz belegt?
+		{ 
+			p_garage->p_stellplaetze[i].verbleibende_parkdauer = p_garage->p_stellplaetze[i].verbleibende_parkdauer - 1; //Parkdauer dekrementieren
+
+			if (p_garage->p_stellplaetze[i].verbleibende_parkdauer <= 0) //Parkdauer abgelaufen? -> Dann Fahrzeug ausparken
+			{ 
+				int erfolg_ausparken = ausparken_fahrzeug(p_garage, p_garage->p_stellplaetze[i].fahrzeug_id); //ausführen der ausparken_fahrzeug Funktion
+				if (erfolg_ausparken == 1)//Sicherheitsüberprüfung
+				{
+					p_daten->gesamt_abfahrten = p_daten->gesamt_abfahrten + 1; //gesamte Abfahrten um eins erhöhen
+				}
+			}
+		}
+	}
+	 
+		
+	
 
 }
 
