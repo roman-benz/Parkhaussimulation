@@ -69,10 +69,14 @@ Fahrzeug* queue_dequeue(Queue *p_eineQueue, int einparken_zeitschritt){
 }
 
 void queue_destroy(Queue *p_queue){
+    Fahrzeug *fahrzeug;
     int platzhalter_zeitschritt = 0;
-    while (queue_dequeue(p_queue, platzhalter_zeitschritt) != NULL);
+    while (fahrzeug = queue_dequeue(p_queue, platzhalter_zeitschritt) != NULL){
+        free(fahrzeug); //Speicher des Fahrzeugs freigeben
+    }
     //ACHTUNG -> NUR AUFRUFEN WENN WARTEZEIT EINES FAHRZEUGES NICHT MEHR RELEVANT IST, da queue_destroy die Wartezeit falsch überschreibt
 }
+
 /*
     Die Funktion queue_init verhindert, dass die Zeiger auf Garbage-Werte zeigen.
     Das könnte später zu Fehlern und Abstürzen führen, wenn sie nicht vorher mit NULL initialisiert werden.
