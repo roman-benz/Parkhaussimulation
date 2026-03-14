@@ -7,7 +7,7 @@
 
 
 void queue_init(Queue *p_queue){
-    if (p_queue = NULL)
+    if (p_queue == NULL)
     {
         return;
     }
