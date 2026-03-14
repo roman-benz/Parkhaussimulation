@@ -182,6 +182,11 @@ Function ausparken_fahrzeug(Parkhaus *p_garage, int fahrzeug_id)
 END
 */
 
+void ausfuehren_simulationsschritt(int aktueller_schritt, const Simulationskonfiguration *p_konfiguration, Parkhaus *p_garage, Queue *p_queue, Simulationdaten *p_daten)
+{
+
+}
+
 /*
 Function ausfuehren_simulationsschritt(
 // Feste Reihenfolge des Schritts (Abfahrten, Queue, Ankünfte, Kennzahlen),
