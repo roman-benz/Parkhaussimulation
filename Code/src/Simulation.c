@@ -199,12 +199,19 @@ void ausfuehren_simulationsschritt(int aktueller_schritt, const Simulationskonfi
 			p_garage->p_stellplaetze[i].verbleibende_parkdauer = p_garage->p_stellplaetze[i].verbleibende_parkdauer - 1; //Parkdauer dekrementieren
 
 			if (p_garage->p_stellplaetze[i].verbleibende_parkdauer <= 0) //Parkdauer abgelaufen? -> Dann Fahrzeug ausparken
-			{ 
-				int erfolg_ausparken = ausparken_fahrzeug(p_garage, p_garage->p_stellplaetze[i].fahrzeug_id); //ausführen der ausparken_fahrzeug Funktion
-				if (erfolg_ausparken == 1)//Sicherheitsüberprüfung
+			{
+				//Stellplatz direkt am bekannten Index zuruecksetzen
+				p_garage->p_stellplaetze[i].fahrzeug_id = -1;
+				p_garage->p_stellplaetze[i].verbleibende_parkdauer = 0;
+				p_garage->p_stellplaetze[i].eintritts_zeit = 0;
+				p_garage->p_stellplaetze[i].wartezeit = 0;
+
+				if (p_garage->belegte_stellplaetze > 0) //Sicherheitsueberpruefung damit es nicht negativ wird
 				{
-					p_daten->gesamt_abfahrten = p_daten->gesamt_abfahrten + 1; //gesamte Abfahrten um eins erhöhen
+					p_garage->belegte_stellplaetze = p_garage->belegte_stellplaetze - 1;
 				}
+
+				p_daten->gesamt_abfahrten = p_daten->gesamt_abfahrten + 1; //gesamte Abfahrten um eins erhöhen
 			}
 		}
 	}
