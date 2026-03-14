@@ -230,6 +230,7 @@ void ausfuehren_simulationsschritt(int aktueller_schritt, const Simulationskonfi
 			//Durchschnittliche Wartezeit als laufender Mittelwert aktualisieren
 			p_daten->durchschnittliche_wartezeit = ((p_daten->durchschnittliche_wartezeit * (p_daten->gesamt_geparkt - 1))+ wartendes_fahrzeug->wartezeit) / p_daten->gesamt_geparkt;
 		}
+		free(wartendes_fahrzeug); //Speicher freigeben
 	}
 
 	//TEIL 3: Neue Ankunft verarbeiten
