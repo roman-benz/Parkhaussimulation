@@ -216,7 +216,7 @@ void ausfuehren_simulationsschritt(int aktueller_schritt, const Simulationskonfi
 		//Wartezeit wird in queue_dequeue berechnet und im Fahrzeug gespeichert
 		Fahrzeug *wartendes_fahrzeug = queue_dequeue(p_queue,aktueller_schritt);
 
-		int erfolg_einparken = einparken_fahrzeug(p_garage, &wartendes_fahrzeug);
+		int erfolg_einparken = einparken_fahrzeug(p_garage, wartendes_fahrzeug);
 		if(erfolg_einparken == 1)//Sicherheitsüberprüfung
 		{
 			p_daten->gesamt_geparkt = p_daten->gesamt_geparkt + 1; //gesamt geparkt um eins erhöhen
