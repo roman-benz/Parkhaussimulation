@@ -120,6 +120,7 @@ void test_queue_dequeue_letztes_element(void)
     printf("test_queue_dequeue_letztes_element: OK\n");
 }
 
+//Prueft, ob nach destroy wirklich NULL ist
 void test_queue_destroy_leert_queue(void)
 {
     Queue q;
@@ -128,6 +129,7 @@ void test_queue_destroy_leert_queue(void)
     Fahrzeug a1 = {1, 10, 0, 0};
     Fahrzeug a2 = {2, 10, 0, 0};
     Fahrzeug a3 = {3, 10, 0, 0};
+
     queue_enqueue(&q, &a1, 1);
     queue_enqueue(&q, &a2, 2);
     queue_enqueue(&q, &a3, 3);
@@ -135,8 +137,8 @@ void test_queue_destroy_leert_queue(void)
     queue_destroy(&q);
 
     assert(q.length == 0);
-    assert(q.head == NULL);
-    assert(q.tail == NULL);
+    assert(q.head == NULL);     //kein element mehr drin
+    assert(q.tail == NULL);     //tail muss auch NULL sein
 
     printf("test_queue_destroy_leert_queue: OK\n");
 }
