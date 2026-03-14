@@ -42,13 +42,12 @@ void queue_enqueue(Queue *p_eineQueue, Fahrzeug *p_einFahrzeug, int enqueue_zeit
 }
 
 Fahrzeug* queue_dequeue(Queue *p_eineQueue, int einparken_zeitschritt){
-    Fahrzeug *einparkendesFahrzeug = malloc(sizeof (einparkendesFahrzeug));
     if (p_eineQueue->length == 0)
     {
         return NULL;
     }
-    QueueNode *entfernterKnoten = p_eineQueue->head;     
-    einparkendesFahrzeug = entfernterKnoten->p_einFahrzeug;      
+    QueueNode *entfernterKnoten = p_eineQueue->head;
+    Fahrzeug *einparkendesFahrzeug = entfernterKnoten->p_einFahrzeug;      
     einparkendesFahrzeug->wartezeit = einparken_zeitschritt - entfernterKnoten->enqueue_zeitschritt;
     
     p_eineQueue->head = entfernterKnoten->next;
