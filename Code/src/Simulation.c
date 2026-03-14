@@ -402,6 +402,11 @@ void end_simulationsdaten_ausgeben(const Simulationdaten *p_daten)
 	*/
 }
 
+void start_simulation(const Simulationskonfiguration *p_konfiguration)
+{
+	
+}
+
 /*
 Function start_simulation(const Simulationskonfiguration *p_konfiguration)
 	// Führt alles strukturiert zusammen: Initialisierung, Simulationsschleife und Aufräumen,
