@@ -439,7 +439,7 @@ void start_simulation(const Simulationskonfiguration *p_konfiguration)
 	daten.durchschnittliche_wartezeit = 0.0;
 	daten.durchschnittliche_auslastung = 0.0;
 
-	// Datei zu Beginn neu anlegen, damit nur Werte der aktuellen Simulation enthalten sind
+	// Datei zu Beginn neu anlegen, damit nur Werte der aktuellen Simulation enthalten sind.
 	datei_auslastung = fopen("Output/data/auslastung.txt", "w");
 	if (datei_auslastung != NULL)
 	{
