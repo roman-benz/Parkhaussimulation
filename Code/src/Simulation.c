@@ -152,6 +152,11 @@ Function einparken_fahrzeug(Parkhaus *p_garage, const Fahrzeug *p_fahrzeug)
 END
 */
 
+int ausparken_fahrzeug(Parkhaus *p_garage, int fahrzeug_id)
+{
+	
+}
+
 /*
 Function ausparken_fahrzeug(Parkhaus *p_garage, int fahrzeug_id)
 // Fahrzeugentfernung über eindeutige ID und vollständiges Zurücksetzen
