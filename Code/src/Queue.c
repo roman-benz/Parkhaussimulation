@@ -21,7 +21,14 @@ void queue_enqueue(Queue *p_eineQueue, Fahrzeug *p_einFahrzeug, int enqueue_zeit
     QueueNode *fahrzeugknoten = malloc(sizeof (*fahrzeugknoten));
     if (fahrzeugknoten != NULL)
     {
-        fahrzeugknoten->p_einFahrzeug = p_einFahrzeug;
+        fahrzeugknoten->p_einFahrzeug = malloc(sizeof(Fahrzeug)); //Speicher auf heap reservieren
+        if (fahrzeugknoten->p_einFahrzeug == NULL) //Prüfen ob Reservierung erfolgreich war
+        {
+            free(fahrzeugknoten); //Speicher freigeben
+            return;
+        }
+        
+        *fahrzeugknoten->p_einFahrzeug = *p_einFahrzeug; // Fahrzeugdaten auf heap speichern
         fahrzeugknoten->next = NULL;
         fahrzeugknoten->enqueue_zeitschritt = enqueue_zeitschritt;
         if (p_eineQueue->length == 0)
