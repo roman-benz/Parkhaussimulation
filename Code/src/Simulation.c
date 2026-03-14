@@ -208,6 +208,22 @@ void ausfuehren_simulationsschritt(int aktueller_schritt, const Simulationskonfi
 			}
 		}
 	}
+
+	//TEIL 2: Fahrzeuge aus der Queue einparken
+	//Solange freie Plaetze vorhanden sind und die Queue nicht leer ist, wird immer das vorderste Fahrzeug aus der Queue geholt.
+	while(p_garage->belegte_stellplaetze < p_garage->maximale_kapazitaet && p_queue->length > 0)
+	{
+		//Wartezeit wird in queue_dequeue berechnet und im Fahrzeug gespeichert
+		Fahrzeug *wartendes_fahrzeug = queue_dequeue(p_queue,aktueller_schritt);
+
+		int erfolg_einparken = einparken_fahrzeug(p_garage, &wartendes_fahrzeug);
+		if(erfolg_einparken == 1)//Sicherheitsüberprüfung
+		{
+			p_daten->gesamt_geparkt = p_daten->gesamt_geparkt + 1; //gesamt geparkt um eins erhöhen
+			//Durchschnittliche Wartezeit als laufender Mittelwert aktualisieren
+			p_daten->durchschnittliche_wartezeit = ((p_daten->durchschnittliche_wartezeit * (p_daten->gesamt_geparkt - 1))+ wartendes_fahrzeug->wartezeit) / p_daten->gesamt_geparkt;
+		}
+	}
 	 
 		
 	
