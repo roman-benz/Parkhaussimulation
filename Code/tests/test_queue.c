@@ -73,12 +73,35 @@ void test_queue_enqueue_zeitschritt_gespeichert(void)
     printf("test_queue_enqueue_zeitschritt_gespeichert: OK\n");
 }
 
+void test_queue_dequeue_wartezeit_und_reihenfolge(void)
+{
+    Queue q;
+    queue_init(&q);
+
+    Fahrzeug a1 = {1, 10, 0, 0};
+    Fahrzeug a2 = {2, 10, 0, 0};
+    queue_enqueue(&q, &a1, 3);
+    queue_enqueue(&q, &a2, 5);
+
+    Fahrzeug *ergebnis = queue_dequeue(&q, 10);
+
+    assert(ergebnis->fahrzeug_id == 1);
+    assert(ergebnis->wartezeit == 7);
+    assert(q.length == 1);
+    assert(q.head->p_einFahrzeug->fahrzeug_id == 2);
+    assert(q.head == q.tail);
+
+    queue_destroy(&q);
+    printf("test_queue_dequeue_wartezeit_und_reihenfolge: OK\n");
+}
+
 int main(void)
 {
     test_queue_init_setzt_felder_auf_null();
     test_queue_init_null_pointer_kein_crash();
     test_queue_enqueue_fifo_verkettung();
     test_queue_enqueue_zeitschritt_gespeichert();
+    test_queue_dequeue_wartezeit_und_reihenfolge();
 
     printf("Alle Tests erfolgreich!\n");
     return 0;
