@@ -402,6 +402,62 @@ void end_simulationsdaten_ausgeben(const Simulationdaten *p_daten)
 	*/
 }
 
+void start_simulation(const Simulationskonfiguration *p_konfiguration)
+{
+	Parkhaus garage;
+	Queue warteschlange;
+	Simulationdaten daten;
+	FILE *datei_auslastung;
+	int erfolg_init;
+
+	if (p_konfiguration == NULL)
+	{
+		return;
+	}
+
+	srand(p_konfiguration->zufalls_seed);   // Zufallsgenerator mit Seed initialisieren
+
+	garage.p_stellplaetze = NULL;
+	garage.maximale_kapazitaet = 0;
+	garage.belegte_stellplaetze = 0;
+	
+	erfolg_init = initialisierung_garage(&garage, p_konfiguration->anzahl_parkplaetze);
+	if (erfolg_init == 0)
+	{
+		return; // Ohne initialisierte Garage darf die Simulation nicht starten
+	}
+
+	queue_init(&warteschlange);
+
+	daten.gesamt_ankuenfte = 0;
+	daten.gesamt_geparkt = 0;
+	daten.gesamt_abfahrten = 0;
+	daten.warteschlangen_laenge = 0;
+	daten.maximale_warteschlangen_laenge = 0;
+	daten.aktuell_belegte_stellplaetze = 0;
+	daten.auslastungsrate = 0.0;
+	daten.durchschnittliche_wartezeit = 0.0;
+	daten.durchschnittliche_auslastung = 0.0;
+
+	// Datei zu Beginn neu anlegen, damit nur Werte der aktuellen Simulation enthalten sind.
+	datei_auslastung = fopen("Output/data/auslastung.txt", "w");
+	if (datei_auslastung != NULL)
+	{
+		fprintf(datei_auslastung, "Zeitschritt\tAuslastungsrate\n");
+		fclose(datei_auslastung);
+	}
+	for (int schritt = 1; schritt <= p_konfiguration->anzahl_simulationsschritte; schritt++)
+	{
+		ausfuehren_simulationsschritt(schritt, p_konfiguration, &garage, &warteschlange, &daten);
+		simulationsschrittdaten_ausgeben(schritt, &daten);
+	}
+
+	end_simulationsdaten_ausgeben(&daten);
+
+	queue_destroy(&warteschlange);
+	free(garage.p_stellplaetze);
+}
+
 /*
 Function start_simulation(const Simulationskonfiguration *p_konfiguration)
 	// Führt alles strukturiert zusammen: Initialisierung, Simulationsschleife und Aufräumen,
