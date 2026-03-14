@@ -143,6 +143,20 @@ void test_queue_destroy_leert_queue(void)
     printf("test_queue_destroy_leert_queue: OK\n");
 }
 
+void test_queue_destroy_leere_queue(void)
+{
+    Queue q;
+    queue_init(&q);
+
+    queue_destroy(&q);
+
+    assert(q.length == 0);
+    assert(q.head == NULL);
+    assert(q.tail == NULL);
+
+    printf("test_queue_destroy_leere_queue: OK\n");
+}
+
 int main(void)
 {
     test_queue_init_setzt_felder_auf_null();
