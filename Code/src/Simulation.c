@@ -404,7 +404,16 @@ void end_simulationsdaten_ausgeben(const Simulationdaten *p_daten)
 
 void start_simulation(const Simulationskonfiguration *p_konfiguration)
 {
-	
+	Parkhaus garage;
+	Queue warteschlange;
+	Simulationdaten daten;
+	FILE *datei_auslastung;
+	int erfolg_init;
+
+	if (p_konfiguration == NULL)
+	{
+		return;
+	}
 }
 
 /*
