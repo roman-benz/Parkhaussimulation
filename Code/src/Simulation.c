@@ -154,7 +154,15 @@ END
 
 int ausparken_fahrzeug(Parkhaus *p_garage, int fahrzeug_id)
 {
-	
+	if (p_garage == NULL || fahrzeug_id < 0)
+	{
+		return 0;
+	}
+
+	if (p_garage->p_stellplaetze == NULL || p_garage->maximale_kapazitaet <= 0)
+	{
+		return 0;
+	}
 }
 
 /*
