@@ -18,3 +18,11 @@ void test_queue_init_setzt_felder_auf_null(void)
     printf("test_queue_init_setzt_felder_auf_null: OK\n");
 }
 
+int main(void)
+{
+    test_queue_init_setzt_felder_auf_null();
+
+    printf("Alle Tests erfolgreich!\n");
+    return 0;
+}
+
