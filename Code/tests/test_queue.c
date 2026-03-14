@@ -120,6 +120,27 @@ void test_queue_dequeue_letztes_element(void)
     printf("test_queue_dequeue_letztes_element: OK\n");
 }
 
+void test_queue_destroy_leert_queue(void)
+{
+    Queue q;
+    queue_init(&q);
+
+    Fahrzeug a1 = {1, 10, 0, 0};
+    Fahrzeug a2 = {2, 10, 0, 0};
+    Fahrzeug a3 = {3, 10, 0, 0};
+    queue_enqueue(&q, &a1, 1);
+    queue_enqueue(&q, &a2, 2);
+    queue_enqueue(&q, &a3, 3);
+
+    queue_destroy(&q);
+
+    assert(q.length == 0);
+    assert(q.head == NULL);
+    assert(q.tail == NULL);
+
+    printf("test_queue_destroy_leert_queue: OK\n");
+}
+
 int main(void)
 {
     test_queue_init_setzt_felder_auf_null();
@@ -128,6 +149,7 @@ int main(void)
     test_queue_enqueue_zeitschritt_gespeichert();
     test_queue_dequeue_wartezeit_und_reihenfolge();
     test_queue_dequeue_letztes_element();
+    test_queue_destroy_leert_queue();
 
     printf("Alle Tests erfolgreich!\n");
     return 0;
