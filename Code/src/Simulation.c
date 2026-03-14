@@ -421,6 +421,11 @@ void start_simulation(const Simulationskonfiguration *p_konfiguration)
 	garage.maximale_kapazitaet = 0;
 	garage.belegte_stellplaetze = 0;
 	
+	erfolg_init = initialisierung_garage(&garage, p_konfiguration->anzahl_parkplaetze);
+	if (erfolg_init == 0)
+	{
+		return; // Ohne initialisierte Garage darf die Simulation nicht starten
+	}
 }
 
 /*
