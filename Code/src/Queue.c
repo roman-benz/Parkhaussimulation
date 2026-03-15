@@ -7,13 +7,13 @@
 
 
 void queue_init(Queue *p_queue){
-    if (p_queue = NULL)
+    if (p_queue = NULL) //Testet ob übergebene Queue nicht NULL ist
     {
         return;
     }
-    p_queue->head = NULL;
+    p_queue->head = NULL;   //Head und Tail werden auf NULL gesetzt
     p_queue->tail = NULL;
-    p_queue->length = 0;
+    p_queue->length = 0;       //Länge wird auf 0 gesetzt
 }
 
 
