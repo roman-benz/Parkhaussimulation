@@ -34,29 +34,30 @@ void test_simulationsschritt_ankunft_geht_in_queue_wenn_voll(void)
     printf("simulationsschritt_ankunft_geht_in_queue_wenn_voll: OK\n");
 }
 
+//Prüft ob ein Fahrzeug bei abgelaufener Parkdauer korrekt ausgeparkt wird
 void test_simulationsschritt_abfahrt_entfernt_fahrzeug_korrekt(void)
 {
     Parkhaus garage;
-    initialisierung_garage(&garage, 1);
+    initialisierung_garage(&garage, 1); //Initialisiert Garage mit einem Stellplatz
 
     Fahrzeug kurzparker = {7, 1, 0, 0};
-    einparken_fahrzeug(&garage, &kurzparker);
+    einparken_fahrzeug(&garage, &kurzparker);   //Fahrzeug mit einem Zeitschritt als verbleibende Parkdauer einparken
 
     Queue queue;
     queue_init(&queue);
 
-    Simulationdaten daten = {0, 0, 0, 0, 0, 0, 0.0, 0.0, 0.0};
+    Simulationdaten daten = {0, 0, 0, 0, 0, 0, 0.0, 0.0, 0.0};  //Setzt Statistiken zurück
     Simulationskonfiguration konfig = {1, 10, 0, 100, 123};
     srand(konfig.zufalls_seed);
 
-    ausfuehren_simulationsschritt(1, &konfig, &garage, &queue, &daten);
+    ausfuehren_simulationsschritt(1, &konfig, &garage, &queue, &daten); //Fahrzeug sollte in diesem Schritt ausgeparkt werden
 
-    assert(daten.gesamt_abfahrten == 1);
-    assert(garage.belegte_stellplaetze == 0);
+    assert(daten.gesamt_abfahrten == 1);        //Hier wird mit asser jeweils geprüft, ob die neuen Statistiken nach dem ausgeführten Simulationsschritt passen
+    assert(garage.belegte_stellplaetze == 0);   //0 belegte Plätze
     assert(daten.aktuell_belegte_stellplaetze == 0);
     assert(daten.gesamt_ankuenfte == 0);
     assert(daten.gesamt_geparkt == 0);
-    assert(queue.length == 0);
+    assert(queue.length == 0);  //Leere Warteschlange
     assert(daten.auslastungsrate == 0.0);
     assert(daten.durchschnittliche_auslastung == 0.0);
 
