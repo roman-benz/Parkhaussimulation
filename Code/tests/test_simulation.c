@@ -34,8 +34,40 @@ void test_simulationsschritt_ankunft_geht_in_queue_wenn_voll(void)
     printf("simulationsschritt_ankunft_geht_in_queue_wenn_voll: OK\n");
 }
 
+void test_simulationsschritt_abfahrt_entfernt_fahrzeug_korrekt(void)
+{
+    Parkhaus garage;
+    initialisierung_garage(&garage, 1);
+
+    Fahrzeug kurzparker = {7, 1, 0, 0};
+    einparken_fahrzeug(&garage, &kurzparker);
+
+    Queue queue;
+    queue_init(&queue);
+
+    Simulationdaten daten = {0, 0, 0, 0, 0, 0, 0.0, 0.0, 0.0};
+    Simulationskonfiguration konfig = {1, 10, 0, 100, 123};
+    srand(konfig.zufalls_seed);
+
+    ausfuehren_simulationsschritt(1, &konfig, &garage, &queue, &daten);
+
+    assert(daten.gesamt_abfahrten == 1);
+    assert(garage.belegte_stellplaetze == 0);
+    assert(daten.aktuell_belegte_stellplaetze == 0);
+    assert(daten.gesamt_ankuenfte == 0);
+    assert(daten.gesamt_geparkt == 0);
+    assert(queue.length == 0);
+    assert(daten.auslastungsrate == 0.0);
+    assert(daten.durchschnittliche_auslastung == 0.0);
+
+    free(garage.p_stellplaetze);
+    queue_destroy(&queue);
+    printf("simulationsschritt_abfahrt_entfernt_fahrzeug_korrekt: OK\n");
+}
+
 int main(void)
 {
     test_simulationsschritt_ankunft_geht_in_queue_wenn_voll();
+    test_simulationsschritt_abfahrt_entfernt_fahrzeug_korrekt();
     return 0;
 }
