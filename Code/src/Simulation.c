@@ -152,6 +152,41 @@ Function einparken_fahrzeug(Parkhaus *p_garage, const Fahrzeug *p_fahrzeug)
 END
 */
 
+int ausparken_fahrzeug(Parkhaus *p_garage, int fahrzeug_id)
+{
+	if (p_garage == NULL || fahrzeug_id < 0)
+	{
+		return 0;
+	}
+
+	if (p_garage->p_stellplaetze == NULL || p_garage->maximale_kapazitaet <= 0)
+	{
+		return 0;
+	}
+
+	// Gesuchtes Fahrzeug über die ID im Parkhaus finden
+	for (int i = 0; i < p_garage->maximale_kapazitaet; i++)
+	{
+		if (p_garage->p_stellplaetze[i].fahrzeug_id == fahrzeug_id)
+		{
+			// Stellplatz nach erfolgreichem Ausparken wieder als frei markieren
+			p_garage->p_stellplaetze[i].fahrzeug_id = -1;
+			p_garage->p_stellplaetze[i].verbleibende_parkdauer = 0;
+			p_garage->p_stellplaetze[i].eintritts_zeit = 0;
+			p_garage->p_stellplaetze[i].wartezeit = 0;
+
+			if (p_garage->belegte_stellplaetze > 0)
+			{
+				p_garage->belegte_stellplaetze = p_garage->belegte_stellplaetze - 1;
+			}
+
+			return 1;
+		}
+	}
+
+	return 0;
+}
+
 /*
 Function ausparken_fahrzeug(Parkhaus *p_garage, int fahrzeug_id)
 // Fahrzeugentfernung über eindeutige ID und vollständiges Zurücksetzen
@@ -181,6 +216,115 @@ Function ausparken_fahrzeug(Parkhaus *p_garage, int fahrzeug_id)
 	RETURN 0;   //Fahrzeug-ID wurde nicht gefunden
 END
 */
+
+void ausfuehren_simulationsschritt(int aktueller_schritt, const Simulationskonfiguration *p_konfiguration, Parkhaus *p_garage, Queue *p_queue, Simulationdaten *p_daten)
+{
+	// Feste Reihenfolge des Schritts (Abfahrten, Queue, Ankünfte, Kennzahlen),
+	// damit jeder Zeitschritt deterministisch und fachlich korrekt
+	// verarbeitet wird.
+	if (p_konfiguration == NULL || p_garage == NULL || p_queue == NULL || p_daten == NULL){
+		return;     //Ungueltige Eingaben abfangen
+	}
+
+	//TEIL 1: Abfahrten bearbeiten
+	for (int i = 0; i < p_garage->maximale_kapazitaet; i++)	//Parkplatz array durchitterien
+	{
+		if (p_garage->p_stellplaetze[i].fahrzeug_id != -1) //Stellplatz belegt?
+		{ 
+			p_garage->p_stellplaetze[i].verbleibende_parkdauer = p_garage->p_stellplaetze[i].verbleibende_parkdauer - 1; //Parkdauer dekrementieren
+
+			if (p_garage->p_stellplaetze[i].verbleibende_parkdauer <= 0) //Parkdauer abgelaufen? -> Dann Fahrzeug ausparken
+			{
+				//Stellplatz direkt am bekannten Index zuruecksetzen
+				p_garage->p_stellplaetze[i].fahrzeug_id = -1;
+				p_garage->p_stellplaetze[i].verbleibende_parkdauer = 0;
+				p_garage->p_stellplaetze[i].eintritts_zeit = 0;
+				p_garage->p_stellplaetze[i].wartezeit = 0;
+
+				if (p_garage->belegte_stellplaetze > 0) //Sicherheitsueberpruefung damit es nicht negativ wird
+				{
+					p_garage->belegte_stellplaetze = p_garage->belegte_stellplaetze - 1;
+				}
+
+				p_daten->gesamt_abfahrten = p_daten->gesamt_abfahrten + 1; //gesamte Abfahrten um eins erhöhen
+			}
+		}
+	}
+
+	//TEIL 2: Fahrzeuge aus der Queue einparken
+	//Solange freie Plaetze vorhanden sind und die Queue nicht leer ist, wird immer das vorderste Fahrzeug aus der Queue geholt.
+	while(p_garage->belegte_stellplaetze < p_garage->maximale_kapazitaet && p_queue->length > 0)
+	{
+		//Wartezeit wird in queue_dequeue berechnet und im Fahrzeug gespeichert
+		Fahrzeug *wartendes_fahrzeug = queue_dequeue(p_queue,aktueller_schritt);
+
+		int erfolg_einparken = einparken_fahrzeug(p_garage, wartendes_fahrzeug);
+		if(erfolg_einparken == 1)//Sicherheitsüberprüfung
+		{
+			p_daten->gesamt_geparkt = p_daten->gesamt_geparkt + 1; //gesamt geparkt um eins erhöhen
+			//Durchschnittliche Wartezeit als laufender Mittelwert aktualisieren
+			p_daten->durchschnittliche_wartezeit = ((p_daten->durchschnittliche_wartezeit * (p_daten->gesamt_geparkt - 1))+ wartendes_fahrzeug->wartezeit) / p_daten->gesamt_geparkt;
+		}
+		free(wartendes_fahrzeug); //Speicher freigeben
+	}
+
+	//TEIL 3: Neue Ankunft verarbeiten
+	//Pro Zeitschritt wird per Zufall entschieden, ob ein neues Fahrzeug ankommt.
+	int zufallswert = rand() % 100; //Modulo 100, damit man es mit dem Zufallswert von 0-100 vergleichen kann
+	if (zufallswert < p_konfiguration->ankunftswahrscheinlichkeit_prozent)
+	{
+		p_daten->gesamt_ankuenfte = p_daten->gesamt_ankuenfte + 1; //Ankünfte um eins erhöhen
+
+		//Neues Fahrzeug mit Basisdaten vorbereiten
+		Fahrzeug neues_fahrzeug;
+		neues_fahrzeug.fahrzeug_id = p_daten->gesamt_ankuenfte;
+		neues_fahrzeug.verbleibende_parkdauer = (rand() % p_konfiguration->max_parkdauer_minuten) + 1; //durch das +1 wird eine unrealistische Parkdauer von 0 vermieden
+		neues_fahrzeug.eintritts_zeit = aktueller_schritt;
+		neues_fahrzeug.wartezeit = 0;
+
+		//Wenn ein Platz frei ist, direkt einparken. Sonst in die Queue stellen.
+		if(p_garage->belegte_stellplaetze < p_garage->maximale_kapazitaet)
+		{
+			int erfolg_einparken = einparken_fahrzeug(p_garage, &neues_fahrzeug);
+			if(erfolg_einparken == 1)
+			{
+				p_daten->gesamt_geparkt = p_daten->gesamt_geparkt + 1;
+				//Direkte Einfahrt hat Wartezeit 0, geht aber in den Mittelwert ein
+				p_daten->durchschnittliche_wartezeit = (
+					(p_daten->durchschnittliche_wartezeit * (p_daten->gesamt_geparkt - 1))
+					+ neues_fahrzeug.wartezeit
+				) / p_daten->gesamt_geparkt;
+			}
+		}
+		else //In Warteschlange parken
+		{	
+			queue_enqueue(p_queue, &neues_fahrzeug, aktueller_schritt);
+		} 	
+	}
+
+	//TEIL 4: Kennzahlen aktualisieren und in Datenstruct einheitlich abspeichern
+	p_daten->warteschlangen_laenge = p_queue->length;
+	p_daten->aktuell_belegte_stellplaetze = p_garage->belegte_stellplaetze;
+
+	if(p_daten->warteschlangen_laenge > p_daten->maximale_warteschlangen_laenge)	//Maximale Wartschlange aktualisieren
+	{	
+		p_daten->maximale_warteschlangen_laenge = p_daten->warteschlangen_laenge;
+	}
+
+	if(p_garage->maximale_kapazitaet > 0) //um sicher eine division durch null zu vermeiden
+	{
+		p_daten->auslastungsrate = (double)p_garage->belegte_stellplaetze / p_garage->maximale_kapazitaet;//Momentanauslastung berechnen (belegt/kapazitaet)
+	}
+
+	//Durchschnittliche Auslastung als laufenden Mittelwert ueber alle Schritte berechnen
+	if(aktueller_schritt > 1)
+	{
+		p_daten->durchschnittliche_auslastung = ((p_daten->durchschnittliche_auslastung * (aktueller_schritt - 1)) + p_daten->auslastungsrate) / aktueller_schritt;
+	}
+	else {
+		p_daten->durchschnittliche_auslastung = p_daten->auslastungsrate;//beim ersten Schritt ist die durchschnittliche Auslastung die Momentanauslastung
+	}
+}
 
 /*
 Function ausfuehren_simulationsschritt(

@@ -7,7 +7,7 @@
 
 
 void queue_init(Queue *p_queue){
-    if (p_queue = NULL) //Testet ob übergebene Queue nicht NULL ist
+    if (p_queue == NULL)
     {
         return;
     }
@@ -21,7 +21,14 @@ void queue_enqueue(Queue *p_eineQueue, Fahrzeug *p_einFahrzeug, int enqueue_zeit
     QueueNode *fahrzeugknoten = malloc(sizeof (*fahrzeugknoten));
     if (fahrzeugknoten != NULL)
     {
-        fahrzeugknoten->p_einFahrzeug = p_einFahrzeug;
+        fahrzeugknoten->p_einFahrzeug = malloc(sizeof(Fahrzeug)); //Speicher auf heap reservieren
+        if (fahrzeugknoten->p_einFahrzeug == NULL) //Prüfen ob Reservierung erfolgreich war
+        {
+            free(fahrzeugknoten); //Speicher freigeben
+            return;
+        }
+        
+        *fahrzeugknoten->p_einFahrzeug = *p_einFahrzeug; // Fahrzeugdaten auf heap speichern
         fahrzeugknoten->next = NULL;
         fahrzeugknoten->enqueue_zeitschritt = enqueue_zeitschritt;
         if (p_eineQueue->length == 0)
@@ -42,13 +49,12 @@ void queue_enqueue(Queue *p_eineQueue, Fahrzeug *p_einFahrzeug, int enqueue_zeit
 }
 
 Fahrzeug* queue_dequeue(Queue *p_eineQueue, int einparken_zeitschritt){
-    Fahrzeug *einparkendesFahrzeug = malloc(sizeof (einparkendesFahrzeug));
     if (p_eineQueue->length == 0)
     {
         return NULL;
     }
-    QueueNode *entfernterKnoten = p_eineQueue->head;     
-    einparkendesFahrzeug = entfernterKnoten->p_einFahrzeug;      
+    QueueNode *entfernterKnoten = p_eineQueue->head;
+    Fahrzeug *einparkendesFahrzeug = entfernterKnoten->p_einFahrzeug;      
     einparkendesFahrzeug->wartezeit = einparken_zeitschritt - entfernterKnoten->enqueue_zeitschritt;
     
     p_eineQueue->head = entfernterKnoten->next;
@@ -63,10 +69,14 @@ Fahrzeug* queue_dequeue(Queue *p_eineQueue, int einparken_zeitschritt){
 }
 
 void queue_destroy(Queue *p_queue){
+    Fahrzeug *fahrzeug;
     int platzhalter_zeitschritt = 0;
-    while (queue_dequeue(p_queue, platzhalter_zeitschritt) != NULL);
+    while ((fahrzeug = queue_dequeue(p_queue, platzhalter_zeitschritt)) != NULL){
+        free(fahrzeug); //Speicher des Fahrzeugs freigeben
+    }
     //ACHTUNG -> NUR AUFRUFEN WENN WARTEZEIT EINES FAHRZEUGES NICHT MEHR RELEVANT IST, da queue_destroy die Wartezeit falsch überschreibt
 }
+
 /*
     Die Funktion queue_init verhindert, dass die Zeiger auf Garbage-Werte zeigen.
     Das könnte später zu Fehlern und Abstürzen führen, wenn sie nicht vorher mit NULL initialisiert werden.
