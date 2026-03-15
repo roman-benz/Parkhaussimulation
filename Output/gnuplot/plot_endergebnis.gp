@@ -1,14 +1,14 @@
 set terminal pngcairo size 1000,700
 set output 'Output/data/plot_endergebnis.png'
 
-if (!exists("werte_datei")) werte_datei='simulation_ende.txt'
-if (!exists("auslastung_datei")) auslastung_datei='auslastung.txt'
+if (!exists("werte_datei")) werte_datei='Output/data/simulation_ende.txt'
+if (!exists("auslastung_datei")) auslastung_datei='Output/data/auslastung.txt'
 if (system(sprintf('if exist "%s" (echo 1) else (echo 0)',werte_datei))+0!=1) { print 'Fehler: werte_datei fehlt'; exit }
 if (system(sprintf('if exist "%s" (echo 1) else (echo 0)',auslastung_datei))+0!=1) { print 'Fehler: auslastung_datei fehlt'; exit }
 
 load werte_datei
 stats auslastung_datei using 2 nooutput
-avg = STATS_mean
+avg = STATS_mean * 100.0
 stats auslastung_datei using 1 nooutput
 xmax = STATS_max
 davg = (exists("durchschnittliche_auslastung") ? durchschnittliche_auslastung*100.0 : avg)
@@ -32,9 +32,9 @@ plot NaN notitle
 unset title; unset label
 set size 1,0.70; set origin 0,0
 set key outside right; set border; set xtics; set ytics; set grid
-set xlabel 'x'; set ylabel 'Auslastung (%)'
+set xlabel 'Zeitschritt'; set ylabel 'Auslastung (%)'
 set xrange [0:xmax]; set yrange [0:100]
-plot auslastung_datei using 1:2 with linespoints lw 2 pt 7 title 'Momentanauslastung', \
+plot auslastung_datei using 1:($2*100.0) with linespoints lw 2 pt 7 title 'Momentanauslastung', \
 	avg with lines lw 2 dt 2 title 'Durchschnitt'
 
 unset multiplot
