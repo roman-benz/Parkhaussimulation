@@ -660,4 +660,4 @@ Function start_simulation(const Simulationskonfiguration *p_konfiguration)
 	queue_destroy(&warteschlange);
 	free(garage.p_stellplaetze);
 END
-*/
+*/ 
