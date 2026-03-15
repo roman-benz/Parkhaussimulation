@@ -484,6 +484,7 @@ void simulationsschrittdaten_ausgeben(int aktueller_schritt, const Simulationdat
 void end_simulationsdaten_ausgeben(const Simulationdaten *p_daten)
 {
 	FILE *datei_ende;
+	int gnuplot_status;
 
 	if (p_daten == NULL)
 	{
@@ -494,19 +495,29 @@ void end_simulationsdaten_ausgeben(const Simulationdaten *p_daten)
 	datei_ende = fopen("Output/data/simulation_ende.txt", "w");
 	if (datei_ende != NULL)
 	{
-		fprintf(datei_ende, "gesamt_ankuenfte\t%d\n", p_daten->gesamt_ankuenfte);
-		fprintf(datei_ende, "gesamt_geparkt\t%d\n", p_daten->gesamt_geparkt);
-		fprintf(datei_ende, "gesamt_abfahrten\t%d\n", p_daten->gesamt_abfahrten);
-		fprintf(datei_ende, "aktuell_belegte_stellplaetze\t%d\n", p_daten->aktuell_belegte_stellplaetze);
-		fprintf(datei_ende, "warteschlangen_laenge\t%d\n", p_daten->warteschlangen_laenge);
-		fprintf(datei_ende, "maximale_warteschlangen_laenge\t%d\n", p_daten->maximale_warteschlangen_laenge);
-		fprintf(datei_ende, "auslastungsrate\t%.4f\n", p_daten->auslastungsrate);
-		fprintf(datei_ende, "durchschnittliche_wartezeit\t%.4f\n", p_daten->durchschnittliche_wartezeit);
-		fprintf(datei_ende, "durchschnittliche_auslastung\t%.4f\n", p_daten->durchschnittliche_auslastung);
+		fprintf(datei_ende, "gesamt_ankuenfte = %d\n", p_daten->gesamt_ankuenfte);
+		fprintf(datei_ende, "gesamt_geparkt = %d\n", p_daten->gesamt_geparkt);
+		fprintf(datei_ende, "gesamt_abfahrten = %d\n", p_daten->gesamt_abfahrten);
+		fprintf(datei_ende, "aktuell_belegte_stellplaetze = %d\n", p_daten->aktuell_belegte_stellplaetze);
+		fprintf(datei_ende, "warteschlangen_laenge = %d\n", p_daten->warteschlangen_laenge);
+		fprintf(datei_ende, "maximale_warteschlangen_laenge = %d\n", p_daten->maximale_warteschlangen_laenge);
+		fprintf(datei_ende, "auslastungsrate = %.4f\n", p_daten->auslastungsrate);
+		fprintf(datei_ende, "durchschnittliche_wartezeit = %.4f\n", p_daten->durchschnittliche_wartezeit);
+		fprintf(datei_ende, "durchschnittliche_auslastung = %.4f\n", p_daten->durchschnittliche_auslastung);
 		fclose(datei_ende);
 
 		printf("===== ENDE DER SIMULATION =====\n");
 		printf("Simulationsergebnisse finden Sie in der externen Ergebnisdatei.\n");
+
+		gnuplot_status = system("gnuplot Output/gnuplot/plot_endergebnis.gp");
+		if (gnuplot_status != 0)
+		{
+			printf("Warnung: Gnuplot konnte nicht erfolgreich ausgefuehrt werden.\n");
+		}
+		else
+		{
+			printf("Gnuplot wurde erfolgreich ausgefuehrt.\n");
+		}
 
 	}
 	else
