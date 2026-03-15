@@ -152,6 +152,41 @@ Function einparken_fahrzeug(Parkhaus *p_garage, const Fahrzeug *p_fahrzeug)
 END
 */
 
+int ausparken_fahrzeug(Parkhaus *p_garage, int fahrzeug_id)
+{
+	if (p_garage == NULL || fahrzeug_id < 0)
+	{
+		return 0;
+	}
+
+	if (p_garage->p_stellplaetze == NULL || p_garage->maximale_kapazitaet <= 0)
+	{
+		return 0;
+	}
+
+	// Gesuchtes Fahrzeug über die ID im Parkhaus finden
+	for (int i = 0; i < p_garage->maximale_kapazitaet; i++)
+	{
+		if (p_garage->p_stellplaetze[i].fahrzeug_id == fahrzeug_id)
+		{
+			// Stellplatz nach erfolgreichem Ausparken wieder als frei markieren
+			p_garage->p_stellplaetze[i].fahrzeug_id = -1;
+			p_garage->p_stellplaetze[i].verbleibende_parkdauer = 0;
+			p_garage->p_stellplaetze[i].eintritts_zeit = 0;
+			p_garage->p_stellplaetze[i].wartezeit = 0;
+
+			if (p_garage->belegte_stellplaetze > 0)
+			{
+				p_garage->belegte_stellplaetze = p_garage->belegte_stellplaetze - 1;
+			}
+
+			return 1;
+		}
+	}
+
+	return 0;
+}
+
 /*
 Function ausparken_fahrzeug(Parkhaus *p_garage, int fahrzeug_id)
 // Fahrzeugentfernung über eindeutige ID und vollständiges Zurücksetzen
