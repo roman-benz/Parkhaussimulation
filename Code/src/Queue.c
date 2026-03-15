@@ -11,9 +11,9 @@ void queue_init(Queue *p_queue){
     {
         return;
     }
-    p_queue->head = NULL;
+    p_queue->head = NULL;   //Head und Tail werden auf NULL gesetzt
     p_queue->tail = NULL;
-    p_queue->length = 0;
+    p_queue->length = 0;       //Länge wird auf 0 gesetzt
 }
 
 
