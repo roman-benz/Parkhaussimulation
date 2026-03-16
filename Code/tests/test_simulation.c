@@ -47,6 +47,15 @@ void test_initialisierung_garage_ungueltige_kapazitaet_liefert_fehler(void)
 
 void test_einparken_fahrzeug_parkt_und_blockiert_bei_voll(void)
 {
+    Parkhaus garage;
+    int init_erfolg = initialisierung_garage(&garage, 1);
+    assert(init_erfolg == 1);
+
+    Fahrzeug auto1 = {10, 5, 1, 0};
+    Fahrzeug auto2 = {11, 3, 2, 0};
+
+    int park_erfolg = einparken_fahrzeug(&garage, &auto1);
+    int park_fehlschlag = einparken_fahrzeug(&garage, &auto2);
 }
 
 
