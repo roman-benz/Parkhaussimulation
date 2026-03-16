@@ -30,6 +30,12 @@ void test_initialisierung_garage_erfolgreich_setzt_grundzustand(void)
 }
 
 
+void test_initialisierung_garage_ungueltige_kapazitaet_liefert_fehler(void)
+{
+    
+}
+
+
 //Testet, ob ein Fahrzeug bei vollem Parkhaus korrekt in die Warteschlange aufgenommen wird
 void test_simulationsschritt_ankunft_geht_in_queue_wenn_voll(void)
 {
