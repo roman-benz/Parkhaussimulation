@@ -69,6 +69,11 @@ void test_einparken_fahrzeug_parkt_und_blockiert_bei_voll(void)
 }
 
 
+void test_ausparken_fahrzeug_gibt_platz_frei_und_fehlt_bei_unbekannter_id(void)
+{
+}
+
+
 //Testet, ob ein Fahrzeug bei vollem Parkhaus korrekt in die Warteschlange aufgenommen wird
 void test_simulationsschritt_ankunft_geht_in_queue_wenn_voll(void)
 {
