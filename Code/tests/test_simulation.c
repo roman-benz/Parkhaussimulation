@@ -7,6 +7,15 @@
 
 void test_initialisierung_garage_erfolgreich_setzt_grundzustand(void)
 {
+    Parkhaus garage;
+    int kapazitaet = 3;
+
+    int erfolg = initialisierung_garage(&garage, kapazitaet);
+
+    assert(erfolg == 1);
+    assert(garage.p_stellplaetze != NULL);
+    assert(garage.maximale_kapazitaet == kapazitaet);
+    assert(garage.belegte_stellplaetze == 0);
 }
 
 
