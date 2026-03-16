@@ -81,6 +81,17 @@ void test_ausparken_fahrzeug_gibt_platz_frei_und_fehlt_bei_unbekannter_id(void)
 
     int auspark_erfolg = ausparken_fahrzeug(&garage, 5);
     int auspark_fehlschlag = ausparken_fahrzeug(&garage, 999);
+
+    assert(auspark_erfolg == 1);
+    assert(auspark_fehlschlag == 0);
+    assert(garage.belegte_stellplaetze == 0);
+    assert(garage.p_stellplaetze[0].fahrzeug_id == -1);
+    assert(garage.p_stellplaetze[0].verbleibende_parkdauer == 0);
+    assert(garage.p_stellplaetze[0].eintritts_zeit == 0);
+    assert(garage.p_stellplaetze[0].wartezeit == 0);
+
+    free(garage.p_stellplaetze);
+    printf("test_ausparken_fahrzeug_gibt_platz_frei_und_fehlt_bei_unbekannter_id: OK\n");
 }
 
 
