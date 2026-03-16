@@ -71,6 +71,16 @@ void test_einparken_fahrzeug_parkt_und_blockiert_bei_voll(void)
 
 void test_ausparken_fahrzeug_gibt_platz_frei_und_fehlt_bei_unbekannter_id(void)
 {
+    Parkhaus garage;
+    int init_erfolg = initialisierung_garage(&garage, 2);
+    assert(init_erfolg == 1);
+
+    Fahrzeug auto1 = {5, 2, 1, 0};
+    int park_erfolg = einparken_fahrzeug(&garage, &auto1);
+    assert(park_erfolg == 1);
+
+    int auspark_erfolg = ausparken_fahrzeug(&garage, 5);
+    int auspark_fehlschlag = ausparken_fahrzeug(&garage, 999);
 }
 
 
