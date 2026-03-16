@@ -56,6 +56,16 @@ void test_einparken_fahrzeug_parkt_und_blockiert_bei_voll(void)
 
     int park_erfolg = einparken_fahrzeug(&garage, &auto1);
     int park_fehlschlag = einparken_fahrzeug(&garage, &auto2);
+
+    assert(park_erfolg == 1);
+    assert(park_fehlschlag == 0);
+    assert(garage.belegte_stellplaetze == 1);
+    assert(garage.p_stellplaetze[0].fahrzeug_id == 10);
+    assert(garage.p_stellplaetze[0].verbleibende_parkdauer == 5);
+    assert(garage.p_stellplaetze[0].eintritts_zeit == 1);
+
+    free(garage.p_stellplaetze);
+    printf("test_einparken_fahrzeug_parkt_und_blockiert_bei_voll: OK\n");
 }
 
 
