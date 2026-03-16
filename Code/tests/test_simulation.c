@@ -16,6 +16,17 @@ void test_initialisierung_garage_erfolgreich_setzt_grundzustand(void)
     assert(garage.p_stellplaetze != NULL);
     assert(garage.maximale_kapazitaet == kapazitaet);
     assert(garage.belegte_stellplaetze == 0);
+
+    for (int i = 0; i < kapazitaet; i++)
+    {
+        assert(garage.p_stellplaetze[i].fahrzeug_id == -1);
+        assert(garage.p_stellplaetze[i].verbleibende_parkdauer == 0);
+        assert(garage.p_stellplaetze[i].eintritts_zeit == 0);
+        assert(garage.p_stellplaetze[i].wartezeit == 0);
+    }
+
+    free(garage.p_stellplaetze);
+    printf("test_initialisierung_garage_erfolgreich_setzt_grundzustand: OK\n");
 }
 
 
