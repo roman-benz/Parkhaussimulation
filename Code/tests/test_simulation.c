@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include "../Include/Simulation.h"
 
+// Prüft erfolgreiche Initialisierung und definierten Startzustand aller Stellplätze
 void test_initialisierung_garage_erfolgreich_setzt_grundzustand(void)
 {
     Parkhaus garage;
@@ -30,6 +31,7 @@ void test_initialisierung_garage_erfolgreich_setzt_grundzustand(void)
 }
 
 
+// Prüft ungültige Kapazität gibt einen Fehler zurück
 void test_initialisierung_garage_ungueltige_kapazitaet_liefert_fehler(void)
 {
     Parkhaus garage;
@@ -45,6 +47,7 @@ void test_initialisierung_garage_ungueltige_kapazitaet_liefert_fehler(void)
 }
 
 
+// Prüft erfolgreiches Einparken und korrektes Verhalten bei vollem Parkhaus
 void test_einparken_fahrzeug_parkt_und_blockiert_bei_voll(void)
 {
     Parkhaus garage;
@@ -69,6 +72,7 @@ void test_einparken_fahrzeug_parkt_und_blockiert_bei_voll(void)
 }
 
 
+// Prueft Ausparken per ID und Fehlfall bei nicht vorhandener Fahrzeug-ID.
 void test_ausparken_fahrzeug_gibt_platz_frei_und_fehlt_bei_unbekannter_id(void)
 {
     Parkhaus garage;
@@ -95,6 +99,15 @@ void test_ausparken_fahrzeug_gibt_platz_frei_und_fehlt_bei_unbekannter_id(void)
 }
 
 
+// Prueft, dass start_simulation mit NULL ohne Absturz zurückkehrt
+void test_start_simulation_null_pointer_kein_crash(void)
+{
+    start_simulation(NULL);
+    printf("test_start_simulation_null_pointer_kein_crash: OK\n");
+}
+
+
+// Prüft dass die übergebene Konfiguration nur gelesen und nicht verändert wird
 void test_start_simulation_veraendert_konfiguration_nicht(void)
 {
     Simulationskonfiguration konfig = {1, 5, 0, 50, 1234};
