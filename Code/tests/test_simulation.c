@@ -32,7 +32,16 @@ void test_initialisierung_garage_erfolgreich_setzt_grundzustand(void)
 
 void test_initialisierung_garage_ungueltige_kapazitaet_liefert_fehler(void)
 {
-    
+    Parkhaus garage;
+
+    int erfolg = initialisierung_garage(&garage, 0);
+
+    assert(erfolg == 0);
+    assert(garage.p_stellplaetze == NULL);
+    assert(garage.maximale_kapazitaet == 0);
+    assert(garage.belegte_stellplaetze == 0);
+
+    printf("test_initialisierung_garage_ungueltige_kapazitaet_liefert_fehler: OK\n");   
 }
 
 
