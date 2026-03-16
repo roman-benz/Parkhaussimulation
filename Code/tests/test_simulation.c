@@ -5,6 +5,11 @@
 #include <stdlib.h>
 #include "../Include/Simulation.h"
 
+void test_initialisierung_garage_erfolgreich_setzt_grundzustand(void)
+{
+}
+
+
 //Testet, ob ein Fahrzeug bei vollem Parkhaus korrekt in die Warteschlange aufgenommen wird
 void test_simulationsschritt_ankunft_geht_in_queue_wenn_voll(void)
 {
@@ -66,8 +71,10 @@ void test_simulationsschritt_abfahrt_entfernt_fahrzeug_korrekt(void)
     printf("simulationsschritt_abfahrt_entfernt_fahrzeug_korrekt: OK\n");
 }
 
+
 int main(void)
 {
+    test_start_simulation_veraendert_konfiguration_nicht();
     test_simulationsschritt_ankunft_geht_in_queue_wenn_voll();
     test_simulationsschritt_abfahrt_entfernt_fahrzeug_korrekt();
     return 0;
