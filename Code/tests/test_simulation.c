@@ -97,6 +97,18 @@ void test_ausparken_fahrzeug_gibt_platz_frei_und_fehlt_bei_unbekannter_id(void)
 
 void test_start_simulation_veraendert_konfiguration_nicht(void)
 {
+    Simulationskonfiguration konfig = {1, 5, 0, 50, 1234};
+    Simulationskonfiguration vorher = konfig;
+
+    start_simulation(&konfig);
+
+    assert(konfig.anzahl_parkplaetze == vorher.anzahl_parkplaetze);
+    assert(konfig.max_parkdauer_minuten == vorher.max_parkdauer_minuten);
+    assert(konfig.anzahl_simulationsschritte == vorher.anzahl_simulationsschritte);
+    assert(konfig.ankunftswahrscheinlichkeit_prozent == vorher.ankunftswahrscheinlichkeit_prozent);
+    assert(konfig.zufalls_seed == vorher.zufalls_seed);
+
+    printf("test_start_simulation_veraendert_konfiguration_nicht: OK\n");
 }
 
 
