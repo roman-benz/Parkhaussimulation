@@ -176,6 +176,11 @@ void test_simulationsschritt_abfahrt_entfernt_fahrzeug_korrekt(void)
 
 int main(void)
 {
+    test_initialisierung_garage_erfolgreich_setzt_grundzustand();
+    test_initialisierung_garage_ungueltige_kapazitaet_liefert_fehler();
+    test_einparken_fahrzeug_parkt_und_blockiert_bei_voll();
+    test_ausparken_fahrzeug_gibt_platz_frei_und_fehlt_bei_unbekannter_id();
+    test_start_simulation_null_pointer_kein_crash();
     test_start_simulation_veraendert_konfiguration_nicht();
     test_simulationsschritt_ankunft_geht_in_queue_wenn_voll();
     test_simulationsschritt_abfahrt_entfernt_fahrzeug_korrekt();
