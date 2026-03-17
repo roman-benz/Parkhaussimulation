@@ -15,8 +15,7 @@ RUN if [ "${REINSTALL_CMAKE_VERSION_FROM_SOURCE}" != "none" ]; then \
 
 # Install additional packages
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install --no-install-recommends \
-       gnuplot \
+    && apt-get -y install --no-install-recommends gnuplot-nox \
     && rm -rf /var/lib/apt/lists/*
 
 # [Optional] Uncomment this section to install additional packages.
