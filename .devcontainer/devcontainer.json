@@ -4,7 +4,7 @@
     "name": "C++",
     "build": {
         "context": "./c",
-        "dockerfile": "Dockerfile"
+        "dockerfile": "./c/Dockerfile"
     },
     "customizations": {
         "vscode": {
