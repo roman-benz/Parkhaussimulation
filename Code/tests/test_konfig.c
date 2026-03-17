@@ -5,3 +5,8 @@
 #include <stdlib.h>
 #include "../include/Konfig.h"
 
+
+void test_int_wert_einlesen_gueltige_eingabe(void)
+{
+
+}
