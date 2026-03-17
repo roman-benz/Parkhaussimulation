@@ -8,7 +8,14 @@
 
 static int stdin_auf_datei_setzen(const char *dateiname, const char *inhalt)
 {
+	FILE *datei = fopen(dateiname, "w");
+	if (datei == NULL)
+	{
+		return 0;
+	}
 
+	fputs(inhalt, datei);
+	fclose(datei);
 }
 
 
