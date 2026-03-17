@@ -1,4 +1,4 @@
-#include "../include/Konfig.h"
+#include "../Include/Konfig.h"
 #include <stdio.h>
 
 /*
