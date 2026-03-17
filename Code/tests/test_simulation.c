@@ -170,7 +170,7 @@ void test_simulationsschritt_abfahrt_entfernt_fahrzeug_korrekt(void)
     queue_init(&queue);
 
     Simulationdaten daten = {0, 0, 0, 0, 0, 0, 0.0, 0.0, 0.0};  //Setzt Statistiken zurück
-    Simulationskonfiguration konfig = {1, 10, 0, 100, 123};
+    Simulationskonfiguration konfig = {1, 10, 0, 0, 123}; // 0% Ankunft, damit nur die Abfahrt getestet wird
     srand(konfig.zufalls_seed);
 
     ausfuehren_simulationsschritt(1, &konfig, &garage, &queue, &daten); //Fahrzeug sollte in diesem Schritt ausgeparkt werden
