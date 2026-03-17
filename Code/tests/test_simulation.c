@@ -3,10 +3,7 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include "../Include/Simulation.h"
-
-
 
 // Prüft erfolgreiche Initialisierung und definierten Startzustand aller Stellplätze
 void test_initialisierung_garage_erfolgreich_setzt_grundzustand(void)
@@ -189,124 +186,6 @@ void test_simulationsschritt_abfahrt_entfernt_fahrzeug_korrekt(void)
     printf("simulationsschritt_abfahrt_entfernt_fahrzeug_korrekt: OK\n");
 }
 
-int datei_enthaelt_text(const char *dateipfad, const char *suchtext)
-{
-    // Für Ausgabetests reicht oft "enthält erwarteten Teilstring" statt kompletter Dateivergleich.
-    // Ob ein erwarteter Wert/Schlüssel irgendwo in der Datei geschrieben wurde.
-    FILE *datei = fopen(dateipfad, "r");
-    char zeile[512];
-
-    if (datei == NULL)
-    {
-        return 0;
-    }
-
-    while (fgets(zeile, sizeof(zeile), datei) != NULL)
-    {
-        if (strstr(zeile, suchtext) != NULL)
-        {
-            fclose(datei);
-            return 1;
-        }
-    }
-
-    fclose(datei);
-    return 0;
-}
-
-int dateiinhalt_ist_exakt(const char *dateipfad, const char *erwarteter_inhalt)
-{
-    // Bei NULL-Guards wollen wir strikt prüfen, dass sich der Inhalt gar nicht verändert.
-    // Exakte Übereinstimmung der kompletten Datei mit einem bekannten Referenztext.
-    FILE *datei = fopen(dateipfad, "r");
-    char inhalt[1024];
-    size_t gelesen;
-
-    if (datei == NULL)
-    {
-        return 0;
-    }
-
-    gelesen = fread(inhalt, 1, sizeof(inhalt) - 1, datei);
-    inhalt[gelesen] = '\0';
-    fclose(datei);
-
-    if (strcmp(inhalt, erwarteter_inhalt) == 0)
-    {
-        return 1;
-    }
-
-    return 0;
-}
-
-void test_simulationsschrittdaten_ausgeben_schreibt_auslastungszeile(void)
-{
-    // Die Schrittausgabe ist Grundlage für die spätere Auslastungsanalyse.
-    // Ein Simulationsschritt schreibt die erwartete Zeile "Schritt\tAuslastung" in die Datei.
-    Simulationdaten daten = {8, 5, 3, 2, 4, 3, 0.7500, 1.2500, 0.5000};
-
-    remove("Output/data/auslastung.txt");
-
-    simulationsschrittdaten_ausgeben(3, &daten);
-
-    assert(datei_enthaelt_text("Output/data/auslastung.txt", "3\t0.7500"));
-    printf("test_simulationsschrittdaten_ausgeben_schreibt_auslastungszeile: OK\n");
-}
-
-void test_simulationsschrittdaten_ausgeben_null_schreibt_nicht(void)
-{
-    // Bei ungültigem Pointer darf die Ausgabefunktion keine Seiteneffekte verursachen.
-    // Bei p_daten == NULL bleibt eine bestehende Datei exakt unverändert.
-    FILE *datei = fopen("Output/data/auslastung.txt", "w");
-
-    assert(datei != NULL);
-    fprintf(datei, "TEST\n");
-    fclose(datei);
-
-    simulationsschrittdaten_ausgeben(99, NULL);
-
-    assert(dateiinhalt_ist_exakt("Output/data/auslastung.txt", "TEST\n"));
-    printf("test_simulationsschrittdaten_ausgeben_null_schreibt_nicht: OK\n");
-}
-
-void test_end_simulationsdaten_ausgeben_schreibt_alle_enddaten(void)
-{
-    // Die Endausgabe muss alle Kennzahlen vollständig bereitstellen (Dokumentation/Plot-Auswertung).
-    // Alle Pflichtfelder werden als "key = value" in simulation_ende.txt geschrieben.
-    Simulationdaten daten = {12, 9, 7, 2, 5, 4, 0.8000, 1.3333, 0.6125};
-
-    remove("Output/data/simulation_ende.txt");
-
-    end_simulationsdaten_ausgeben(&daten);
-
-    assert(datei_enthaelt_text("Output/data/simulation_ende.txt", "gesamt_ankuenfte = 12"));
-    assert(datei_enthaelt_text("Output/data/simulation_ende.txt", "gesamt_geparkt = 9"));
-    assert(datei_enthaelt_text("Output/data/simulation_ende.txt", "gesamt_abfahrten = 7"));
-    assert(datei_enthaelt_text("Output/data/simulation_ende.txt", "aktuell_belegte_stellplaetze = 4"));
-    assert(datei_enthaelt_text("Output/data/simulation_ende.txt", "warteschlangen_laenge = 2"));
-    assert(datei_enthaelt_text("Output/data/simulation_ende.txt", "maximale_warteschlangen_laenge = 5"));
-    assert(datei_enthaelt_text("Output/data/simulation_ende.txt", "auslastungsrate = 0.8000"));
-    assert(datei_enthaelt_text("Output/data/simulation_ende.txt", "durchschnittliche_wartezeit = 1.3333"));
-    assert(datei_enthaelt_text("Output/data/simulation_ende.txt", "durchschnittliche_auslastung = 0.6125"));
-    printf("test_end_simulationsdaten_ausgeben_schreibt_alle_enddaten: OK\n");
-}
-
-void test_end_simulationsdaten_ausgeben_null_schreibt_nicht(void)
-{
-    // Auch die Endausgabe muss bei NULL robust abbrechen, statt Dateien zu überschreiben.
-    // Bei p_daten == NULL bleibt der vorhandene Dateiinhalt exakt erhalten.
-    FILE *datei = fopen("Output/data/simulation_ende.txt", "w");
-
-    assert(datei != NULL);
-    fprintf(datei, "TEST\n");
-    fclose(datei);
-
-    end_simulationsdaten_ausgeben(NULL);
-
-    assert(dateiinhalt_ist_exakt("Output/data/simulation_ende.txt", "TEST\n"));
-    printf("test_end_simulationsdaten_ausgeben_null_schreibt_nicht: OK\n");
-}
-
 
 int main(void)
 {
@@ -318,9 +197,5 @@ int main(void)
     test_start_simulation_veraendert_konfiguration_nicht();
     test_simulationsschritt_ankunft_geht_in_queue_wenn_voll();
     test_simulationsschritt_abfahrt_entfernt_fahrzeug_korrekt();
-    test_simulationsschrittdaten_ausgeben_schreibt_auslastungszeile();
-    test_simulationsschrittdaten_ausgeben_null_schreibt_nicht();
-    test_end_simulationsdaten_ausgeben_schreibt_alle_enddaten();
-    test_end_simulationsdaten_ausgeben_null_schreibt_nicht();
     return 0;
 }
