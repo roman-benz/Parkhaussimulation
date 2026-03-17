@@ -60,3 +60,14 @@ void test_konfiguration_einlesen_gueltige_eingaben(void)
 	remove(pfad);
 	printf("test_konfiguration_einlesen_gueltige_eingaben: OK\n");
 }
+
+
+int main(void)
+{
+	test_int_wert_einlesen_gueltige_eingabe();
+	test_int_wert_einlesen_wert_ausserhalb_bereich();
+	test_konfiguration_einlesen_null_pointer();
+	test_konfiguration_einlesen_gueltige_eingaben();
+	printf("Alle Konfig-Tests erfolgreich!\n");
+	return 0;
+}
