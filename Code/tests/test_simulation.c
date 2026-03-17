@@ -239,6 +239,20 @@ int dateiinhalt_ist_exakt(const char *dateipfad, const char *erwarteter_inhalt)
     return 0;
 }
 
+void test_simulationsschrittdaten_ausgeben_schreibt_auslastungszeile(void)
+{
+    // Die Schrittausgabe ist Grundlage für die spätere Auslastungsanalyse.
+    // Ein Simulationsschritt schreibt die erwartete Zeile "Schritt\tAuslastung" in die Datei.
+    Simulationdaten daten = {8, 5, 3, 2, 4, 3, 0.7500, 1.2500, 0.5000};
+
+    remove("Output/data/auslastung.txt");
+
+    simulationsschrittdaten_ausgeben(3, &daten);
+
+    assert(datei_enthaelt_text("Output/data/auslastung.txt", "3\t0.7500"));
+    printf("test_simulationsschrittdaten_ausgeben_schreibt_auslastungszeile: OK\n");
+}
+
 
 int main(void)
 {
