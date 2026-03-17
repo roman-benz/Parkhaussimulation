@@ -16,6 +16,13 @@ static int stdin_auf_datei_setzen(const char *dateiname, const char *inhalt)
 
 	fputs(inhalt, datei);
 	fclose(datei);
+
+	if (freopen(dateiname, "r", stdin) == NULL)
+	{
+		return 0;
+	}
+
+	return 1;
 }
 
 
