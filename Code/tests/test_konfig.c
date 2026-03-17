@@ -23,5 +23,14 @@ void test_int_wert_einlesen_gueltige_eingabe(void)
 
 void test_int_wert_einlesen_wert_ausserhalb_bereich(void)
 {
+	const char *pfad = "test_input_int_out_of_range.txt";
+	int out_wert = -7;
 
+	assert(stdin_auf_datei_setzen(pfad, "150\n") == 1);
+
+	assert(int_wert_einlesen("Test: ", 1, 100, &out_wert) == 0);
+	assert(out_wert == -7);
+
+	remove(pfad);
+	printf("test_int_wert_einlesen_wert_ausserhalb_bereich: OK\n");
 }
