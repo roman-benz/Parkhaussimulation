@@ -269,6 +269,28 @@ void test_simulationsschrittdaten_ausgeben_null_schreibt_nicht(void)
     printf("test_simulationsschrittdaten_ausgeben_null_schreibt_nicht: OK\n");
 }
 
+void test_end_simulationsdaten_ausgeben_schreibt_alle_enddaten(void)
+{
+    // Die Endausgabe muss alle Kennzahlen vollständig bereitstellen (Dokumentation/Plot-Auswertung).
+    // Alle Pflichtfelder werden als "key = value" in simulation_ende.txt geschrieben.
+    Simulationdaten daten = {12, 9, 7, 2, 5, 4, 0.8000, 1.3333, 0.6125};
+
+    remove("Output/data/simulation_ende.txt");
+
+    end_simulationsdaten_ausgeben(&daten);
+
+    assert(datei_enthaelt_text("Output/data/simulation_ende.txt", "gesamt_ankuenfte = 12"));
+    assert(datei_enthaelt_text("Output/data/simulation_ende.txt", "gesamt_geparkt = 9"));
+    assert(datei_enthaelt_text("Output/data/simulation_ende.txt", "gesamt_abfahrten = 7"));
+    assert(datei_enthaelt_text("Output/data/simulation_ende.txt", "aktuell_belegte_stellplaetze = 4"));
+    assert(datei_enthaelt_text("Output/data/simulation_ende.txt", "warteschlangen_laenge = 2"));
+    assert(datei_enthaelt_text("Output/data/simulation_ende.txt", "maximale_warteschlangen_laenge = 5"));
+    assert(datei_enthaelt_text("Output/data/simulation_ende.txt", "auslastungsrate = 0.8000"));
+    assert(datei_enthaelt_text("Output/data/simulation_ende.txt", "durchschnittliche_wartezeit = 1.3333"));
+    assert(datei_enthaelt_text("Output/data/simulation_ende.txt", "durchschnittliche_auslastung = 0.6125"));
+    printf("test_end_simulationsdaten_ausgeben_schreibt_alle_enddaten: OK\n");
+}
+
 
 
 int main(void)
