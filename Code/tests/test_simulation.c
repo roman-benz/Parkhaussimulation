@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "../Include/Simulation.h"
 
 // Prüft erfolgreiche Initialisierung und definierten Startzustand aller Stellplätze
