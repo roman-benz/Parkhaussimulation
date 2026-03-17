@@ -1,5 +1,5 @@
-#include "../include/Konfig.h"
-#include "../include/Simulation.h"
+#include "../Include/Konfig.h"
+#include "../Include/Simulation.h"
 #include <stdio.h>
 
 /*
