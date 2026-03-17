@@ -191,6 +191,28 @@ void test_simulationsschritt_abfahrt_entfernt_fahrzeug_korrekt(void)
 
 int datei_enthaelt_text(const char *dateipfad, const char *suchtext)
 {
+    // Für Ausgabetests reicht oft "enthält erwarteten Teilstring" statt kompletter Dateivergleich.
+    // Ob ein erwarteter Wert/Schlüssel irgendwo in der Datei geschrieben wurde.
+    FILE *datei = fopen(dateipfad, "r");
+    char zeile[512];
+
+    if (datei == NULL)
+    {
+        return 0;
+    }
+
+    while (fgets(zeile, sizeof(zeile), datei) != NULL)
+    {
+        if (strstr(zeile, suchtext) != NULL)
+        {
+            fclose(datei);
+            return 1;
+        }
+    }
+
+    fclose(datei);
+    return 0;
+}
 
 
 int main(void)
