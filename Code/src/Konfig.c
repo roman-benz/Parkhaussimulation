@@ -27,7 +27,7 @@ int int_wert_einlesen(const char *prompt, int min_wert, int max_wert, int *p_out
 
     if (eingabe_erfolg != 1) // Ungültige Eingabe: sofortiger Abbruch
     {
-        printf("Ungültige Eingabe. Bitte eine ganze Zahl eingeben.\n");
+        printf("Ungueltige Eingabe. Bitte eine ganze Zahl eingeben.\n");
         while ((c = getchar()) != '\n' && c != EOF) {}  // Eingabepuffer leeren
         return 0;
     }
@@ -51,7 +51,7 @@ int konfiguration_einlesen(Simulationskonfiguration *p_konfiguration)
     }
     
     int benutzereingabe_seed = 0;
-    if (!int_wert_einlesen("Anzahl Parkplätze (1-10000): ", 1, 10000, &p_konfiguration->anzahl_parkplaetze))
+    if (!int_wert_einlesen("Anzahl Parkplaetze (1-10000): ", 1, 10000, &p_konfiguration->anzahl_parkplaetze))
         return 0; 
     if (!int_wert_einlesen("Maximale Parkdauer (1-1000): ", 1, 1000, &p_konfiguration->max_parkdauer_minuten))
         return 0;
