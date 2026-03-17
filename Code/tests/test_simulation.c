@@ -5,6 +5,126 @@
 #include <stdlib.h>
 #include "../Include/Simulation.h"
 
+// Prüft erfolgreiche Initialisierung und definierten Startzustand aller Stellplätze
+void test_initialisierung_garage_erfolgreich_setzt_grundzustand(void)
+{
+    Parkhaus garage;
+    int kapazitaet = 3;
+
+    int erfolg = initialisierung_garage(&garage, kapazitaet);
+
+    assert(erfolg == 1);
+    assert(garage.p_stellplaetze != NULL);
+    assert(garage.maximale_kapazitaet == kapazitaet);
+    assert(garage.belegte_stellplaetze == 0);
+
+    for (int i = 0; i < kapazitaet; i++)
+    {
+        assert(garage.p_stellplaetze[i].fahrzeug_id == -1);
+        assert(garage.p_stellplaetze[i].verbleibende_parkdauer == 0);
+        assert(garage.p_stellplaetze[i].eintritts_zeit == 0);
+        assert(garage.p_stellplaetze[i].wartezeit == 0);
+    }
+
+    free(garage.p_stellplaetze);
+    printf("test_initialisierung_garage_erfolgreich_setzt_grundzustand: OK\n");
+}
+
+
+// Prüft ungültige Kapazität gibt einen Fehler zurück
+void test_initialisierung_garage_ungueltige_kapazitaet_liefert_fehler(void)
+{
+    Parkhaus garage;
+
+    int erfolg = initialisierung_garage(&garage, 0);
+
+    assert(erfolg == 0);
+    assert(garage.p_stellplaetze == NULL);
+    assert(garage.maximale_kapazitaet == 0);
+    assert(garage.belegte_stellplaetze == 0);
+
+    printf("test_initialisierung_garage_ungueltige_kapazitaet_liefert_fehler: OK\n");   
+}
+
+
+// Prüft erfolgreiches Einparken und korrektes Verhalten bei vollem Parkhaus
+void test_einparken_fahrzeug_parkt_und_blockiert_bei_voll(void)
+{
+    Parkhaus garage;
+    int init_erfolg = initialisierung_garage(&garage, 1);
+    assert(init_erfolg == 1);
+
+    Fahrzeug auto1 = {10, 5, 1, 0};
+    Fahrzeug auto2 = {11, 3, 2, 0};
+
+    int park_erfolg = einparken_fahrzeug(&garage, &auto1);
+    int park_fehlschlag = einparken_fahrzeug(&garage, &auto2);
+
+    assert(park_erfolg == 1);
+    assert(park_fehlschlag == 0);
+    assert(garage.belegte_stellplaetze == 1);
+    assert(garage.p_stellplaetze[0].fahrzeug_id == 10);
+    assert(garage.p_stellplaetze[0].verbleibende_parkdauer == 5);
+    assert(garage.p_stellplaetze[0].eintritts_zeit == 1);
+
+    free(garage.p_stellplaetze);
+    printf("test_einparken_fahrzeug_parkt_und_blockiert_bei_voll: OK\n");
+}
+
+
+// Prueft Ausparken per ID und Fehlfall bei nicht vorhandener Fahrzeug-ID.
+void test_ausparken_fahrzeug_gibt_platz_frei_und_fehlt_bei_unbekannter_id(void)
+{
+    Parkhaus garage;
+    int init_erfolg = initialisierung_garage(&garage, 2);
+    assert(init_erfolg == 1);
+
+    Fahrzeug auto1 = {5, 2, 1, 0};
+    int park_erfolg = einparken_fahrzeug(&garage, &auto1);
+    assert(park_erfolg == 1);
+
+    int auspark_erfolg = ausparken_fahrzeug(&garage, 5);
+    int auspark_fehlschlag = ausparken_fahrzeug(&garage, 999);
+
+    assert(auspark_erfolg == 1);
+    assert(auspark_fehlschlag == 0);
+    assert(garage.belegte_stellplaetze == 0);
+    assert(garage.p_stellplaetze[0].fahrzeug_id == -1);
+    assert(garage.p_stellplaetze[0].verbleibende_parkdauer == 0);
+    assert(garage.p_stellplaetze[0].eintritts_zeit == 0);
+    assert(garage.p_stellplaetze[0].wartezeit == 0);
+
+    free(garage.p_stellplaetze);
+    printf("test_ausparken_fahrzeug_gibt_platz_frei_und_fehlt_bei_unbekannter_id: OK\n");
+}
+
+
+// Prueft, dass start_simulation mit NULL ohne Absturz zurückkehrt
+void test_start_simulation_null_pointer_kein_crash(void)
+{
+    start_simulation(NULL);
+    printf("test_start_simulation_null_pointer_kein_crash: OK\n");
+}
+
+
+// Prüft dass die übergebene Konfiguration nur gelesen und nicht verändert wird
+void test_start_simulation_veraendert_konfiguration_nicht(void)
+{
+    Simulationskonfiguration konfig = {1, 5, 0, 50, 1234};
+    Simulationskonfiguration vorher = konfig;
+
+    start_simulation(&konfig);
+
+    assert(konfig.anzahl_parkplaetze == vorher.anzahl_parkplaetze);
+    assert(konfig.max_parkdauer_minuten == vorher.max_parkdauer_minuten);
+    assert(konfig.anzahl_simulationsschritte == vorher.anzahl_simulationsschritte);
+    assert(konfig.ankunftswahrscheinlichkeit_prozent == vorher.ankunftswahrscheinlichkeit_prozent);
+    assert(konfig.zufalls_seed == vorher.zufalls_seed);
+
+    printf("test_start_simulation_veraendert_konfiguration_nicht: OK\n");
+}
+
+
 //Testet, ob ein Fahrzeug bei vollem Parkhaus korrekt in die Warteschlange aufgenommen wird
 void test_simulationsschritt_ankunft_geht_in_queue_wenn_voll(void)
 {
@@ -66,8 +186,15 @@ void test_simulationsschritt_abfahrt_entfernt_fahrzeug_korrekt(void)
     printf("simulationsschritt_abfahrt_entfernt_fahrzeug_korrekt: OK\n");
 }
 
+
 int main(void)
 {
+    test_initialisierung_garage_erfolgreich_setzt_grundzustand();
+    test_initialisierung_garage_ungueltige_kapazitaet_liefert_fehler();
+    test_einparken_fahrzeug_parkt_und_blockiert_bei_voll();
+    test_ausparken_fahrzeug_gibt_platz_frei_und_fehlt_bei_unbekannter_id();
+    test_start_simulation_null_pointer_kein_crash();
+    test_start_simulation_veraendert_konfiguration_nicht();
     test_simulationsschritt_ankunft_geht_in_queue_wenn_voll();
     test_simulationsschritt_abfahrt_entfernt_fahrzeug_korrekt();
     return 0;
