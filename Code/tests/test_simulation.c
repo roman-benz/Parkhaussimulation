@@ -6,6 +6,15 @@
 #include <string.h>
 #include "../Include/Simulation.h"
 
+static void aktiviere_stillen_modus(void)
+{
+#ifdef _WIN32
+    _putenv("PARKHAUS_SILENT=1");
+#else
+    setenv("PARKHAUS_SILENT", "1", 1);
+#endif
+}
+
 
 
 // Prüft erfolgreiche Initialisierung und definierten Startzustand aller Stellplätze
@@ -310,6 +319,8 @@ void test_end_simulationsdaten_ausgeben_null_schreibt_nicht(void)
 
 int main(void)
 {
+    aktiviere_stillen_modus();
+
     test_initialisierung_garage_erfolgreich_setzt_grundzustand();
     test_initialisierung_garage_ungueltige_kapazitaet_liefert_fehler();
     test_einparken_fahrzeug_parkt_und_blockiert_bei_voll();

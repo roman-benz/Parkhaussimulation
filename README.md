@@ -14,6 +14,49 @@ Marc Born, Julien Armbruster, Roman Benz
 | Quartal | Q1 2026 |
 | Sprache | C |
 
+## Kompilieren und Ausfuehren mit CMake
+
+Im Projektverzeichnis ausfuehren:
+
+```bash
+cmake -S . -B build
+cmake --build build
+./build/parkhaus
+```
+
+Hinweis fuer Windows (PowerShell):
+
+```powershell
+cmake -S . -B build
+cmake --build build
+.\build\parkhaus.exe
+```
+
+## Codespaces Hinweis
+
+Der erste Start eines Codespaces kann deutlich laenger dauern (mehrere Minuten).
+Das ist normal, weil Container-Image, Features und Abhaengigkeiten zuerst geladen und gebaut werden.
+
+## Tests mit CMake
+
+Einzelne Test-Binaries bauen und starten:
+
+```bash
+cmake -S . -B build
+cmake --build build
+./build/test_queue
+./build/test_simulation
+```
+
+Hinweis fuer Windows (PowerShell):
+
+```powershell
+cmake -S . -B build
+cmake --build build
+.\build\test_queue.exe
+.\build\test_simulation.exe
+```
+
 ## Projektstruktur
 
 ```

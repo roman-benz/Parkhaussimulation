@@ -15,6 +15,23 @@ ausgegeben und in Ausgabedateien für die spätere Auswertung
 (mit Gnuplot) geschrieben.
 */
 
+static int terminalausgabe_aktiv(void)
+{
+	const char *stumm = getenv("PARKHAUS_SILENT");
+
+	if (stumm == NULL)
+	{
+		return 1;
+	}
+
+	if (stumm[0] == '\0' || stumm[0] == '0')
+	{
+		return 1;
+	}
+
+	return 0;
+}
+
 int initialisierung_garage(Parkhaus *p_garage, int maximale_kapazitaet)
 {
 	if (p_garage == NULL)
@@ -239,16 +256,19 @@ void simulationsschrittdaten_ausgeben(int aktueller_schritt, const Simulationdat
 		return;
 	}
 
-	printf("===== SIMULATIONSSCHRITT %d =====\n", aktueller_schritt);
-	printf("Gesamtankuenfte: %d\n", p_daten->gesamt_ankuenfte);
-	printf("Gesamt geparkt: %d\n", p_daten->gesamt_geparkt);
-	printf("Gesamtabfahrten: %d\n", p_daten->gesamt_abfahrten);
-	printf("Aktuell belegt: %d\n", p_daten->aktuell_belegte_stellplaetze);
-	printf("Warteschlangenlaenge: %d\n", p_daten->warteschlangen_laenge);
-	printf("Maximale Warteschlangenlaenge: %d\n", p_daten->maximale_warteschlangen_laenge);
-	printf("Aktuelle Auslastungsrate: %.4f\n", p_daten->auslastungsrate);
-	printf("Durchschnittliche Wartezeit: %.4f\n", p_daten->durchschnittliche_wartezeit);
-	printf("Durchschnittliche Auslastung: %.4f\n", p_daten->durchschnittliche_auslastung);
+	if (terminalausgabe_aktiv())
+	{
+		printf("===== SIMULATIONSSCHRITT %d =====\n", aktueller_schritt);
+		printf("Gesamtankuenfte: %d\n", p_daten->gesamt_ankuenfte);
+		printf("Gesamt geparkt: %d\n", p_daten->gesamt_geparkt);
+		printf("Gesamtabfahrten: %d\n", p_daten->gesamt_abfahrten);
+		printf("Aktuell belegt: %d\n", p_daten->aktuell_belegte_stellplaetze);
+		printf("Warteschlangenlaenge: %d\n", p_daten->warteschlangen_laenge);
+		printf("Maximale Warteschlangenlaenge: %d\n", p_daten->maximale_warteschlangen_laenge);
+		printf("Aktuelle Auslastungsrate: %.4f\n", p_daten->auslastungsrate);
+		printf("Durchschnittliche Wartezeit: %.4f\n", p_daten->durchschnittliche_wartezeit);
+		printf("Durchschnittliche Auslastung: %.4f\n", p_daten->durchschnittliche_auslastung);
+	}
 
 	datei_auslastung = fopen("Output/data/auslastung.txt", "a");
 	if (datei_auslastung != NULL)
@@ -256,6 +276,37 @@ void simulationsschrittdaten_ausgeben(int aktueller_schritt, const Simulationdat
 		fprintf(datei_auslastung, "%d\t%.4f\n", aktueller_schritt, p_daten->auslastungsrate);
 		fclose(datei_auslastung);
 	}
+}
+
+static int auslastungsdaten_verfuegbar(const char *dateipfad)
+{
+	FILE *datei;
+	char zeile[256];
+	int schritt;
+	double auslastung;
+
+	if (dateipfad == NULL)
+	{
+		return 0;
+	}
+
+	datei = fopen(dateipfad, "r");
+	if (datei == NULL)
+	{
+		return 0;
+	}
+
+	while (fgets(zeile, sizeof(zeile), datei) != NULL)
+	{
+		if (sscanf(zeile, "%d%lf", &schritt, &auslastung) == 2)
+		{
+			fclose(datei);
+			return 1;
+		}
+	}
+
+	fclose(datei);
+	return 0;
 }
 
 void end_simulationsdaten_ausgeben(const Simulationdaten *p_daten)
@@ -282,8 +333,19 @@ void end_simulationsdaten_ausgeben(const Simulationdaten *p_daten)
 		fprintf(datei_ende, "durchschnittliche_auslastung = %.4f\n", p_daten->durchschnittliche_auslastung);
 		fclose(datei_ende);
 
+		if (!terminalausgabe_aktiv())
+		{
+			return;
+		}
+
 		printf("===== ENDE DER SIMULATION =====\n");
 		printf("Simulationsergebnisse finden Sie in der externen Ergebnisdatei.\n");
+
+		if (!auslastungsdaten_verfuegbar("Output/data/auslastung.txt"))
+		{
+			printf("Hinweis: Keine numerischen Auslastungsdaten fuer Gnuplot vorhanden.\n");
+			return;
+		}
 
 		gnuplot_status = system("gnuplot Output/gnuplot/plot_endergebnis.gp");
 		if (gnuplot_status != 0)
