@@ -215,6 +215,29 @@ int datei_enthaelt_text(const char *dateipfad, const char *suchtext)
 }
 
 int dateiinhalt_ist_exakt(const char *dateipfad, const char *erwarteter_inhalt)
+{
+    // Bei NULL-Guards wollen wir strikt prüfen, dass sich der Inhalt gar nicht verändert.
+    // Exakte Übereinstimmung der kompletten Datei mit einem bekannten Referenztext.
+    FILE *datei = fopen(dateipfad, "r");
+    char inhalt[1024];
+    size_t gelesen;
+
+    if (datei == NULL)
+    {
+        return 0;
+    }
+
+    gelesen = fread(inhalt, 1, sizeof(inhalt) - 1, datei);
+    inhalt[gelesen] = '\0';
+    fclose(datei);
+
+    if (strcmp(inhalt, erwarteter_inhalt) == 0)
+    {
+        return 1;
+    }
+
+    return 0;
+}
 
 
 int main(void)
