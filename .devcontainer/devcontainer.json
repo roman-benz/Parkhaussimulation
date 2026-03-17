@@ -3,8 +3,8 @@
 {
     "name": "C++",
     "build": {
-        "context": "./c",
-        "dockerfile": "./c/Dockerfile"
+        "context": ".",
+        "dockerfile": "c/Dockerfile"
     },
     "customizations": {
         "vscode": {
