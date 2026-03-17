@@ -19,3 +19,9 @@ void test_int_wert_einlesen_gueltige_eingabe(void)
 	remove(pfad);
 	printf("test_int_wert_einlesen_gueltige_eingabe: OK\n");
 }
+
+
+void test_int_wert_einlesen_wert_ausserhalb_bereich(void)
+{
+
+}
