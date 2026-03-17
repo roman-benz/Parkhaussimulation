@@ -45,5 +45,18 @@ void test_konfiguration_einlesen_null_pointer(void)
 
 void test_konfiguration_einlesen_gueltige_eingaben(void)
 {
+	const char *pfad = "test_input_konfig_ok.txt";
+	Simulationskonfiguration konfig = {0, 0, 0, 0, 0};
 
+	assert(stdin_auf_datei_setzen(pfad, "10\n120\n500\n35\n12345\n") == 1);
+
+	assert(konfiguration_einlesen(&konfig) == 1);
+	assert(konfig.anzahl_parkplaetze == 10);
+	assert(konfig.max_parkdauer_minuten == 120);
+	assert(konfig.anzahl_simulationsschritte == 500);
+	assert(konfig.ankunftswahrscheinlichkeit_prozent == 35);
+	assert(konfig.zufalls_seed == 12345u);
+
+	remove(pfad);
+	printf("test_konfiguration_einlesen_gueltige_eingaben: OK\n");
 }
