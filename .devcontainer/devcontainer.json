@@ -1,0 +1,19 @@
+// Default Codespaces/devcontainer configuration for this repository.
+// Points to the C environment where gnuplot is installed.
+{
+    "name": "C++",
+    "build": {
+        "context": "./c",
+        "dockerfile": "Dockerfile"
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "hars.CppSnippets"
+            ]
+        }
+    },
+    "features": {
+        "ghcr.io/devcontainers/features/git-lfs:1": {}
+    }
+}
