@@ -41,3 +41,9 @@ void test_konfiguration_einlesen_null_pointer(void)
 	assert(konfiguration_einlesen(NULL) == 0);
 	printf("test_konfiguration_einlesen_null_pointer: OK\n");
 }
+
+
+void test_konfiguration_einlesen_gueltige_eingaben(void)
+{
+
+}
