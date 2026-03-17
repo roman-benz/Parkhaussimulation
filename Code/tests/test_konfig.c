@@ -6,6 +6,12 @@
 #include "../include/Konfig.h"
 
 
+static int stdin_auf_datei_setzen(const char *dateiname, const char *inhalt)
+{
+
+}
+
+
 // Prüft, dass eine gültige Zahl korrekt eingelesen wird
 void test_int_wert_einlesen_gueltige_eingabe(void)
 {
