@@ -214,6 +214,8 @@ int datei_enthaelt_text(const char *dateipfad, const char *suchtext)
     return 0;
 }
 
+int dateiinhalt_ist_exakt(const char *dateipfad, const char *erwarteter_inhalt)
+
 
 int main(void)
 {
