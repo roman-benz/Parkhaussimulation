@@ -291,6 +291,21 @@ void test_end_simulationsdaten_ausgeben_schreibt_alle_enddaten(void)
     printf("test_end_simulationsdaten_ausgeben_schreibt_alle_enddaten: OK\n");
 }
 
+void test_end_simulationsdaten_ausgeben_null_schreibt_nicht(void)
+{
+    // Auch die Endausgabe muss bei NULL robust abbrechen, statt Dateien zu überschreiben.
+    // Bei p_daten == NULL bleibt der vorhandene Dateiinhalt exakt erhalten.
+    FILE *datei = fopen("Output/data/simulation_ende.txt", "w");
+
+    assert(datei != NULL);
+    fprintf(datei, "TEST\n");
+    fclose(datei);
+
+    end_simulationsdaten_ausgeben(NULL);
+
+    assert(dateiinhalt_ist_exakt("Output/data/simulation_ende.txt", "TEST\n"));
+    printf("test_end_simulationsdaten_ausgeben_null_schreibt_nicht: OK\n");
+}
 
 
 int main(void)
