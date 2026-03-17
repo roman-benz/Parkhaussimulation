@@ -189,6 +189,9 @@ void test_simulationsschritt_abfahrt_entfernt_fahrzeug_korrekt(void)
     printf("simulationsschritt_abfahrt_entfernt_fahrzeug_korrekt: OK\n");
 }
 
+int datei_enthaelt_text(const char *dateipfad, const char *suchtext)
+{
+
 
 int main(void)
 {
