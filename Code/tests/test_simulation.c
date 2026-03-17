@@ -253,6 +253,23 @@ void test_simulationsschrittdaten_ausgeben_schreibt_auslastungszeile(void)
     printf("test_simulationsschrittdaten_ausgeben_schreibt_auslastungszeile: OK\n");
 }
 
+void test_simulationsschrittdaten_ausgeben_null_schreibt_nicht(void)
+{
+    // Bei ungültigem Pointer darf die Ausgabefunktion keine Seiteneffekte verursachen.
+    // Bei p_daten == NULL bleibt eine bestehende Datei exakt unverändert.
+    FILE *datei = fopen("Output/data/auslastung.txt", "w");
+
+    assert(datei != NULL);
+    fprintf(datei, "TEST\n");
+    fclose(datei);
+
+    simulationsschrittdaten_ausgeben(99, NULL);
+
+    assert(dateiinhalt_ist_exakt("Output/data/auslastung.txt", "TEST\n"));
+    printf("test_simulationsschrittdaten_ausgeben_null_schreibt_nicht: OK\n");
+}
+
+
 
 int main(void)
 {
