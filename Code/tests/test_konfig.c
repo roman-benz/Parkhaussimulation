@@ -6,6 +6,7 @@
 #include "../include/Konfig.h"
 
 
+// Prüft, dass eine gültige Zahl korrekt eingelesen wird
 void test_int_wert_einlesen_gueltige_eingabe(void)
 {
     const char *pfad = "test_input_int_ok.txt";
@@ -21,6 +22,7 @@ void test_int_wert_einlesen_gueltige_eingabe(void)
 }
 
 
+// Prüft, dass ein Wert ausserhalb des Bereichs abgelehnt wird
 void test_int_wert_einlesen_wert_ausserhalb_bereich(void)
 {
 	const char *pfad = "test_input_int_out_of_range.txt";
@@ -36,6 +38,7 @@ void test_int_wert_einlesen_wert_ausserhalb_bereich(void)
 }
 
 
+// Prüft, dass ein NULL-Pointer als Zielstruktur abgefangen wird
 void test_konfiguration_einlesen_null_pointer(void)
 {
 	assert(konfiguration_einlesen(NULL) == 0);
@@ -43,6 +46,7 @@ void test_konfiguration_einlesen_null_pointer(void)
 }
 
 
+// Prüft, dass alle Konfigurationswerte korrekt eingelesen werden
 void test_konfiguration_einlesen_gueltige_eingaben(void)
 {
 	const char *pfad = "test_input_konfig_ok.txt";
