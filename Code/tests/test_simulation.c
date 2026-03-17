@@ -6,6 +6,8 @@
 #include <string.h>
 #include "../Include/Simulation.h"
 
+
+
 // Prüft erfolgreiche Initialisierung und definierten Startzustand aller Stellplätze
 void test_initialisierung_garage_erfolgreich_setzt_grundzustand(void)
 {
@@ -198,5 +200,9 @@ int main(void)
     test_start_simulation_veraendert_konfiguration_nicht();
     test_simulationsschritt_ankunft_geht_in_queue_wenn_voll();
     test_simulationsschritt_abfahrt_entfernt_fahrzeug_korrekt();
+    test_simulationsschrittdaten_ausgeben_schreibt_auslastungszeile();
+    test_simulationsschrittdaten_ausgeben_null_schreibt_nicht();
+    test_end_simulationsdaten_ausgeben_schreibt_alle_enddaten();
+    test_end_simulationsdaten_ausgeben_null_schreibt_nicht();
     return 0;
 }
