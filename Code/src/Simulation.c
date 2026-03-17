@@ -258,6 +258,37 @@ void simulationsschrittdaten_ausgeben(int aktueller_schritt, const Simulationdat
 	}
 }
 
+static int auslastungsdaten_verfuegbar(const char *dateipfad)
+{
+	FILE *datei;
+	char zeile[256];
+	int schritt;
+	double auslastung;
+
+	if (dateipfad == NULL)
+	{
+		return 0;
+	}
+
+	datei = fopen(dateipfad, "r");
+	if (datei == NULL)
+	{
+		return 0;
+	}
+
+	while (fgets(zeile, sizeof(zeile), datei) != NULL)
+	{
+		if (sscanf(zeile, "%d%lf", &schritt, &auslastung) == 2)
+		{
+			fclose(datei);
+			return 1;
+		}
+	}
+
+	fclose(datei);
+	return 0;
+}
+
 void end_simulationsdaten_ausgeben(const Simulationdaten *p_daten)
 {
 	FILE *datei_ende;
@@ -284,6 +315,12 @@ void end_simulationsdaten_ausgeben(const Simulationdaten *p_daten)
 
 		printf("===== ENDE DER SIMULATION =====\n");
 		printf("Simulationsergebnisse finden Sie in der externen Ergebnisdatei.\n");
+
+		if (!auslastungsdaten_verfuegbar("Output/data/auslastung.txt"))
+		{
+			printf("Hinweis: Keine numerischen Auslastungsdaten fuer Gnuplot vorhanden.\n");
+			return;
+		}
 
 		gnuplot_status = system("gnuplot Output/gnuplot/plot_endergebnis.gp");
 		if (gnuplot_status != 0)
