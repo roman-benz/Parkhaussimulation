@@ -6,6 +6,7 @@
 #include "../include/Konfig.h"
 
 
+// Schreibt Testeingaben in eine Datei und leitet stdin darauf um
 static int stdin_auf_datei_setzen(const char *dateiname, const char *inhalt)
 {
 	FILE *datei = fopen(dateiname, "w");
@@ -17,6 +18,7 @@ static int stdin_auf_datei_setzen(const char *dateiname, const char *inhalt)
 	fputs(inhalt, datei);
 	fclose(datei);
 
+	// Ab hier liest scanf aus der Datei statt aus der Tastatur
 	if (freopen(dateiname, "r", stdin) == NULL)
 	{
 		return 0;
@@ -34,10 +36,11 @@ void test_int_wert_einlesen_gueltige_eingabe(void)
 
 	assert(stdin_auf_datei_setzen(pfad, "42\n") == 1);
 
-	assert(int_wert_einlesen("Test: ", 1, 100, &out_wert) == 1);
+	assert(int_wert_einlesen("Test: ", 1, 100, &out_wert) == 1);    // Der eingelesene Wert muss genau übernommen werden
+
 	assert(out_wert == 42);
 
-	remove(pfad);
+	remove(pfad); 	// Temporäre Testdatei aufräumen
 	printf("test_int_wert_einlesen_gueltige_eingabe: OK\n");
 }
 
@@ -50,7 +53,7 @@ void test_int_wert_einlesen_wert_ausserhalb_bereich(void)
 
 	assert(stdin_auf_datei_setzen(pfad, "150\n") == 1);
 
-	assert(int_wert_einlesen("Test: ", 1, 100, &out_wert) == 0);
+	assert(int_wert_einlesen("Test: ", 1, 100, &out_wert) == 0);	// Bei Fehler darf der alte Wert nicht überschrieben werden
 	assert(out_wert == -7);
 
 	remove(pfad);
