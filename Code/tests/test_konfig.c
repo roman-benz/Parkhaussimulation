@@ -34,3 +34,10 @@ void test_int_wert_einlesen_wert_ausserhalb_bereich(void)
 	remove(pfad);
 	printf("test_int_wert_einlesen_wert_ausserhalb_bereich: OK\n");
 }
+
+
+void test_konfiguration_einlesen_null_pointer(void)
+{
+	assert(konfiguration_einlesen(NULL) == 0);
+	printf("test_konfiguration_einlesen_null_pointer: OK\n");
+}
