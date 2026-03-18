@@ -53,7 +53,7 @@ int konfiguration_einlesen(Simulationskonfiguration *p_konfiguration)
     int benutzereingabe_seed = 0;
     if (!int_wert_einlesen("Anzahl Parkplaetze (1-10000): ", 1, 10000, &p_konfiguration->anzahl_parkplaetze))
         return 0; 
-    if (!int_wert_einlesen("Maximale Parkdauer (1-1000): ", 1, 1000, &p_konfiguration->max_parkdauer_minuten))
+    if (!int_wert_einlesen("Maximale Parkdauer (1-10000): ", 1, 10000, &p_konfiguration->max_parkdauer_minuten))
         return 0;
     if (!int_wert_einlesen("Simulationsdauer in Schritten (1-100000): ", 1, 100000, &p_konfiguration->anzahl_simulationsschritte))
         return 0;
@@ -97,8 +97,8 @@ END
 
 Function konfiguration_einlesen(p_konfiguration)
     int benutzereingabe_seed = 0 // Speichert den eingegebenen Seed-Wert temporär
-    int_wert_einlesen("Anzahl Parkplätze (1-1000): ", 1, 1000, &p_konfiguration.anzahl_parkplaetze)
-    int_wert_einlesen("Maximale Parkdauer (1-1000): ", 1, 1000, &p_konfiguration.max_parkdauer_minuten)
+    int_wert_einlesen("Anzahl Parkplätze (1-10000): ", 1, 10000, &p_konfiguration.anzahl_parkplaetze)
+    int_wert_einlesen("Maximale Parkdauer (1-10000): ", 1, 10000, &p_konfiguration.max_parkdauer_minuten)
     int_wert_einlesen("Simulationsdauer in Schritten (1-100000): ", 1, 100000, &p_konfiguration.anzahl_simulationsschritte)
     int_wert_einlesen("Ankunftswahrscheinlichkeit in % (0-100): ", 0, 100, &p_konfiguration.ankunftswahrscheinlichkeit_prozent)
     int_wert_einlesen("Zufalls-Seed (0-2147483647): ", 0, 2147483647, &benutzereingabe_seed)
