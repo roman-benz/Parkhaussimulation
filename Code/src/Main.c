@@ -17,7 +17,7 @@
  */
 int main(void)
 {
-    Simulationskonfiguration konfiguration; 
+    Simulationskonfiguration konfiguration; // Hier werden alle Eingabewerte gespeichert
 
     printf("\n==== Parkhaus-Simulation ====\n");
 
