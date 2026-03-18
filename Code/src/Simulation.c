@@ -324,6 +324,7 @@ void end_simulationsdaten_ausgeben(const Simulationdaten *p_daten)
 	datei_ende = fopen("Output/data/simulation_ende.txt", "w");
 	if (datei_ende != NULL)
 	{
+		// Endkennzahlen gesammelt in eine Ergebnisdatei schreiben.
 		fprintf(datei_ende, "gesamt_ankuenfte = %d\n", p_daten->gesamt_ankuenfte);
 		fprintf(datei_ende, "gesamt_geparkt = %d\n", p_daten->gesamt_geparkt);
 		fprintf(datei_ende, "gesamt_abfahrten = %d\n", p_daten->gesamt_abfahrten);
@@ -335,6 +336,7 @@ void end_simulationsdaten_ausgeben(const Simulationdaten *p_daten)
 		fprintf(datei_ende, "durchschnittliche_auslastung = %.4f\n", p_daten->durchschnittliche_auslastung);
 		fclose(datei_ende);
 
+		// Bei stummem Modus nur Datei schreiben und Konsolen-/Plot-Ausgabe auslassen.
 		if (!terminalausgabe_aktiv())
 		{
 			return;
@@ -349,6 +351,7 @@ void end_simulationsdaten_ausgeben(const Simulationdaten *p_daten)
 			return;
 		}
 
+		// Externes Plot-Skript starten und Rueckgabewert fuer klare Statusmeldung pruefen.
 		gnuplot_status = system("gnuplot Output/gnuplot/plot_endergebnis.gp");
 		if (gnuplot_status != 0)
 		{
