@@ -336,7 +336,7 @@ void end_simulationsdaten_ausgeben(const Simulationdaten *p_daten)
 		fprintf(datei_ende, "durchschnittliche_auslastung = %.4f\n", p_daten->durchschnittliche_auslastung);
 		fclose(datei_ende);
 
-		// Bei stummem Modus nur Datei schreiben und Konsolen-/Plot-Ausgabe auslassen.
+		// Bei stummem Modus für Tests nur Datei schreiben und Konsolen-/Plot-Ausgabe auslassen. 
 		if (!terminalausgabe_aktiv())
 		{
 			return;
