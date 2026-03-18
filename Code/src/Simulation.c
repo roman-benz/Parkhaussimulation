@@ -258,6 +258,7 @@ void simulationsschrittdaten_ausgeben(int aktueller_schritt, const Simulationdat
 
 	if (terminalausgabe_aktiv())
 	{
+		// Ausfuehrliche Schrittinfos nur ausgeben, wenn die Terminalausgabe aktiviert ist.
 		printf("===== SIMULATIONSSCHRITT %d =====\n", aktueller_schritt);
 		printf("Gesamtankuenfte: %d\n", p_daten->gesamt_ankuenfte);
 		printf("Gesamt geparkt: %d\n", p_daten->gesamt_geparkt);
@@ -270,6 +271,7 @@ void simulationsschrittdaten_ausgeben(int aktueller_schritt, const Simulationdat
 		printf("Durchschnittliche Auslastung: %.4f\n", p_daten->durchschnittliche_auslastung);
 	}
 
+	// Auslastungswerte schrittweise anhaengen, damit Gnuplot sie direkt als Zeitreihe lesen kann.
 	datei_auslastung = fopen("Output/data/auslastung.txt", "a");
 	if (datei_auslastung != NULL)
 	{
@@ -322,6 +324,7 @@ void end_simulationsdaten_ausgeben(const Simulationdaten *p_daten)
 	datei_ende = fopen("Output/data/simulation_ende.txt", "w");
 	if (datei_ende != NULL)
 	{
+		// Endkennzahlen gesammelt in eine Ergebnisdatei schreiben.
 		fprintf(datei_ende, "gesamt_ankuenfte = %d\n", p_daten->gesamt_ankuenfte);
 		fprintf(datei_ende, "gesamt_geparkt = %d\n", p_daten->gesamt_geparkt);
 		fprintf(datei_ende, "gesamt_abfahrten = %d\n", p_daten->gesamt_abfahrten);
@@ -333,6 +336,7 @@ void end_simulationsdaten_ausgeben(const Simulationdaten *p_daten)
 		fprintf(datei_ende, "durchschnittliche_auslastung = %.4f\n", p_daten->durchschnittliche_auslastung);
 		fclose(datei_ende);
 
+		// Bei stummem Modus für Tests nur Datei schreiben und Konsolen-/Plot-Ausgabe auslassen. 
 		if (!terminalausgabe_aktiv())
 		{
 			return;
@@ -347,6 +351,7 @@ void end_simulationsdaten_ausgeben(const Simulationdaten *p_daten)
 			return;
 		}
 
+		// Externes Plot-Skript starten und Rueckgabewert fuer klare Statusmeldung pruefen.
 		gnuplot_status = system("gnuplot Output/gnuplot/plot_endergebnis.gp");
 		if (gnuplot_status != 0)
 		{
