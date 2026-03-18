@@ -84,6 +84,28 @@ void test_einparken_fahrzeug_parkt_und_blockiert_bei_voll(void)
 }
 
 
+// Prüft, ob ein Fahrzeug korrekt eingeparkt wird, wenn Platz ist
+void test_einparken_fahrzeug_erfolgreich(void)
+{
+    Parkhaus garage;
+    int init_erfolg = initialisierung_garage(&garage, 2);
+    assert(init_erfolg == 1);
+
+    Fahrzeug auto1 = {1, 10, 1, 0};
+
+    int park_erfolg = einparken_fahrzeug(&garage, &auto1);
+
+    assert(park_erfolg == 1);
+    assert(garage.belegte_stellplaetze == 1);
+    assert(garage.p_stellplaetze[0].fahrzeug_id == 1);
+    assert(garage.p_stellplaetze[0].verbleibende_parkdauer == 10);
+    assert(garage.p_stellplaetze[0].eintritts_zeit == 1);
+
+    free(garage.p_stellplaetze);
+    printf("test_einparken_fahrzeug_erfolgreich: OK\n");
+}
+
+
 // Prueft Ausparken per ID und Fehlfall bei nicht vorhandener Fahrzeug-ID.
 void test_ausparken_fahrzeug_gibt_platz_frei_und_fehlt_bei_unbekannter_id(void)
 {
@@ -324,6 +346,7 @@ int main(void)
     test_initialisierung_garage_erfolgreich_setzt_grundzustand();
     test_initialisierung_garage_ungueltige_kapazitaet_liefert_fehler();
     test_einparken_fahrzeug_parkt_und_blockiert_bei_voll();
+    test_einparken_fahrzeug_erfolgreich();
     test_ausparken_fahrzeug_gibt_platz_frei_und_fehlt_bei_unbekannter_id();
     test_start_simulation_null_pointer_kein_crash();
     test_start_simulation_veraendert_konfiguration_nicht();
