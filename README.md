@@ -46,6 +46,7 @@ cmake -S . -B build
 cmake --build build
 ./build/test_queue
 ./build/test_simulation
+./build/test_konfig
 ```
 
 Hinweis fuer Windows (PowerShell):
@@ -55,6 +56,7 @@ cmake -S . -B build
 cmake --build build
 .\build\test_queue.exe
 .\build\test_simulation.exe
+.\build\test_konfig.exe
 ```
 
 ## Projektstruktur
@@ -67,19 +69,25 @@ Parkhausimulation/
 │   │   ├── Parkhaus.h            Struct Fahrzeug, Struct Parkhaus
 │   │   ├── Queue.h               Struct QueueNode, Struct Queue, Prototypen fuer Warteschlange
 │   │   └── Simulation.h          Struct Simulationdaten, Prototypen fuer Simulationsablauf
-│   └── src/
+│   ├── src/
 │       ├── Main.c                Programmstart und Ablaufsteuerung
 │       ├── Konfig.c              Eingabevalidierung und Konfigurationseinlesung
 │       ├── Queue.c               Warteschlangen-Operationen (init, enqueue, dequeue, destroy)
 │       └── Simulation.c          Simulationsschritt, Ein-/Ausparken, Statistikausgabe
+│   └── tests/
+│       ├── test_konfig.c         Unit-Tests fuer Konfiguration und Eingabepruefung
+│       ├── test_queue.c          Unit-Tests fuer Queue-Operationen
+│       └── test_simulation.c     Unit-Tests fuer Simulationslogik und Ausgabe
 ├── docs/
 │   ├── Dokumentation_Dateistruktur.pdf           Begruendung der Modulaufteilung
 │   ├── geplante_Statistiken.pdf                  Uebersicht Statistiken und Ausgabeformat
-│   ├── Flussdiagramm_ausfuehren_simulationsschritt.drawio / .jpg
+│   ├── Flussdiagramm_ausfuehren_simulationsschritt.drawio
+│   ├── Flussdiagramm_ausführen_simulationsschritt.jpg
 │   ├── Flussdiagramm_int_wert_einlesen.drawio / .jpg
 │   └── Flussdiagramm_Queue_enqueue.drawio / .jpg
 ├── Information/
 │   ├── TSA-TSL25_Programmieren-I_Programmentwurf_Parkhaus-Simulation-Teil1.pdf
+│   ├── TSA-TSL25_Programmieren-I_Programmentwurf_Parkhaus-Simulation-Teil2 (3).pdf
 │   └── c_coding_conventions.md
 ├── LICENSE
 └── README.md
