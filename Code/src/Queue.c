@@ -79,6 +79,9 @@ void queue_destroy(Queue *p_queue){
 }
 
 /*
+PSEUDOCODE:
+
+
     Die Funktion queue_init verhindert, dass die Zeiger auf Garbage-Werte zeigen.
     Das könnte später zu Fehlern und Abstürzen führen, wenn sie nicht vorher mit NULL initialisiert werden.
 */
