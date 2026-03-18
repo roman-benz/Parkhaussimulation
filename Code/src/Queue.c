@@ -68,13 +68,14 @@ Fahrzeug* queue_dequeue(Queue *p_eineQueue, int einparken_zeitschritt){
     
 }
 
+//ACHTUNG -> NUR AUFRUFEN WENN WARTEZEIT EINES FAHRZEUGES NICHT MEHR RELEVANT IST, da queue_destroy die Wartezeit falsch überschreibt
 void queue_destroy(Queue *p_queue){
-    Fahrzeug *fahrzeug;
-    int platzhalter_zeitschritt = 0;
+    Fahrzeug *fahrzeug; //Zwischenspeicher für Fahrzeug
+    int platzhalter_zeitschritt = 0;    //Platzhalter
     while ((fahrzeug = queue_dequeue(p_queue, platzhalter_zeitschritt)) != NULL){
         free(fahrzeug); //Speicher des Fahrzeugs freigeben
     }
-    //ACHTUNG -> NUR AUFRUFEN WENN WARTEZEIT EINES FAHRZEUGES NICHT MEHR RELEVANT IST, da queue_destroy die Wartezeit falsch überschreibt
+    
 }
 
 /*
