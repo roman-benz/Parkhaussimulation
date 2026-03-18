@@ -258,6 +258,7 @@ void simulationsschrittdaten_ausgeben(int aktueller_schritt, const Simulationdat
 
 	if (terminalausgabe_aktiv())
 	{
+		// Ausfuehrliche Schrittinfos nur ausgeben, wenn die Terminalausgabe aktiviert ist.
 		printf("===== SIMULATIONSSCHRITT %d =====\n", aktueller_schritt);
 		printf("Gesamtankuenfte: %d\n", p_daten->gesamt_ankuenfte);
 		printf("Gesamt geparkt: %d\n", p_daten->gesamt_geparkt);
@@ -270,6 +271,7 @@ void simulationsschrittdaten_ausgeben(int aktueller_schritt, const Simulationdat
 		printf("Durchschnittliche Auslastung: %.4f\n", p_daten->durchschnittliche_auslastung);
 	}
 
+	// Auslastungswerte schrittweise anhaengen, damit Gnuplot sie direkt als Zeitreihe lesen kann.
 	datei_auslastung = fopen("Output/data/auslastung.txt", "a");
 	if (datei_auslastung != NULL)
 	{
