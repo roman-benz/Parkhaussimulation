@@ -72,7 +72,7 @@ void ausfuehren_simulationsschritt(
 );
 
 /**
- * @brief Gibt die Simulationsdaten eines Schritts auf der Konsole aus.
+ * @brief Gibt die Simulationsdaten eines Schritts auf der Konsole aus und schreibt Schrittdateien.
  * 
  * @param aktueller_schritt Nummer des aktuellen Simulationsschritts
  * @param p_daten Zeiger auf die auszugebenden Simulationsdaten
