@@ -40,7 +40,7 @@ int initialisierung_garage(Parkhaus *p_garage, int maximale_kapazitaet)
 	}
 
 	// Erst auf sicheren Grundzustand setzen
-	p_garage->p_stellplaetze = NULL;
+	p_garage->p_stellplaetze = NULL; // Sicher, falls Initialisierung später abbricht
 	p_garage->maximale_kapazitaet = 0;
 	p_garage->belegte_stellplaetze = 0;
 
@@ -49,7 +49,7 @@ int initialisierung_garage(Parkhaus *p_garage, int maximale_kapazitaet)
 		return 0;
 	}
 
-	// Speicher für alle Stellplaetze reservieren.
+	// Speicher für alle Stellplätze reservieren
 	p_garage->p_stellplaetze = calloc((size_t)maximale_kapazitaet, sizeof(Fahrzeug));
 	if (p_garage->p_stellplaetze == NULL)
 	{
@@ -88,14 +88,14 @@ int einparken_fahrzeug(Parkhaus *p_garage, const Fahrzeug *p_fahrzeug)
 
 	if (p_garage->belegte_stellplaetze >= p_garage->maximale_kapazitaet) // Parkhaus ist voll
 	{
-		return 0;
+		return 0; // Kein freier Platz mehr vorhanden
 	}
 
 	for (int i = 0; i < p_garage->maximale_kapazitaet; i++)
 	{
 		if (p_garage->p_stellplaetze[i].fahrzeug_id == -1)
 		{
-			p_garage->p_stellplaetze[i] = *p_fahrzeug; // Ganzes Fahrzeug auf Platz kopieren
+			p_garage->p_stellplaetze[i] = *p_fahrzeug; // Alle Fahrzeugdaten in einem Schritt übernehmen
 			p_garage->belegte_stellplaetze = p_garage->belegte_stellplaetze + 1;
 			return 1;
 		}
@@ -129,7 +129,7 @@ int ausparken_fahrzeug(Parkhaus *p_garage, int fahrzeug_id)
 
 			if (p_garage->belegte_stellplaetze > 0)
 			{
-				p_garage->belegte_stellplaetze = p_garage->belegte_stellplaetze - 1;
+				p_garage->belegte_stellplaetze = p_garage->belegte_stellplaetze - 1; // Einen belegten Platz weniger zählen 
 			}
 
 			return 1;
@@ -393,7 +393,7 @@ void start_simulation(const Simulationskonfiguration *p_konfiguration)
 		return; // Ohne initialisierte Garage darf die Simulation nicht starten
 	}
 
-	queue_init(&warteschlange);
+	queue_init(&warteschlange); // Queue startet immer leer
 
 	daten.gesamt_ankuenfte = 0;
 	daten.gesamt_geparkt = 0;
@@ -405,7 +405,7 @@ void start_simulation(const Simulationskonfiguration *p_konfiguration)
 	daten.durchschnittliche_wartezeit = 0.0;
 	daten.durchschnittliche_auslastung = 0.0;
 
-	// Datei zu Beginn neu anlegen, damit nur Werte der aktuellen Simulation enthalten sind.
+	// Datei zu Beginn neu anlegen, damit nur Werte der aktuellen Simulation enthalten sind
 	datei_auslastung = fopen("Output/data/auslastung.txt", "w");
 	if (datei_auslastung != NULL)
 	{
@@ -414,7 +414,7 @@ void start_simulation(const Simulationskonfiguration *p_konfiguration)
 	}
 	for (int schritt = 1; schritt <= p_konfiguration->anzahl_simulationsschritte; schritt++)
 	{
-		ausfuehren_simulationsschritt(schritt, p_konfiguration, &garage, &warteschlange, &daten);
+		ausfuehren_simulationsschritt(schritt, p_konfiguration, &garage, &warteschlange, &daten); // Ein kompletter Zeitschritt.
 		simulationsschrittdaten_ausgeben(schritt, &daten);
 	}
 
