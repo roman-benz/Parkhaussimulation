@@ -250,6 +250,7 @@ void ausfuehren_simulationsschritt(int aktueller_schritt, const Simulationskonfi
 void simulationsschrittdaten_ausgeben(int aktueller_schritt, const Simulationdaten *p_daten)
 {
 	FILE *datei_auslastung;
+	FILE *datei_schrittdaten;
 
 	if (p_daten == NULL)
 	{
@@ -277,6 +278,28 @@ void simulationsschrittdaten_ausgeben(int aktueller_schritt, const Simulationdat
 	{
 		fprintf(datei_auslastung, "%d\t%.4f\n", aktueller_schritt, p_daten->auslastungsrate);
 		fclose(datei_auslastung);
+	}
+
+	// Vollstaendige Schrittdaten immer in eine zweite Datei schreiben,
+	// unabhaengig davon, ob die Terminalausgabe aktiv ist.
+	datei_schrittdaten = fopen("Output/data/schrittdaten.txt", "a");
+	if (datei_schrittdaten != NULL)
+	{
+		fprintf(datei_schrittdaten, "===== SIMULATIONSSCHRITT %d =====\n", aktueller_schritt);
+		fprintf(datei_schrittdaten, "Gesamtankuenfte: %d\n", p_daten->gesamt_ankuenfte);
+		fprintf(datei_schrittdaten, "Gesamt geparkt: %d\n", p_daten->gesamt_geparkt);
+		fprintf(datei_schrittdaten, "Gesamtabfahrten: %d\n", p_daten->gesamt_abfahrten);
+		fprintf(datei_schrittdaten, "Aktuell belegt: %d\n", p_daten->aktuell_belegte_stellplaetze);
+		fprintf(datei_schrittdaten, "Warteschlangenlaenge: %d\n", p_daten->warteschlangen_laenge);
+		fprintf(datei_schrittdaten, "Maximale Warteschlangenlaenge: %d\n", p_daten->maximale_warteschlangen_laenge);
+		fprintf(datei_schrittdaten, "Aktuelle Auslastungsrate: %.4f\n", p_daten->auslastungsrate);
+		fprintf(datei_schrittdaten, "Durchschnittliche Wartezeit: %.4f\n", p_daten->durchschnittliche_wartezeit);
+		fprintf(datei_schrittdaten, "Durchschnittliche Auslastung: %.4f\n", p_daten->durchschnittliche_auslastung);
+		fclose(datei_schrittdaten);
+	}
+	else
+	{
+		printf("Fehler: Datei 'Output/data/schrittdaten.txt' konnte nicht geoeffnet werden.\n");
 	}
 }
 
@@ -374,6 +397,7 @@ void start_simulation(const Simulationskonfiguration *p_konfiguration)
 	Queue warteschlange;
 	Simulationdaten daten;
 	FILE *datei_auslastung;
+	FILE *datei_schrittdaten;
 	int erfolg_init;
 
 	if (p_konfiguration == NULL)
@@ -412,6 +436,18 @@ void start_simulation(const Simulationskonfiguration *p_konfiguration)
 		fprintf(datei_auslastung, "Zeitschritt\tAuslastungsrate\n");
 		fclose(datei_auslastung);
 	}
+
+	// Schrittprotokoll pro Lauf neu starten, damit nur aktuelle Simulationsdaten enthalten sind.
+	datei_schrittdaten = fopen("Output/data/schrittdaten.txt", "w");
+	if (datei_schrittdaten != NULL)
+	{
+		fclose(datei_schrittdaten);
+	}
+	else
+	{
+		printf("Fehler: Datei 'Output/data/schrittdaten.txt' konnte nicht geoeffnet werden.\n");
+	}
+
 	for (int schritt = 1; schritt <= p_konfiguration->anzahl_simulationsschritte; schritt++)
 	{
 		ausfuehren_simulationsschritt(schritt, p_konfiguration, &garage, &warteschlange, &daten); // Ein kompletter Zeitschritt.
