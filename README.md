@@ -37,6 +37,11 @@ cmake --build build
 Der erste Start eines Codespaces kann deutlich laenger dauern (mehrere Minuten).
 Das ist normal, weil Container-Image, Features und Abhaengigkeiten zuerst geladen und gebaut werden.
 
+## Output Hinweis
+
+Der Output der Simulation befindet sich unter .\Output\data , dort befindet sich eine plot_endergebnis.png welche die Enddaten mit Auslastungsgraph darstellt. 
+Die anderen txt Dateien sind Primär für das Programm und nicht für den Endnutzer. Die auslastung.txt gibt die Auslastung für jeden Zeitschritt an und die schrittdaten.txt die Simulationsdaten für jeden Zeitschritt. In der simulation_ende.txt sind die Enddaten geschrieben.
+
 ## Tests mit CMake
 
 Einzelne Test-Binaries bauen und starten:
