@@ -49,22 +49,22 @@ void queue_enqueue(Queue *p_eineQueue, Fahrzeug *p_einFahrzeug, int enqueue_zeit
 }
 
 Fahrzeug* queue_dequeue(Queue *p_eineQueue, int einparken_zeitschritt){
-    if (p_eineQueue->length == 0)
+    if (p_eineQueue->length == 0)   //Wenn die Warteschlange leer ist kann kein Fahrzeug entfernt werden
     {
         return NULL;
     }
-    QueueNode *entfernterKnoten = p_eineQueue->head;
-    Fahrzeug *einparkendesFahrzeug = entfernterKnoten->p_einFahrzeug;      
-    einparkendesFahrzeug->wartezeit = einparken_zeitschritt - entfernterKnoten->enqueue_zeitschritt;
+    QueueNode *entfernterKnoten = p_eineQueue->head;    //FIFO -> Head wird entfernt
+    Fahrzeug *einparkendesFahrzeug = entfernterKnoten->p_einFahrzeug;  //Fahrzeug was später returnt wird    
+    einparkendesFahrzeug->wartezeit = einparken_zeitschritt - entfernterKnoten->enqueue_zeitschritt;    //Wartezeitberechnung
     
-    p_eineQueue->head = entfernterKnoten->next;
+    p_eineQueue->head = entfernterKnoten->next; //Head auf das nächste Fahrzeug in der Warteschlange setzen
     if (p_eineQueue->head == NULL)
     {
-        p_eineQueue->tail = NULL;
+        p_eineQueue->tail = NULL;   //Wenn Warteschlange leer ist muss auch Tail auf NULL gesetzt werden
     }
-    free(entfernterKnoten);
-    p_eineQueue->length = p_eineQueue->length - 1;
-    return einparkendesFahrzeug;
+    free(entfernterKnoten); //Speicher freigeben
+    p_eineQueue->length = p_eineQueue->length - 1;  //Dekrementieren
+    return einparkendesFahrzeug;    //Fahrzeug returnen
     
 }
 
