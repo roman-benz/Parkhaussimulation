@@ -133,6 +133,27 @@ void test_ausparken_fahrzeug_gibt_platz_frei_und_fehlt_bei_unbekannter_id(void)
 }
 
 
+// Prüft, ob ein Fahrzeug korrekt ausgeparkt wird
+void test_ausparken_fahrzeug_erfolgreich(void)
+{
+    Parkhaus garage;
+    int init_erfolg = initialisierung_garage(&garage, 1);
+    assert(init_erfolg == 1);
+
+    Fahrzeug auto1 = {1, 10, 1, 0};
+    einparken_fahrzeug(&garage, &auto1);
+
+    int auspark_erfolg = ausparken_fahrzeug(&garage, 1);
+
+    assert(auspark_erfolg == 1);
+    assert(garage.belegte_stellplaetze == 0);
+    assert(garage.p_stellplaetze[0].fahrzeug_id == -1);
+
+    free(garage.p_stellplaetze);
+    printf("test_ausparken_fahrzeug_erfolgreich: OK\n");
+}
+
+
 // Prueft, dass start_simulation mit NULL ohne Absturz zurückkehrt
 void test_start_simulation_null_pointer_kein_crash(void)
 {
@@ -348,6 +369,7 @@ int main(void)
     test_einparken_fahrzeug_parkt_und_blockiert_bei_voll();
     test_einparken_fahrzeug_erfolgreich();
     test_ausparken_fahrzeug_gibt_platz_frei_und_fehlt_bei_unbekannter_id();
+    test_ausparken_fahrzeug_erfolgreich();
     test_start_simulation_null_pointer_kein_crash();
     test_start_simulation_veraendert_konfiguration_nicht();
     test_simulationsschritt_ankunft_geht_in_queue_wenn_voll();
