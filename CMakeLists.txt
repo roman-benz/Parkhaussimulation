@@ -22,3 +22,8 @@ add_executable(test_simulation
     Code/src/Simulation.c
     Code/src/Queue.c
 )
+
+add_executable(test_konfig
+    Code/tests/test_konfig.c
+    Code/src/Konfig.c
+)
