@@ -63,6 +63,7 @@ cmake --build build
 
 ```
 Parkhausimulation/
+├── CMakeLists.txt
 ├── Code/
 │   ├── Include/
 │   │   ├── Konfig.h              Struct Simulationskonfiguration, Prototypen fuer Eingabe
@@ -70,14 +71,16 @@ Parkhausimulation/
 │   │   ├── Queue.h               Struct QueueNode, Struct Queue, Prototypen fuer Warteschlange
 │   │   └── Simulation.h          Struct Simulationdaten, Prototypen fuer Simulationsablauf
 │   ├── src/
-│       ├── Main.c                Programmstart und Ablaufsteuerung
-│       ├── Konfig.c              Eingabevalidierung und Konfigurationseinlesung
-│       ├── Queue.c               Warteschlangen-Operationen (init, enqueue, dequeue, destroy)
-│       └── Simulation.c          Simulationsschritt, Ein-/Ausparken, Statistikausgabe
+│   │   ├── Main.c                Programmstart und Ablaufsteuerung
+│   │   ├── Konfig.c              Eingabevalidierung und Konfigurationseinlesung
+│   │   ├── Queue.c               Warteschlangen-Operationen (init, enqueue, dequeue, destroy)
+│   │   └── Simulation.c          Simulationsschritt, Ein-/Ausparken, Statistikausgabe
 │   └── tests/
 │       ├── test_konfig.c         Unit-Tests fuer Konfiguration und Eingabepruefung
 │       ├── test_queue.c          Unit-Tests fuer Queue-Operationen
 │       └── test_simulation.c     Unit-Tests fuer Simulationslogik und Ausgabe
+├── build/
+│   └── bin/                      Build-Ausgabeverzeichnis
 ├── docs/
 │   ├── Dokumentation_Dateistruktur.pdf           Begruendung der Modulaufteilung
 │   ├── geplante_Statistiken.pdf                  Uebersicht Statistiken und Ausgabeformat
@@ -89,6 +92,13 @@ Parkhausimulation/
 │   ├── TSA-TSL25_Programmieren-I_Programmentwurf_Parkhaus-Simulation-Teil1.pdf
 │   ├── TSA-TSL25_Programmieren-I_Programmentwurf_Parkhaus-Simulation-Teil2 (3).pdf
 │   └── c_coding_conventions.md
+├── Output/
+│   ├── data/
+│   │   ├── auslastung.txt
+│   │   ├── simulation_ende.txt
+│   │   └── plot_endergebnis.png
+│   └── gnuplot/
+│       └── plot_endergebnis.gp
 ├── LICENSE
 └── README.md
 ```
