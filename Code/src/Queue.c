@@ -18,7 +18,7 @@ void queue_init(Queue *p_queue){
 
 
 void queue_enqueue(Queue *p_eineQueue, Fahrzeug *p_einFahrzeug, int enqueue_zeitschritt){
-    QueueNode *fahrzeugknoten = malloc(sizeof (*fahrzeugknoten));
+    QueueNode *fahrzeugknoten = malloc(sizeof (*fahrzeugknoten));   //Neuer Knoten für das Fahrzeug
     if (fahrzeugknoten != NULL)
     {
         fahrzeugknoten->p_einFahrzeug = malloc(sizeof(Fahrzeug)); //Speicher auf heap reservieren
@@ -29,19 +29,19 @@ void queue_enqueue(Queue *p_eineQueue, Fahrzeug *p_einFahrzeug, int enqueue_zeit
         }
         
         *fahrzeugknoten->p_einFahrzeug = *p_einFahrzeug; // Fahrzeugdaten auf heap speichern
-        fahrzeugknoten->next = NULL;
-        fahrzeugknoten->enqueue_zeitschritt = enqueue_zeitschritt;
+        fahrzeugknoten->next = NULL;    //Sozusagen Tail->next = NULL
+        fahrzeugknoten->enqueue_zeitschritt = enqueue_zeitschritt;  //Zeitschritt für Wartezeitberechnung speichern
         if (p_eineQueue->length == 0)
         {
-            p_eineQueue->head = fahrzeugknoten;
+            p_eineQueue->head = fahrzeugknoten; //Wenn die Warteschlange leer ist: Fahrzeug ist head und tail
             p_eineQueue->tail = fahrzeugknoten;
         }
         else
         {
-            p_eineQueue->tail->next = fahrzeugknoten;
+            p_eineQueue->tail->next = fahrzeugknoten;   //Wenn die Warteschlange nicht leer ist, wird das Fahrzeug zum tail
             p_eineQueue->tail = fahrzeugknoten;
         }
-        p_eineQueue->length = p_eineQueue->length + 1;
+        p_eineQueue->length = p_eineQueue->length + 1;  //Länge um 1 erhöhen
     }
     else{
         return;
@@ -49,35 +49,39 @@ void queue_enqueue(Queue *p_eineQueue, Fahrzeug *p_einFahrzeug, int enqueue_zeit
 }
 
 Fahrzeug* queue_dequeue(Queue *p_eineQueue, int einparken_zeitschritt){
-    if (p_eineQueue->length == 0)
+    if (p_eineQueue->length == 0)   //Wenn die Warteschlange leer ist kann kein Fahrzeug entfernt werden
     {
         return NULL;
     }
-    QueueNode *entfernterKnoten = p_eineQueue->head;
-    Fahrzeug *einparkendesFahrzeug = entfernterKnoten->p_einFahrzeug;      
-    einparkendesFahrzeug->wartezeit = einparken_zeitschritt - entfernterKnoten->enqueue_zeitschritt;
+    QueueNode *entfernterKnoten = p_eineQueue->head;    //FIFO -> Head wird entfernt
+    Fahrzeug *einparkendesFahrzeug = entfernterKnoten->p_einFahrzeug;  //Fahrzeug was später returnt wird    
+    einparkendesFahrzeug->wartezeit = einparken_zeitschritt - entfernterKnoten->enqueue_zeitschritt;    //Wartezeitberechnung
     
-    p_eineQueue->head = entfernterKnoten->next;
+    p_eineQueue->head = entfernterKnoten->next; //Head auf das nächste Fahrzeug in der Warteschlange setzen
     if (p_eineQueue->head == NULL)
     {
-        p_eineQueue->tail = NULL;
+        p_eineQueue->tail = NULL;   //Wenn Warteschlange leer ist muss auch Tail auf NULL gesetzt werden
     }
-    free(entfernterKnoten);
-    p_eineQueue->length = p_eineQueue->length - 1;
-    return einparkendesFahrzeug;
+    free(entfernterKnoten); //Speicher freigeben
+    p_eineQueue->length = p_eineQueue->length - 1;  //Dekrementieren
+    return einparkendesFahrzeug;    //Fahrzeug returnen
     
 }
 
+//ACHTUNG -> NUR AUFRUFEN WENN WARTEZEIT EINES FAHRZEUGES NICHT MEHR RELEVANT IST, da queue_destroy die Wartezeit falsch überschreibt
 void queue_destroy(Queue *p_queue){
-    Fahrzeug *fahrzeug;
-    int platzhalter_zeitschritt = 0;
+    Fahrzeug *fahrzeug; //Zwischenspeicher für Fahrzeug
+    int platzhalter_zeitschritt = 0;    //Platzhalter
     while ((fahrzeug = queue_dequeue(p_queue, platzhalter_zeitschritt)) != NULL){
         free(fahrzeug); //Speicher des Fahrzeugs freigeben
     }
-    //ACHTUNG -> NUR AUFRUFEN WENN WARTEZEIT EINES FAHRZEUGES NICHT MEHR RELEVANT IST, da queue_destroy die Wartezeit falsch überschreibt
+    
 }
 
 /*
+PSEUDOCODE:
+
+
     Die Funktion queue_init verhindert, dass die Zeiger auf Garbage-Werte zeigen.
     Das könnte später zu Fehlern und Abstürzen führen, wenn sie nicht vorher mit NULL initialisiert werden.
 */
