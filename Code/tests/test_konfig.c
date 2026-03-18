@@ -3,7 +3,7 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "../include/Konfig.h"
+#include "../Include/Konfig.h"
 
 
 // Schreibt Testeingaben in eine Datei und leitet stdin darauf um
