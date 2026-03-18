@@ -1,10 +1,28 @@
 #include "../Include/Konfig.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 /*
  * File: Konfig.c
  * Description: Implementierung der Funktionen zur Eingabe und Validierung der Simulationskonfiguration.
  */
+
+static int terminalausgabe_aktiv(void)
+{
+    const char *stumm = getenv("PARKHAUS_SILENT");
+
+    if (stumm == NULL)
+    {
+        return 1;
+    }
+
+    if (stumm[0] == '\0' || stumm[0] == '0')
+    {
+        return 1;
+    }
+
+    return 0;
+}
 
 int int_wert_einlesen(const char *prompt, int min_wert, int max_wert, int *p_out_wert)
 {
@@ -17,24 +35,36 @@ int int_wert_einlesen(const char *prompt, int min_wert, int max_wert, int *p_out
         return 0;
     }
 
-    printf("%s", prompt); // Eingabeaufforderung ausgeben
+    if (terminalausgabe_aktiv())
+    {
+        printf("%s", prompt); // Eingabeaufforderung ausgeben
+    }
     eingabe_erfolg = scanf("%d", &value);
     if (eingabe_erfolg == EOF)
     {
-        printf("Eingabe abgebrochen.\n");
+        if (terminalausgabe_aktiv())
+        {
+            printf("Eingabe abgebrochen.\n");
+        }
         return 0;
     }
 
     if (eingabe_erfolg != 1) // Ungültige Eingabe: sofortiger Abbruch
     {
-        printf("Ungueltige Eingabe. Bitte eine ganze Zahl eingeben.\n");
+        if (terminalausgabe_aktiv())
+        {
+            printf("Ungueltige Eingabe. Bitte eine ganze Zahl eingeben.\n");
+        }
         while ((c = getchar()) != '\n' && c != EOF) {}  // Eingabepuffer leeren
         return 0;
     }
 
     if (value < min_wert || value > max_wert) // Bereichsprüfung
     {
-        printf("Wert außerhalb des erlaubten Bereichs (%d bis %d).\n", min_wert, max_wert);
+        if (terminalausgabe_aktiv())
+        {
+            printf("Wert außerhalb des erlaubten Bereichs (%d bis %d).\n", min_wert, max_wert);
+        }
         return 0;
     }
 

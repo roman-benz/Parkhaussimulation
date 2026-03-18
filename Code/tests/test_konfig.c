@@ -5,6 +5,15 @@
 #include <stdlib.h>
 #include "../Include/Konfig.h"
 
+static void aktiviere_stillen_modus(void)
+{
+#ifdef _WIN32
+	_putenv("PARKHAUS_SILENT=1");
+#else
+	setenv("PARKHAUS_SILENT", "1", 1);
+#endif
+}
+
 
 // Schreibt Testeingaben in eine Datei und leitet stdin darauf um
 static int stdin_auf_datei_setzen(const char *dateiname, const char *inhalt)
@@ -91,10 +100,12 @@ void test_konfiguration_einlesen_gueltige_eingaben(void)
 
 int main(void)
 {
+	aktiviere_stillen_modus();
+
 	test_int_wert_einlesen_gueltige_eingabe();
 	test_int_wert_einlesen_wert_ausserhalb_bereich();
 	test_konfiguration_einlesen_null_pointer();
 	test_konfiguration_einlesen_gueltige_eingaben();
-	printf("Alle Konfig-Tests erfolgreich!\n");
+	printf("Alle Tests erfolgreich!\n");
 	return 0;
 }
